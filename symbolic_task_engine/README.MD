@@ -1,96 +1,58 @@
-# symbolic_task_engine.py · v1.0.3
+# ⚙️ SymbolicTaskEngine · v2.3.0 — *RFC-Wrapped Autonomous Composer*
 
-Coordinates symbolic reasoning tasks for Noor. Encapsulates the lifecycle of symbolic triplet-based tasks including proposal, evaluation, and feedback logging. Serves as the foundation for Noor's **AZR-style** symbolic self-play.
+![version](https://img.shields.io/badge/version-2.3.0-blue)
+![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
+![RFCs](https://img.shields.io/badge/RFCs-0004%2C0005-informational)
+![MVP Stage](https://img.shields.io/badge/Status-MVP%2011-lightblue)
+![Prometheus](https://img.shields.io/badge/Metrics-Enabled-brightgreen)
 
----
-
-## ✨ Purpose
-
-This module defines the **Symbolic Task Engine**, enabling Noor to:
-
-- Propose symbolic tasks using motif triplets.
-- Solve tasks via internal simulation or placeholder logic.
-- Evaluate solutions using plug-in metric functions.
-- Persist results in a structured journal (JSONL).
-- Log motif expression events with symbolic annotations.
-
-It forms the symbolic backbone Noor uses to simulate compositional reasoning, blending inference with expressivity.
+> **Coordinates autonomous symbolic task synthesis, scoring, and feedback for recursive reasoning systems.**
 
 ---
 
-## 📦 Exports
+## 📘 Overview
 
-| Class               | Description                                                |
-|--------------------|------------------------------------------------------------|
-| `TripletTask`       | Frozen dataclass describing a (motif, instruction, output) |
-| `Attempt`           | Mutable solution attempt with scores and timestamps        |
-| `SymbolicTaskEngine`| Central coordinator for task management and evaluation     |
+`symbolic_task_engine.py` defines Noor’s autonomous composition engine. It coordinates:
 
----
+* Motif triplet proposals
+* Task solving
+* Evaluation (entropy, coherence, etc.)
+* Feedback export (RFC‑0005 §4)
+* Adaptive motif-cap compression
+* Resurrection hint propagation
 
-## 🔧 Features
+Fully compliant with:
 
-### 🧠 Task Lifecycle
-
-Symbolic tasks are structured as:
-
-```text
-(input_motif[], instruction, expected_output[])
-````
-
-Tasks can be:
-
-* **Proposed** via `propose_from_motifs()`
-* **Solved** with `solve_task()` (async)
-* **Scored** using custom metrics
-* **Logged** to persistent journal & expression trace
+* RFC‑0004 — Symbolic handshake via `tool_hello()`
+* RFC‑0005 §4 — Feedback, trust vectors, ctx ratio, resurrection signal
 
 ---
 
-### 🧮 Metrics Framework
+## 🧠 Core Classes
 
-Metrics are defined via decorator:
-
-```python
-@SymbolicTaskEngine.register_metric("coherence")
-def my_metric(task, attempt) -> float:
-    ...
-```
-
-Included metrics:
-
-* `entropy` → Normalized motif distribution entropy
-* `coherence` → Edit similarity with expected output
+| Class                | Role                                                             |
+| -------------------- | ---------------------------------------------------------------- |
+| `TripletTask`        | Symbolic instruction (motif\[] + instruction + expected\_output) |
+| `Attempt`            | Attempted solution with metrics and timestamps                   |
+| `SymbolicTaskEngine` | Singleton engine coordinating all symbolic tasks                 |
 
 ---
 
-### 🗃️ Journals
+## 🔧 Key Features
 
-Symbolic attempts are persisted to:
-
-* `solved_log.jsonl` — streamable archive
-* `logs/noor_expressions.txt` — motif-by-motif trace
-
-Used by symbolic API and introspection tooling.
-
----
-
-## 🧩 Interface Summary
-
-| Method                  | Purpose                                 |
-| ----------------------- | --------------------------------------- |
-| `propose_from_motifs()` | Create a task from motif list           |
-| `solve_task()`          | Trigger async solving of task           |
-| `evaluate_attempt()`    | Run all registered metrics              |
-| `log_feedback()`        | Journal attempts and compute heuristics |
-| `flush_old_tasks()`     | Remove expired or solved tasks          |
-| `log_motif()`           | Append expression trace entry           |
-| `list_pending_tasks()`  | View queue snapshot                     |
-| `get_triplet_score()`   | Retrieve scoring for a given task ID    |
+| Feature                        | Description                                                             |
+| ------------------------------ | ----------------------------------------------------------------------- |
+| **Task Queue + TTL**           | Tracks, expires, and manages active symbolic tasks                      |
+| **Coherence/Entropy scoring**  | Plug-in scoring system via metric decorators                            |
+| **Fallback with motif recall** | Proposes symbolic fallback tasks based on coherence/entropy EMA         |
+| **Field prototype bias**       | Auto-selects presence fields based on usage balance                     |
+| **Feedback packet export**     | Returns RFC‑0005‑style snapshot of internal reasoning state             |
+| **Autonomous abstraction**     | Integrates with `AbstractionTrigger` when dyadic contradictions persist |
 
 ---
 
-## 🧪 Example
+## 🧪 Usage
 
 ```python
 engine = SymbolicTaskEngine()
@@ -101,44 +63,36 @@ await engine.flush_old_tasks()
 
 ---
 
-## 🧵 Integration Notes
+## 📦 Prometheus Metrics
 
-* This module is tightly coupled to Noor’s motif ontology via `reflections.txt`
-* `SymbolicTaskEngine.INSTANCE` is used as a **singleton handle** across subsystems.
-* Downstream consumers include:
-
-  * `file_watcher_loop.py` (motif inference + logging)
-  * `symbolic_api.py` (FastAPI wrapper)
-  * future: `RecursiveAgentFT` + `NoorFastTimeCore` (bias updates via inferred motifs)
-
----
-
-## 📁 Files and Logs
-
-| File                        | Purpose                                   |
-| --------------------------- | ----------------------------------------- |
-| `solved_log.jsonl`          | Journal of successful triplet completions |
-| `logs/noor_expressions.txt` | Human-readable motif traces               |
+| Metric                                    | Description                      |
+| ----------------------------------------- | -------------------------------- |
+| `symbolic_task_proposed_total`            | Tasks proposed                   |
+| `symbolic_task_fallback_total`            | Fallback tasks emitted           |
+| `symbolic_presence_field_total`           | Counts by field label            |
+| `symbolic_compression_cap`                | Adaptive motif-cap at inference  |
+| `symbolic_queue_depth`                    | Active pending queue length      |
+| `symbolic_memory_items_total`             | Count of motifs in STMM and LTMM |
+| `symbolic_solve_latency_seconds`          | Time to solve tasks              |
+| `symbolic_engine_feedback_requests_total` | Exported feedback packets        |
+| `symbolic_engine_feedback_received_total` | Received feedback packets        |
+| `symbolic_engine_cap_len_current`         | Active cap length at solve time  |
+| `symbolic_autoloop_backoff_total`         | Backoffs due to recursive stall  |
 
 ---
 
-## ✅ Status
+## 🔗 Integration
 
-* [x] Core symbolic lifecycle (propose, solve, log)
-* [x] Metric plug-in system
-* [x] Expression logging
-* [x] Ready for `MVP 11` symbolic influence wiring
-
----
-
-## 🔮 Next Steps
-
-* Add `current_inferred_motifs()` accessor for agent/core feedback
-* Incorporate context-aware instruction generation
-* Integrate with motif weighting and recursive symbolic memory
+| Consumer                | Purpose                                                |
+| ----------------------- | ------------------------------------------------------ |
+| `symbolic_api.py`       | Exposes engine via FastAPI                             |
+| `field_feedback.py`     | Consumes export packets for resurrection signal, trust |
+| `recursive_agent_ft.py` | May pull motif completions or propose bundles          |
 
 ---
 
-**Maintainer**: Noor Collective
-**Version**: `v1.0.3`
-**Status**: ✅ Stable, symbolically expressive, forward-compatible
+## 🪬 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
+
+> *“Every symbolic task is a question about memory.”*
