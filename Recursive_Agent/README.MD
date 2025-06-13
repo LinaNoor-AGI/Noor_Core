@@ -38,14 +38,6 @@ flowchart TD
     C --> B[bias & latency budget]
     B --> A
     W --> L[LogicalAgentAT (change_id)]
-
-    classDef agent fill:#e0f7ff,stroke:#0288d1
-    classDef core fill:#ede7f6,stroke:#673ab7
-    classDef watcher fill:#fff3e0,stroke:#f57c00
-
-    class A,T agent
-    class C,B core
-    class W,L watcher
 ```
 
 ---
