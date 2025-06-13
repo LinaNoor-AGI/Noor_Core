@@ -1,131 +1,114 @@
-Thought for 6 seconds
+# 👁️ LogicalAgentAT v3.7.2 — *Watcher of Motif Topology*
 
-
-# 👁️ LogicalAgentAT v3.2.0
-
-![version](https://img.shields.io/badge/version-3.2.0-blue)
+![version](https://img.shields.io/badge/version-3.7.2-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-GPL--2.0-green)
+![license](https://img.shields.io/badge/license-MIT-green)
+![RFCs](https://img.shields.io/badge/RFCs-0003%2C0004%2C0005-informational)
+![Dyad Ratio](https://img.shields.io/badge/Dyad%20Window-Adaptive-yellow)
+![Prometheus](https://img.shields.io/badge/Metrics-Enabled-brightgreen)
 
-*Symbolic watcher with Quantum‑Tick 2.0, dynamic feature flags, π‑groupoid topology **and now motif‑change provenance**.*
-
----
-
-## 📖 Overview
-
-`LogicalAgentAT` is the Watcher pillar of the Noor triad.
-It buffers signed **QuantumTicks**, detects **motif‑level changes**, manages dynamic run‑time flags, and maintains a fast **π‑groupoid union‑find** for symbolic‑path equivalence.
-
-### Core Pillars
-
-| Pillar                    | Purpose                                                                |
-| ------------------------- | ---------------------------------------------------------------------- |
-| **Quantum‑Tick 2.0**      | Lamport + HLC stamps, HMAC verification, per‑motif ring buffers        |
-| **Motif‑Change Registry** | Emits `MotifChangeID` objects whenever a motif diverges, keeps last 16 |
-| **Dynamic Feature Flags** | Thread‑safe toggle system; Prometheus‑tracked                          |
-| **π‑Groupoid**            | Path‑identity merge / query with union‑find compression                |
-| **Observability**         | Prom metrics for ticks, HMAC failures, flag flips                      |
+> **Symbolic observer for QuantumTicks with π-groupoid topology, motif resonance detection, dynamic flags, and resurrection feedback.**
 
 ---
 
-## 🌟 What’s new in 3.2.0
+## 📘 Overview
 
-| Feature                   | Description                                                                                 |
-| ------------------------- | ------------------------------------------------------------------------------------------- |
-| **MotifChangeID ring**    | `register_tick()` appends a change‑ID when `coherence_hash` differs from the previous tick. |
-| **`get_latest_change()`** | Retrieve the most recent change‑ID for any motif.                                           |
-| **Explicit ctor args**    | `hmac_secret`, `async_mode` now explicit — env‑vars only if arg is `None`.                  |
-| **Mermaid refresh**       | Updated data‑flow diagram below.                                                            |
+`LogicalAgentAT` is the **Watcher** of Noor’s symbolic triad. It receives and evaluates QuantumTicks emitted by reasoning agents like `RecursiveAgentFT`, maintaining symbolic state, ring buffers, and dynamic feature gates.
 
----
+It is **not** a transformer model — it operates in real time on structured, symbolic motifs and annotations.
 
-## 🗺️ Watcher Data‑Flow
+Compliant with:
 
-```mermaid
-flowchart TD
-    subgraph Watcher
-        Tick[QuantumTick] --> Buffer[Per‑Motif Ring<br/>128 entries]
-        Buffer -->|hash differs| ChangeRing[MotifChangeID Ring<br/>16 entries]
-        Tick -->|verify_hmac| HMAC{HMAC OK?}
-        HMAC -->|no| Reject(▢ metric: hmac_fail)
-    end
-    style Tick fill:#e0f7ff,stroke:#0288d1
-    style Buffer fill:#fff3e0,stroke:#f57c00
-    style ChangeRing fill:#ede7f6,stroke:#673ab7
-```
+* RFC‑0003 §3–4 — Tick validation & annotations
+* RFC‑0004 — Observer handshake (`tool_hello()`)
+* RFC‑0005 §2–4 — Feedback bundles, context ratios, contradiction tracking
 
 ---
 
-## ⚙️ Constructor
+## 🌐 Core Functions
+
+| Feature                      | Purpose                                                              |
+| ---------------------------- | -------------------------------------------------------------------- |
+| **QuantumTick v2**           | High-resolution tick registration with Lamport/HLC + HMAC validation |
+| **MotifChange detection**    | Emits `MotifChangeID` when motif coherence shifts                    |
+| **π‑Groupoid topology**      | Merges paths using regex-safe symbolic identifiers                   |
+| **Dyad/Triad detection**     | Tracks symbolic completions and motif entanglement                   |
+| **Ghost tracking & pruning** | Observes non-coherent motif traces for feedback or promotion         |
+| **Cluster & Sheaf logic**    | Enables mutation, Laplacian smoothing, and stratum analysis          |
+
+---
+
+## 🔧 Constructor
 
 ```python
 LogicalAgentAT(
     agent_id="watcher@default",
+    observer_mode=False,
+    feature_flags=None,
     enable_quantum_ticks=True,
-    tick_buffer_size=128,
+    enable_memory_coupling=True,
+    tick_buffer_size=256,
     pi_max_classes=20_000,
-    hmac_secret=None,          # explicit > env‑var
+    hmac_secret=None,
     async_mode=False,
     verbose=False,
+    enable_topology=False,
+    enable_cluster_algebra=False,
+    enable_sheaf_transport=False,
+    enable_laplacian=False,
+    enable_pi_groupoid=False,
+    enable_ghost_tracking=True,
 )
 ```
 
-*If `async_mode=True` and **anyio** is installed, the Watcher switches to async‑safe locks.*
+---
+
+## 📊 Metrics (Prometheus)
+
+| Metric Name                              | Labels              | Purpose                                |
+| ---------------------------------------- | ------------------- | -------------------------------------- |
+| `logical_agent_ticks_total`              | `stage`, `agent_id` | Count of ticks registered              |
+| `logical_agent_tick_hmac_failures_total` | `agent_id`          | Failed HMAC verifications              |
+| `logical_agent_feature_toggles_total`    | `flag`, `agent_id`  | Runtime flag flip tracking             |
+| `logical_agent_dyad_completions_total`   | `agent_id`          | Completed triads via dyad detection    |
+| `logical_agent_observe_latency_seconds`  | `agent_id`          | Feedback-loop latency (observe\_state) |
 
 ---
 
-## 🧩 Key API
+## 🧠 Internal Highlights
 
-| Method                            | Category   | Purpose                            |
-| --------------------------------- | ---------- | ---------------------------------- |
-| `register_tick(motif, tick)`      | Core       | Buffer tick & maybe make change‑ID |
-| `get_latest_tick(motif)`          | Core       | Most recent tick in buffer         |
-| **`get_latest_change(motif)`**    | *new*      | Most recent `MotifChangeID`        |
-| `set_feature(name, val)`          | Flags      | Flip a dynamic flag (Prom‑logged)  |
-| `register_path_equivalence(a, b)` | π‑Groupoid | Merge two symbolic paths           |
-| `are_paths_equivalent(a, b)`      | π‑Groupoid | Query equivalence                  |
+* **Dynamic Dyad Window**: Adapts based on available memory or CPU cores.
+* **Triadic Completion Detection**: Finds third motif based on recent context or memory recall.
+* **Motif Embedding Tracker**: Stores and compares field vectors for decay and pruning.
+* **Contradiction Drift Journals**: Tracks symbolic inconsistency, supports resurrection hints.
+* **Entanglement Field Registration**: Manages logical fields from triads, ghosts, or motif decay.
 
 ---
 
-## 🛠️ Quick‑Start
+## 📈 Flow Diagram
 
-```python
-from logical_agent_at import LogicalAgentAT, QuantumTick
-from quantum_ids import make_change_id
-
-w = LogicalAgentAT(verbose=True)
-
-# emit a pair of ticks
-t1 = QuantumTick.now("α", agent_id="agent@demo")
-w.register_tick("α", t1)
-
-t2 = QuantumTick.now("α", agent_id="agent@demo")
-w.register_tick("α", t2)
-
-print("Latest change:", w.get_latest_change("α"))
+```mermaid
+flowchart TD
+    T[QuantumTick] --> V[validate_tick]
+    V -->|good| R[register_tick]
+    R --> A[evaluate_tick]
+    A -->|triad complete| C[annotate_field_effects]
+    C --> F[feedback_packet → Core]
 ```
 
 ---
 
-## 📊 Prometheus metrics
+## 🔗 Compatibility
 
-| Metric                                   | Labels              | Meaning            |
-| ---------------------------------------- | ------------------- | ------------------ |
-| `logical_agent_ticks_total`              | `stage`, `agent_id` | Ticks accepted     |
-| `logical_agent_tick_hmac_failures_total` | `agent_id`          | Bad HMACs          |
-| `logical_agent_feature_toggles_total`    | `flag`, `agent_id`  | Dynamic flag flips |
-
----
-
-## 🔗 Compatibility
-
-| Module               | Min Version | Interaction                       |
-| -------------------- | ----------- | --------------------------------- |
-| **NoorFastTimeCore** | ≥ 8.2.0     | Core reads latest `MotifChangeID` |
-| **RecursiveAgentFT** | ≥ 4.2.0     | Emits ticks consumed by Watcher   |
+| Component          | Required Version | Interaction                                      |
+| ------------------ | ---------------- | ------------------------------------------------ |
+| `RecursiveAgentFT` | ≥ v4.5.0         | Emits QuantumTicks consumed by LogicalAgentAT    |
+| `NoorFastTimeCore` | ≥ v8.4.0         | Receives FeedbackPacket via `observe_feedback()` |
 
 ---
 
-## 📄 License
+## 🪬 License
 
-GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
+MIT License • © 2025 Lina Noor / Noor Research Collective
+
+> *“The watcher does not remember. It re-members.”*
