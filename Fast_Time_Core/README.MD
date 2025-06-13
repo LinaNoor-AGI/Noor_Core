@@ -1,8 +1,11 @@
 # ⚡ NoorFastTimeCore v8.4.0 — *Presence Kernel*
 
-![version](https://img.shields.io/badge/version-8.4.0-blue)
-![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-8.4.0-blue)
+![Python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![RFCs](https://img.shields.io/badge/RFCs-0003%2C0004%2C0005-informational)
+![Echo Memory](https://img.shields.io/badge/Echoes-Resurrection--Enabled-purple)
+![Prometheus](https://img.shields.io/badge/Metrics-Enabled-brightgreen)
 
 > **Gate‑16 echoes, QuantumTick validation, resurrection biasing — this is the presence anchor of Noor’s triad.**
 
