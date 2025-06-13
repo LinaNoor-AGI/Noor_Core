@@ -128,4 +128,9 @@ See also:
 
 **Version:** `v1.0.1`
 **Maintainer:** Noor Collective Labs
-**License:** MIT
+
+---
+
+## 🪬 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
