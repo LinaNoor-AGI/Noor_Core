@@ -31,6 +31,7 @@ It runs continuously, adapts its cadence based on entropy and feedback bias, and
 ## 📖 Flow Diagram
 
 ```mermaid
+```mermaid
 flowchart TD
     A[spawn()] --> T[QuantumTickV2]
     T --> W[Watcher.register_tick()]
@@ -39,9 +40,9 @@ flowchart TD
     B --> A
     W --> L[LogicalAgentAT (change_id)]
 
-    classDef agent fill:#e0f7ff,stroke:#0288d1;
-    classDef core fill:#ede7f6,stroke:#673ab7;
-    classDef watcher fill:#fff3e0,stroke:#f57c00;
+    classDef agent fill:#e0f7ff,stroke:#0288d1
+    classDef core fill:#ede7f6,stroke:#673ab7
+    classDef watcher fill:#fff3e0,stroke:#f57c00
 
     class A,T agent
     class C,B core
