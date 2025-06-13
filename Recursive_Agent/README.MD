@@ -32,12 +32,12 @@ It runs continuously, adapts its cadence based on entropy and feedback bias, and
 
 ```mermaid
 flowchart TD
-    A[spawn()] --> T[QuantumTickV2]
-    T --> W[Watcher.register_tick()]
-    T --> C[FastTimeCore.receive_feedback()]
+    A[spawn] --> T[QuantumTickV2]
+    T --> W[register_tick]
+    T --> C[receive_feedback]
     C --> B[bias & latency budget]
     B --> A
-    W --> L[LogicalAgentAT (change_id)]
+    W --> L[MotifChangeID]
 ```
 
 ---
