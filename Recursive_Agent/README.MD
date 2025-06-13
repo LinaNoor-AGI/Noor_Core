@@ -31,7 +31,6 @@ It runs continuously, adapts its cadence based on entropy and feedback bias, and
 ## 📖 Flow Diagram
 
 ```mermaid
-```mermaid
 flowchart TD
     A[spawn()] --> T[QuantumTickV2]
     T --> W[Watcher.register_tick()]
