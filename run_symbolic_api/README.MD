@@ -104,3 +104,9 @@ If launched independently, ensure `SymbolicTaskEngine.INSTANCE` is initialized p
 ## 🧭 Version
 
 **v1.0.0** — Initial launch integration with FastAPI and symbolic subsystem.
+
+---
+
+## 🪬 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
