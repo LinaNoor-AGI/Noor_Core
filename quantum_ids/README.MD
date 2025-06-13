@@ -80,6 +80,8 @@ flowchart LR
 
 ---
 
-## 🪬 License
+---
 
-GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
+## 🪬 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
