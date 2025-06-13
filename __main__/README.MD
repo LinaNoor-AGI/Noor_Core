@@ -56,6 +56,6 @@ The full flag set is documented in **[orchestrator README →](./orchestrator.m
 
 ---
 
-## 🪬 License
+## 🪬 License
 
-GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
+MIT License • © 2025 Lina Noor / Noor Research Collective
