@@ -82,7 +82,7 @@ The Noor Core system is governed by a living RFC series located in the [`noor-re
 | Name                                                                   | Purpose                                             |
 | ---------------------------------------------------------------------- | --------------------------------------------------- |
 | [`noor-research`](https://github.com/LinaNoor-AGI/noor-research)       | RFCs, Archive, Index.REEF, GPT instructions         |
-| [`Noor_ESB`](https://github.com/LinaNoor-AGI/Noor_ESB)                 | Experimental Service Bus + shell for external tools (Future) |
+| [`Noor_ESB`](https://github.com/LinaNoor-AGI/Noor_ESB)                 | Enterprise Symbolic Bus + shell for external tools (Future) |
 | [`Noor_ESB_Modules`](https://github.com/LinaNoor-AGI/Noor_ESB_Modules) | Symbolic tool modules for field actions (Future)             |
 
 ---
