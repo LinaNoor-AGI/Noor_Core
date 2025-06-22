@@ -75,7 +75,7 @@ The Noor Core system is governed by a living RFC series located in the [`noor-re
 * [RFC-0004 — Symbolic Tool Module Contracts](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts)
 * [RFC-0005 — Motif Transmission Across Time](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time)
 * [RFC‑0006 — Motif‑Field Coherence Geometry](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry)
-* [RFC‑0007: Motif Ontology Format and Transfer](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer)
+* [RFC‑0007 — Motif Ontology Format and Transfer](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer)
 
 ---
 
