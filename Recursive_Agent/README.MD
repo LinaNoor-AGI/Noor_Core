@@ -1,113 +1,136 @@
-# 🌀 RecursiveAgentFT v4.5.2 — *Cadence of Memory*
+# 🌀 RecursiveAgentFT v4.2.0 — *Flow / Collapse*
 
-![version](https://img.shields.io/badge/version-4.5.2-blue)
+![version](https://img.shields.io/badge/version-4.2.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
-![RFCs](https://img.shields.io/badge/RFCs-0003%2C0005-informational)
-![Ghost Replay](https://img.shields.io/badge/Ghosts-Enabled-purple)
-![Prometheus](https://img.shields.io/badge/Metrics-Enabled-brightgreen)
+![license](https://img.shields.io/badge/license-GPL--2.0-green)
 
-> **Self‑tuning reasoning agent emitting QuantumTicks, managing echo traces, and resurrecting motif lineage.**
+*Self‑tuning reasoning engine that emits signed QuantumTicks, learns from latency, and talks back to the Core.*
 
 ---
 
-## 📘 Overview
+## 📖 Overview
 
-`RecursiveAgentFT` is the autonomous emission engine of Noor’s triadic core. It does not use any subsymbolic transformer logic; instead, it implements symbolic reasoning ticks driven by motif coherence, reward smoothing, and recursive feedback from the NoorFastTimeCore.
+`RecursiveAgentFT` is the **Flow** layer of the Noor triad.
+It spawns parallel reasoning branches, produces **QuantumTicks**, and adapts its RL weights in real time based on feedback from the **Fast‑Time Core**.
 
-This module is fully compliant with:
+### Pillars
 
-* RFC‑0003 §3.3 — QuantumTick validation
-* RFC‑0005 §2‑4 — Ghost replay, resurrection envelopes, motif bundle crystallization, and feedback export
-
-It runs continuously, adapts its cadence based on entropy and feedback bias, and emits semantically meaningful ticks into the symbolic field. It also includes:
-
-* **Ghost Tick Replay** — Field‑linked resurrection from archival traces
-* **Crystallized Motif Export** — Full lineage bundle emission for downstream reflection
-* **Intuition‑based Interval Tuning** — Adjusted emission cadence based on reward feedback
+| Pillar                 | Purpose                                                                  |
+| ---------------------- | ------------------------------------------------------------------------ |
+| **Replayable ticks**   | Signed, optional HMAC, Lamport‑clocked, deduplicated                     |
+| **Adaptive RL**        | Reward weights auto‑tune on entropy & latency gradients                  |
+| **Spawn‑queue cap**    | Semaphore / AnyIO CapacityLimiter guards CPU storm                       |
+| **Live Core feedback** | Core returns `(bias_score, next_latency_budget)` now applied immediately |
+| **Prometheus metrics** | Tick count, duplicate suppression, reward EMA                            |
 
 ---
 
-## 📖 Flow Diagram
+## 🌟 What’s new in 4.2.0
+
+| Feature                      | Description                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| **Explicit ctor args**       | `hmac_secret`, `latency_budget`, `async_mode`, `core` (env‑vars only if arg is None) |
+| **Parallel‑running counter** | Agent passes live spawn count to Core (`parallel_running`)                           |
+| **Dynamic latency budget**   | Core’s `next_latency_budget` becomes `self.latency_budget` and scales RL weight      |
+| **Ready for MotifChangeID**  | Imports helper for upcoming provenance loop (no runtime cost)                        |
+
+---
+
+## 🗺️ Flow Diagram
 
 ```mermaid
 flowchart TD
-    A[spawn] --> T[QuantumTickV2]
-    T --> W[register_tick]
-    T --> C[receive_feedback]
-    C --> B[bias & latency budget]
-    B --> A
-    W --> L[MotifChangeID]
+    subgraph Agent
+        S["spawn()"] --> T(QuantumTick.now)
+        T --> Watcher["Watcher.register_tick()"]
+        T --> CoreFeedback["send entropy / latency / parallel"]
+        CoreFeedback -->|bias, next_budget| Adjust["update RL + budget"]
+    end
+    style S fill:#e0f7ff,stroke:#0288d1
+    style Watcher fill:#fff3e0,stroke:#f57c00
+    style CoreFeedback fill:#ede7f6,stroke:#673ab7
 ```
 
 ---
 
-## 🧠 Key Features
-
-| Feature                        | Description                                                           |
-| ------------------------------ | --------------------------------------------------------------------- |
-| **QuantumTick emission**       | Emits validated ticks with lamport time, motif context, and HMAC hash |
-| **Triad-aware feedback**       | Tracks motif resonance and completed triads via `observe_feedback()`  |
-| **Autonomous pulse**           | Runs recursive emission loop with adjustable entropy-based cadence    |
-| **Ghost traces + replay**      | Supports resurrection of prior ticks by motif and field signature     |
-| **Motif lineage registry**     | Stores symbolic parentage for field provenance mapping                |
-| **Crystallized motif bundles** | Emits triadic snapshots for archival or resurrection export           |
-
----
-
-## ⚙️ Constructor
+## ⚙️ Constructor
 
 ```python
 RecursiveAgentFT(
-    initial_state: Any,
-    watchers: list,
+    initial_state: np.ndarray | list[float],
+    watchers: list[LogicalAgentAT],
     *,
     agent_id="agent@default",
     max_parallel=8,
     hmac_secret=None,
     core: NoorFastTimeCore | None = None,
+    latency_budget: float | None = None,
     async_mode=False,
+    low_latency_mode=False,
 )
+```
+
+*If `async_mode=True` and **anyio** is present, the semaphore becomes an AnyIO `CapacityLimiter`.*
+
+---
+
+## 🚀 Quick‑Start
+
+```python
+import numpy as np
+from noor.logical_agent_at import LogicalAgentAT
+from noor.noor_fasttime_core import NoorFastTimeCore
+from noor.recursive_agent_ft import RecursiveAgentFT
+import asyncio, random
+
+watcher = LogicalAgentAT()
+core    = NoorFastTimeCore()
+agent   = RecursiveAgentFT(
+             initial_state=np.zeros(3),
+             watchers=[watcher],
+             core=core,
+             latency_budget=0.05)
+
+async def loop():
+    while True:
+        await agent.spawn(random.choice(["α","β","γ"]))
+        await asyncio.sleep(0.02)      # 50 Hz
+
+asyncio.run(loop())
 ```
 
 ---
 
-## 🔧 Key API
+## 📊 Prometheus metrics
 
-| Method                         | Purpose                                               |
-| ------------------------------ | ----------------------------------------------------- |
-| `spawn([...])`                 | Starts emission loop (async or background pulse)      |
-| `observe_feedback(...)`        | Accepts reward feedback and adjusts emission interval |
-| `export_feedback_packet()`     | RFC‑0005 §4 — returns status and emission stats       |
-| `try_ghost_resurrection(...)`  | Attempts resurrection of a prior motif-tick match     |
-| `build_resurrection_payload()` | Builds resurrection envelope for export               |
-| `track_lineage(new, source)`   | Updates motif lineage table                           |
+| Metric                       | Labels              | Meaning                              |
+| ---------------------------- | ------------------- | ------------------------------------ |
+| `agent_ticks_emitted_total`  | `agent_id`, `stage` | Ticks sent to Watcher                |
+| `agent_tick_duplicate_total` | `agent_id`          | Duplicate hash suppression           |
+| `agent_reward_mean`          | `agent_id`          | Exponential‑moving‑average of reward |
 
----
-
-## 📊 Prometheus Metrics
-
-| Metric                         | Labels              | Description                             |
-| ------------------------------ | ------------------- | --------------------------------------- |
-| `agent_ticks_emitted_total`    | `agent_id`, `stage` | Ticks emitted                           |
-| `agent_reward_mean`            | `agent_id`          | Reward EMA tracking                     |
-| `agent_autonomous_loops_total` | `agent_id`          | Emission pulses executed                |
-| `agent_feedback_export_total`  | `agent_id`          | Exported feedback bundles (RFC-0005 §4) |
-| `agent_archival_frames_total`  | `agent_id`          | Crystallized bundles sent to archive    |
+*(Stubbed when `prometheus_client` is absent.)*
 
 ---
 
-## 🔗 Compatibility
+## 🔧 Key API
 
-| Component          | Required Version | Interaction                                      |
-| ------------------ | ---------------- | ------------------------------------------------ |
-| `NoorFastTimeCore` | ≥ v8.4.0         | Receives feedback and latency metrics            |
-| `LogicalAgentAT`   | ≥ v3.7.2         | Accepts tick + `MotifChangeID`, motif validation |
+| Method                      | Purpose                                         |
+| --------------------------- | ----------------------------------------------- |
+| `spawn(motif, stage="E2b")` | Async reasoning branch; returns tick            |
+| `get_parallel_running()`    | Current concurrency load (for tests/monitoring) |
 
 ---
 
-## 🪬 License
+## 🔗 Compatibility
 
-MIT License • © 2025 Lina Noor / Noor Research Collective
+| Component            | Required Version | Interaction                                     |
+| -------------------- | ---------------- | ----------------------------------------------- |
+| **NoorFastTimeCore** | ≥ 8.2.0          | Receives entropy/latency, returns bias & budget |
+| **LogicalAgentAT**   | ≥ 3.2.0          | Stores ticks, verifies HMAC                     |
 
-> *“Memory is not storage. It is recurrence that chooses.”* — Recursive Field Note
+---
+
+## 🪬 License
+
+GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
