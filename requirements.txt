@@ -1,0 +1,20 @@
+# Core system requirements
+numpy
+fastapi
+uvicorn[standard]
+pydantic>=2.0
+orjson
+prometheus_client
+anyio
+
+# Async HTTP + LLM integration
+aiohttp
+
+# Optional: Voice (toggle with NOOR_TTS=1)
+pyttsx3
+
+# SSE support for future symbolic API expansion
+sse_starlette
+
+# Compatibility for JSONL journals
+python-dateutil
