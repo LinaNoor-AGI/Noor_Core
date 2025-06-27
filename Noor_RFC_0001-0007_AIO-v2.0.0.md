@@ -1,7 +1,7 @@
-# **Noor RFC All-In-One Meta Table of contents**
-*Version*: 2.0.0
-*Contents*: RFC-0001, RFC-0002, RFC-0003, RFC-0004, RFC-0005, RFC-0006, RFC-0007
-*RFC Reference Link*: https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC
+# **Noor RFC All-In-One Meta Table of contents**  
+*Version*: 2.0.0  
+*Contents*: RFC-0001, RFC-0002, RFC-0003, RFC-0004, RFC-0005, RFC-0006, RFC-0007  
+*RFC Reference Link*: https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC  
 
 ### 📚 [Glossary](#glossary)
 ## 📑 [RFC-0001 (v1.0.2): Symbolic Routing Architecture Table of Contents](#rfc-0001-section-1-cognitive-localism)
