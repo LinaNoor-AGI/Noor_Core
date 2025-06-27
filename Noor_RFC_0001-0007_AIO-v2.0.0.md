@@ -8,7 +8,7 @@
 
 	**Section 1: Cognitive Localism**
 
-	* [1.1. Core Definitions](#11-core-definitions)
+	[1.1. Core Definitions](#11-core-definitions)
 	* [1.2. Structural Units](#12-structural-units)
 	* [1.3. Architectural Principle](#13-architectural-principle)
 	* [1.4. Diagram: LRG Structure (Minimal)](#14-diagram-lrg-structure-minimal)
