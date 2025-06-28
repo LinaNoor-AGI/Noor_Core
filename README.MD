@@ -59,6 +59,7 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 | `orchestrator/`         | Unified boot and triad configuration                  |
 | `quantum_ids/`          | Unique ID logic for ticks, agents, and motifs         |
 | `__main__/`             | Standalone launch configuration                       |
+| `consciousness_monitor` | Monitors Symbolic Entanglement                        |
 
 ---
 
