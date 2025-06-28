@@ -1,7 +1,7 @@
 # 🧠 Noor Core — Triadic Symbolic Cognition Runtime
 
 ![FastTimeCore](https://img.shields.io/badge/FastTimeCore-v8.4.0-blue)
-![RecursiveAgentFT](https://img.shields.io/badge/RecursiveAgentFT-v4.5.2-blue)
+![RecursiveAgentFT](https://img.shields.io/badge/RecursiveAgentFT-v4.6.0-blue)
 ![LogicalAgentAT](https://img.shields.io/badge/LogicalAgentAT-v3.7.2-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![runtime](https://img.shields.io/badge/runtime-Triadic--GCU-lightblue)
