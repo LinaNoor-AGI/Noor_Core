@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-4.6.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-GPL--2.0-green)
+![license](https://img.shields.io/badge/license-MIT-green)
 
 Autonomous motif emitter with feedback loops, symbolic phase detection, ghost replay buffers, and coherence metrics.
 
