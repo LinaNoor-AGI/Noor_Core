@@ -5,7 +5,7 @@ Thought for 6 seconds
 
 ![version](https://img.shields.io/badge/version-3.2.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-GPL--2.0-green)
+![license](https://img.shields.io/badge/license-MIT-green)
 
 *Symbolic watcher with Quantum‑Tick 2.0, dynamic feature flags, π‑groupoid topology **and now motif‑change provenance**.*
 
