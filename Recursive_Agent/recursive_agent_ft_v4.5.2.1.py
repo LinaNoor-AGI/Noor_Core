@@ -34,16 +34,6 @@ from typing import Any, Deque, Dict, List, Optional
 import numpy as np
 from noor.motif_memory_manager import get_global_memory_manager
 
-# 🔁 RecursiveAgentFT v4.6.0 update components
-from noor.recursive_agent_ft_update_0001 import (
-    AgentSwirlModule,
-    MotifDensityTracker,
-    compute_coherence_potential,
-    LazyMonitorMixin,
-    extend_feedback_packet,
-    PHASE_SHIFT_MODE,
-)
-
 try:
     from prometheus_client import Counter, Gauge
 except ImportError:  # pragma: no cover
@@ -142,7 +132,7 @@ class LRUCache(OrderedDict):
 # RecursiveAgentFT
 # ──────────────────────────────────────────────────────────────
 
-class RecursiveAgentFT(LazyMonitorMixin):
+class RecursiveAgentFT:
     """Autonomous motif emitter (RFC‑0003) with extended echo/ghost support."""
 
     # Prometheus metrics (as v4.5.1)
