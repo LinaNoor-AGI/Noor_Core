@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-1.0.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-GPL--2.0-green)
+![license](https://img.shields.io/badge/license-MIT-green)
 
 `__main__.py` is a **one‑line shim** that lets you launch the entire Noor triad
 with the familiar
