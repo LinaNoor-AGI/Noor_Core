@@ -69,12 +69,12 @@ RecursiveAgentFT(
 
 ```mermaid
 flowchart TD
-    A[spawn()] --> B[Choose motifs]
+    A[spawn] --> B[Choose motifs]
     B --> C[Update swirl and density]
     C --> D[Compute coherence potential and phase ID]
     D --> E[Emit QuantumTick]
-    E --> F[Watcher register_tick()]
-    E --> G[Core receive_feedback()]
+    E --> F[Watcher register_tick]
+    E --> G[Core receive_feedback]
     E --> H[Store echo in ghost buffer]
     H --> I[Optional resurrection path]
 ```
