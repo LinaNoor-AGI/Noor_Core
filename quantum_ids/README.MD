@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-0.1.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-GPL--2.0-green)
+![license](https://img.shields.io/badge/license-MIT-green)
 
 *Tiny, immutable building‑block for tracking structural changes inside the Noor triad.*
 
