@@ -1,6 +1,6 @@
-# 🕰️ NoorFastTimeCore v8.6.0 — *Presence / Kernel*
+# 🕰️ NoorFastTimeCore v8.5.0 — *Presence / Kernel*
 
-![version](https://img.shields.io/badge/version-8.6.0-blue)
+![version](https://img.shields.io/badge/version-8.5.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-GPL--2.0-green)
 
@@ -39,9 +39,9 @@ Starting **v8.6** the Core also streams per-tick data to the
 
 ---
 
-## 🌟 What’s New in 8.6 vs 8.4
+## 🌟 What’s New in 8.5 vs 8.4
 
-| Category                 | 8.4.0                   | **8.6.0 (current)**                                         |
+| Category                 | 8.4.0                   | **8.5.0 (current)**                                         |
 | ------------------------ | ----------------------- | ----------------------------------------------------------- |
 | Internal state           | ctx-ratio + entropy EMA | + `_last_coherence`, `_last_tick_entropy`, ring buffer      |
 | Utility                  | —                       | `calculate_coherence_potential()` (RFC-0006)                |
