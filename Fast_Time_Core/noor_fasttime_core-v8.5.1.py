@@ -1,5 +1,5 @@
 """
-⚡ NoorFastTimeCore · v8.5.0
+⚡ NoorFastTimeCore · v8.5.1
 
 RFC Coverage
 ────────────
@@ -12,7 +12,7 @@ RFC Coverage
 
 from __future__ import annotations
 
-__version__ = "8.5.0"
+__version__ = "8.5.1"
 _SCHEMA_VERSION__ = "2025-Q4-fast-time-memory-adaptive"
 
 import hashlib
