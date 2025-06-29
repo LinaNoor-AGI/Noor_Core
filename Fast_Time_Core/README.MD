@@ -106,12 +106,6 @@ Poetic verses remain in source for resonance.
 
 ---
 
-## 🚀 Quick Start
-
-```bash
-pip install -U noor-fasttime-core     # hypothetical package name
-```
-
 ```python
 from noor_fasttime_core import NoorFastTimeCore
 
