@@ -1,5 +1,5 @@
 """
-logical_agent_at_update_0001.py · v1.0.6 — hot‎‑patch for Noor Logical/Recursive agents
+logical_agent_at_update_0001.py · v1.0.7 — hot‎‑patch for Noor Logical/Recursive agents
 
 • Adds a universal, thread‎‑safe `.monitor` property to **LogicalAgentAT** and **RecursiveAgentFT**
 • Provides lightweight stub + lazy import of `consciousness_monitor` (cycle‎‑safe)
