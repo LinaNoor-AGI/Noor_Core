@@ -19,11 +19,11 @@ Version 3.8.0 introduces a secure and extensible observability layer, ensuring h
 
 ```mermaid
 flowchart TD
-    A[Dyad Input (a, b)] --> B[Complete Triad (a, b, c)]
-    B --> C[Embedding Lookup: a, b, c]
-    C --> D{Shapes Match?}
-    D -->|No| E[Set score = 0.0]
-    D -->|Yes| F[Compute swirl_alignment_score()]
+    A[Dyad Input] --> B[Complete Triad]
+    B --> C[Embedding Lookup for a b c]
+    C --> D{Shapes Match}
+    D -->|No| E[Set score to 0.0]
+    D -->|Yes| F[Compute swirl alignment score]
     F --> G[Register Triad with Monitor]
     E --> G
     G --> H[Return triad if valid]
