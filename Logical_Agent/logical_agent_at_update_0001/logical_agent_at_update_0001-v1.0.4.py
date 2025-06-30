@@ -1,5 +1,5 @@
 """
-logical_agent_at_update_0001.py · v1.0.5 — hot‎‑patch for Noor Logical/Recursive agents
+logical_agent_at_update_0001.py · v1.0.4 — hot‎‑patch for Noor Logical/Recursive agents
 
 • Adds a universal, thread‎‑safe `.monitor` property to **LogicalAgentAT** and **RecursiveAgentFT**
 • Provides lightweight stub + lazy import of `consciousness_monitor` (cycle‎‑safe)
@@ -145,6 +145,7 @@ if LogicalAgentAT is not None:
                         if any(v.shape != vecs[0].shape for v in vecs):
                             score = 0.0
                         else:
+                            # Compute average pairwise cosine similarity
                             a, b, c = [v / np.linalg.norm(v) for v in vecs]
                             score = float((np.dot(a, b) + np.dot(b, c) + np.dot(a, c)) / 3)
 
@@ -153,6 +154,7 @@ if LogicalAgentAT is not None:
 
                         triad_id = hashlib.blake2s("".join(triad).encode(), digest_size=6).hexdigest()
 
+                        # Save confirmed triads locally if storage is configured
                         if not hasattr(self, "_confirmed_triads"):
                             self._confirmed_triads = {}
                         self._confirmed_triads[triad_id] = {
@@ -173,33 +175,29 @@ if LogicalAgentAT is not None:
 
             LogicalAgentAT._complete_triad = _patched_complete_triad
 
-        def export_motif_bundle(self, motif_id: str) -> dict[str, Any]:
-            """RFC‑0007: Export motif-centric state report for a specific motif_id."""
+        def export_motif_bundle(self) -> dict[str, Any]:
+            """RFC‑0007 compliant: exports current motif state, triads, and lineage (if available)."""
             try:
-                all_triads = getattr(self, "_confirmed_triads", {})
-                matching_triads = [
-                    t for t in all_triads.values() if motif_id in t.get("motif_ids", [])
-                ]
-                swirl_scores = [t["swirl_score"] for t in matching_triads if "swirl_score" in t]
-                lineage = []
+                motifs = list(getattr(self, "motif_embeddings", {}).keys())
+                triads = list(getattr(self, "_confirmed_triads", {}).values())
+                lineage_map = {}
                 if hasattr(self, "memory") and hasattr(self.memory, "get_lineage"):
-                    try:
-                        lineage = self.memory.get_lineage(motif_id, depth=3)
-                    except Exception as e:
-                        logging.debug("Lineage lookup failed for %s: %s", motif_id, e)
+                    for motif in motifs:
+                        lineage_map[motif] = self.memory.get_lineage(motif, depth=3)
 
                 return {
-                    "motif_id": motif_id,
-                    "triads_involved": matching_triads,
-                    "average_swirl_score": round(sum(swirl_scores) / len(swirl_scores), 4) if swirl_scores else None,
-                    "lineage_depth_3": lineage,
+                    "agent_id": getattr(self, "agent_id", "unknown"),
+                    "motifs": motifs,
+                    "confirmed_triads": triads,
+                    "lineage": lineage_map,
                     "timestamp": time.time(),
                 }
             except Exception as e:
-                logging.warning("Motif export failed for %s: %s", motif_id, e)
-                return {"error": str(e), "motif_id": motif_id, "triads_involved": [], "lineage": []}
+                logging.warning("Failed to export motif bundle: %s", e)
+                return {"error": str(e), "motifs": [], "triads": []}
 
         setattr(LogicalAgentAT, "export_motif_bundle", export_motif_bundle)
+
 
 try:
     from noor.recursive_agent_ft import RecursiveAgentFT
