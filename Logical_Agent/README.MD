@@ -22,8 +22,8 @@ flowchart TD
     A[Dyad Input (a, b)] --> B[Complete Triad (a, b, c)]
     B --> C[Embedding Lookup: a, b, c]
     C --> D{Shapes Match?}
-    D -- No --> E[Set score = 0.0]
-    D -- Yes --> F[Compute swirl_alignment_score()]
+    D -->|No| E[Set score = 0.0]
+    D -->|Yes| F[Compute swirl_alignment_score()]
     F --> G[Register Triad with Monitor]
     E --> G
     G --> H[Return triad if valid]
