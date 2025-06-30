@@ -202,18 +202,7 @@ if LogicalAgentAT is not None:
                 logging.warning("Motif export failed for %s: %s", motif_id, e)
                 return {"error": str(e), "motif_id": motif_id, "triads_involved": [], "lineage": []}
 
-        def _compute_motif_integration_depth(self) -> dict[str, int]:
-            """Returns λᵢ: the integration depth for each motif (count of triads involved)."""
-            from collections import defaultdict
-            depth = defaultdict(int)
-            triads = getattr(self, "_confirmed_triads", {})
-            for triad_data in triads.values():
-                for motif in triad_data.get("motif_ids", []):
-                    depth[motif] += 1
-            return dict(depth)
-
-        setattr(LogicalAgentAT, "_compute_motif_integration_depth", _compute_motif_integration_depth)   
-        
+        setattr(LogicalAgentAT, "export_motif_bundle", export_motif_bundle)
 
 try:
     from noor.recursive_agent_ft import RecursiveAgentFT
