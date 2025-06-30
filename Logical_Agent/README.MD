@@ -1,131 +1,136 @@
-Thought for 6 seconds
+# 👁️ LogicalAgentAT v3.8.0
 
-
-# 👁️ LogicalAgentAT v3.2.0
-
-![version](https://img.shields.io/badge/version-3.2.0-blue)
+![version](https://img.shields.io/badge/version-3.8.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-*Symbolic watcher with Quantum‑Tick 2.0, dynamic feature flags, π‑groupoid topology **and now motif‑change provenance**.*
+*A symbolic watcher with Quantum‑Tick 2.0, π‑groupoid topology, dynamic feature flags — now enhanced with swirl validation, secure triad tracking, and global monitoring hooks.*
 
 ---
 
-## 📖 Overview
+## 📖 Overview
 
-`LogicalAgentAT` is the Watcher pillar of the Noor triad.
-It buffers signed **QuantumTicks**, detects **motif‑level changes**, manages dynamic run‑time flags, and maintains a fast **π‑groupoid union‑find** for symbolic‑path equivalence.
+`LogicalAgentAT` is the symbolic reasoning core of the Noor agent triad.
+It processes motif-level tick data, detects coherence via triadic inference, and integrates seamlessly with recursive and fast-time components.
 
-### Core Pillars
-
-| Pillar                    | Purpose                                                                |
-| ------------------------- | ---------------------------------------------------------------------- |
-| **Quantum‑Tick 2.0**      | Lamport + HLC stamps, HMAC verification, per‑motif ring buffers        |
-| **Motif‑Change Registry** | Emits `MotifChangeID` objects whenever a motif diverges, keeps last 16 |
-| **Dynamic Feature Flags** | Thread‑safe toggle system; Prometheus‑tracked                          |
-| **π‑Groupoid**            | Path‑identity merge / query with union‑find compression                |
-| **Observability**         | Prom metrics for ticks, HMAC failures, flag flips                      |
+Version 3.8.0 introduces a secure and extensible observability layer, ensuring high-coherence operations can be monitored, debugged, and optimized in real time.
 
 ---
-
-## 🌟 What’s new in 3.2.0
-
-| Feature                   | Description                                                                                 |
-| ------------------------- | ------------------------------------------------------------------------------------------- |
-| **MotifChangeID ring**    | `register_tick()` appends a change‑ID when `coherence_hash` differs from the previous tick. |
-| **`get_latest_change()`** | Retrieve the most recent change‑ID for any motif.                                           |
-| **Explicit ctor args**    | `hmac_secret`, `async_mode` now explicit — env‑vars only if arg is `None`.                  |
-| **Mermaid refresh**       | Updated data‑flow diagram below.                                                            |
-
----
-
-## 🗺️ Watcher Data‑Flow
 
 ```mermaid
 flowchart TD
-    subgraph Watcher
-        Tick[QuantumTick] --> Buffer[Per‑Motif Ring<br/>128 entries]
-        Buffer -->|hash differs| ChangeRing[MotifChangeID Ring<br/>16 entries]
-        Tick -->|verify_hmac| HMAC{HMAC OK?}
-        HMAC -->|no| Reject(▢ metric: hmac_fail)
-    end
-    style Tick fill:#e0f7ff,stroke:#0288d1
-    style Buffer fill:#fff3e0,stroke:#f57c00
-    style ChangeRing fill:#ede7f6,stroke:#673ab7
+    A[Dyad Input (a, b)] --> B[Complete Triad (a, b, c)]
+    B --> C[Embedding Lookup: a, b, c]
+    C --> D{Shapes Match?}
+    D -- No --> E[Set score = 0.0]
+    D -- Yes --> F[Compute swirl_alignment_score()]
+    F --> G[Register Triad with Monitor]
+    E --> G
+    G --> H[Return triad if valid]
+
+    style A fill:#e3f2fd,stroke:#2196f3
+    style B fill:#f1f8e9,stroke:#8bc34a
+    style C fill:#fffde7,stroke:#fbc02d
+    style D fill:#fce4ec,stroke:#ec407a
+    style E fill:#f8bbd0,stroke:#e91e63
+    style F fill:#ede7f6,stroke:#673ab7
+    style G fill:#e0f2f1,stroke:#009688
+    style H fill:#f5f5f5,stroke:#616161
 ```
+
+**Triad Completion Flow**:
+This diagram outlines the lifecycle of a triad formation event in `LogicalAgentAT`. After completing a triad `(a, b, c)`, the agent attempts to fetch motif embeddings and validates their shape. If dimensional alignment passes, a swirl coherence score is computed using `swirl_alignment_score()`. Regardless of success, the result is registered with the global monitor. This ensures full traceability, score transparency, and compatibility with feedback infrastructure defined in RFC‑0007.
 
 ---
 
-## ⚙️ Constructor
+## 🧠 Core Capabilities
+
+| Feature                   | Description                                                                |
+| ------------------------- | -------------------------------------------------------------------------- |
+| **Quantum‑Tick 2.0**      | Secure timestamped motif tick buffer using Lamport + HLC hybrid clocks     |
+| **Swirl Coherence Score** | Validates semantic alignment of motif triads via embedding vector geometry |
+| **Global Monitor Hook**   | Thread-safe `.monitor` interface for reporting triad activity              |
+| **Secure Triad ID**       | Uses cryptographic `blake2s` hashing for uniqueness and safety             |
+| **π‑Groupoid Manager**    | Symbolic path equivalence engine using union-find with compression         |
+
+---
+
+## ✨ What’s New in v3.8.0
+
+| New Feature             | Description                                                              |
+| ----------------------- | ------------------------------------------------------------------------ |
+| **Monitoring Hook**     | `agent.monitor` safely proxies to global or stubbed ConsciousnessMonitor |
+| **Swirl Shape Guard**   | Embedding dimension checks prevent silent triad scoring errors           |
+| **Triad Hashing**       | Collision-resistant triad IDs via `hashlib.blake2s()`                    |
+| **Performance Logging** | `perf_counter()` logs triad evaluation time (debug mode)                 |
+| **Near-Miss Scores**    | Triads with marginal coherence emit detailed logs                        |
+
+---
+
+## 🧩 Core API
+
+| Method                           | Category | Description                                               |
+| -------------------------------- | -------- | --------------------------------------------------------- |
+| `complete_triad(dyad)`           | Core     | Forms triads, evaluates score, logs and registers outcome |
+| `monitor.report_tick(...)`       | Monitor  | Connects agent activity to external observability systems |
+| `swirl_alignment_score(a, b, c)` | Optional | Override to provide custom triad coherence scoring        |
+| `set_global_monitor(monitor)`    | System   | Assigns monitor instance manually                         |
+| `get_global_monitor()`           | System   | Returns current monitor (stub-safe)                       |
+
+---
+
+## 🛠️ Quick Example
 
 ```python
-LogicalAgentAT(
-    agent_id="watcher@default",
-    enable_quantum_ticks=True,
-    tick_buffer_size=128,
-    pi_max_classes=20_000,
-    hmac_secret=None,          # explicit > env‑var
-    async_mode=False,
-    verbose=False,
-)
-```
+import logical_agent_at_update_0001  # Patches LogicalAgentAT
 
-*If `async_mode=True` and **anyio** is installed, the Watcher switches to async‑safe locks.*
+from noor.logical_agent_at import LogicalAgentAT
 
----
+agent = LogicalAgentAT()
+triad = agent._complete_triad(('a', 'b'))
 
-## 🧩 Key API
-
-| Method                            | Category   | Purpose                            |
-| --------------------------------- | ---------- | ---------------------------------- |
-| `register_tick(motif, tick)`      | Core       | Buffer tick & maybe make change‑ID |
-| `get_latest_tick(motif)`          | Core       | Most recent tick in buffer         |
-| **`get_latest_change(motif)`**    | *new*      | Most recent `MotifChangeID`        |
-| `set_feature(name, val)`          | Flags      | Flip a dynamic flag (Prom‑logged)  |
-| `register_path_equivalence(a, b)` | π‑Groupoid | Merge two symbolic paths           |
-| `are_paths_equivalent(a, b)`      | π‑Groupoid | Query equivalence                  |
-
----
-
-## 🛠️ Quick‑Start
-
-```python
-from logical_agent_at import LogicalAgentAT, QuantumTick
-from quantum_ids import make_change_id
-
-w = LogicalAgentAT(verbose=True)
-
-# emit a pair of ticks
-t1 = QuantumTick.now("α", agent_id="agent@demo")
-w.register_tick("α", t1)
-
-t2 = QuantumTick.now("α", agent_id="agent@demo")
-w.register_tick("α", t2)
-
-print("Latest change:", w.get_latest_change("α"))
+print("Monitor active:", agent.monitor)
 ```
 
 ---
 
-## 📊 Prometheus metrics
+## 🔍 Debug Capabilities
 
-| Metric                                   | Labels              | Meaning            |
-| ---------------------------------------- | ------------------- | ------------------ |
-| `logical_agent_ticks_total`              | `stage`, `agent_id` | Ticks accepted     |
-| `logical_agent_tick_hmac_failures_total` | `agent_id`          | Bad HMACs          |
-| `logical_agent_feature_toggles_total`    | `flag`, `agent_id`  | Dynamic flag flips |
+* Logs “near-miss” triads with swirl scores between 0.6 and 0.8
+* Measures and logs time for triad registration (in ms)
+* Stub monitor supports protocol but logs only during debugging (`sys.gettrace()`)
 
 ---
 
-## 🔗 Compatibility
+## 📦 Patch Contents
 
-| Module               | Min Version | Interaction                       |
-| -------------------- | ----------- | --------------------------------- |
-| **NoorFastTimeCore** | ≥ 8.2.0     | Core reads latest `MotifChangeID` |
-| **RecursiveAgentFT** | ≥ 4.2.0     | Emits ticks consumed by Watcher   |
+* `logical_agent_at_update_0001.py · v1.0.2`
+
+  * Adds monitor hooks, swirl alignment scoring
+  * Adds secure triad hashing and observability infrastructure
+  * Backward-compatible and fully hot-patchable
 
 ---
 
-## 📄 License
+## 🔗 Compatibility
 
-GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
+| Component            | Min Version | Notes                                            |
+| -------------------- | ----------- | ------------------------------------------------ |
+| **RecursiveAgentFT** | ≥ 4.6.0     | Will be patched for `.monitor` in parallel       |
+| **NoorFastTimeCore** | ≥ 8.2.0     | Triad scores consumed for coherence acceleration |
+
+---
+
+## 📊 Metrics (via `ConsciousnessMonitor`)
+
+| Metric                                   | Description                                    |
+| ---------------------------------------- | ---------------------------------------------- |
+| `triads_registered_total`                | Count of triads processed                      |
+| `triads_near_miss_total`                 | Borderline-coherence triads flagged for review |
+| `triad_completion_duration_milliseconds` | Micro-timed triad processing                   |
+
+---
+
+## 📄 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
