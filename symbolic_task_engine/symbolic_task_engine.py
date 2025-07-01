@@ -1,14 +1,14 @@
-# symbolic_task_engine.py · v2.3.0 — RFC-wrapped autonomous composer
+# symbolic_task_engine.py · v2.4.0 — RFC-wrapped autonomous composer
 
 """
-⚙️ SymbolicTaskEngine · v2.3.0
+⚙️ SymbolicTaskEngine · v2.4.0
 
 RFC coverage
 • RFC-0004               – Tool-module handshake (`tool_hello`, role=composer)
 • RFC-0005 §4            – Field-feedback export, ctx_ratio, trust vectors, resurrection hints
 • Back-compat advisory   – v2.1.x callers can ignore new envelope keys
 
-Δ v2.3.0
+Δ v2.4.0
 ────────
 • Added RFC-compliant shells (`tool_hello`, `export_feedback_packet`, `receive_feedback_packet`)
 • Surfaced `field_signature` + ctx/trust/resurrection hints inside Task.extensions
@@ -31,6 +31,7 @@ from pathlib import Path
 from typing import Callable, Deque, Dict, List, Optional, AsyncGenerator, Any
 from uuid import uuid4
 from noor.symbolic_abstraction import AbstractionTrigger
+import symbolic_task_engine_update_0001  # ⬆️ one‑liner; patches SymbolicTaskEngine on import
 
 # ─── Optional dependencies — stub when missing ────────────────────────────
 try:
@@ -63,7 +64,7 @@ except ImportError:  # pragma: no cover
         return _Null()
 
 # ──────────────────────────────────────────────────────────────
-__version__ = "2.3.0"
+__version__ = "2.4.0"
 _SCHEMA_VERSION__ = "2025-Q4-symbolic-task-engine-v2.2"
 SCHEMA_COMPAT = ("RFC-0004", "RFC-0005:4")
 # ──────────────────────────────────────────────────────────────
