@@ -1,20 +1,4 @@
-# symbolic_task_engine.py · v2.4.1 — RFC-wrapped autonomous composer
-
-"""
-⚙️ SymbolicTaskEngine · v2.4.1
-
-RFC coverage
-• RFC-0004               – Tool-module handshake (`tool_hello`, role=composer)
-• RFC-0005 §4            – Field-feedback export, ctx_ratio, trust vectors, resurrection hints
-• Back-compat advisory   – v2.1.x callers can ignore new envelope keys
-
-Δ v2.4.0
-────────
-• Added RFC-compliant shells (`tool_hello`, `export_feedback_packet`, `receive_feedback_packet`)
-• Surfaced `field_signature` + ctx/trust/resurrection hints inside Task.extensions
-• Prometheus: feedback export gauge + adaptive motif-cap metrics
-• No logic removed; adaptive coherence/entropy flow untouched
-"""
+# symbolic_task_engine.py · v2.1.0 autonomous-loop
 
 from __future__ import annotations
 
@@ -28,10 +12,8 @@ from collections import Counter, defaultdict, deque
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Callable, Deque, Dict, List, Optional, AsyncGenerator, Any
+from typing import Callable, Deque, Dict, List, Optional, AsyncGenerator
 from uuid import uuid4
-from noor.symbolic_abstraction import AbstractionTrigger
-import symbolic_task_engine_update_0001  # ⬆️ one‑liner; patches SymbolicTaskEngine on import
 
 # ─── Optional dependencies — stub when missing ────────────────────────────
 try:
@@ -43,39 +25,44 @@ try:
     from prometheus_client import Counter as PromCounter, Gauge, Histogram
 except ImportError:  # pragma: no cover
     class _Stub:
-        def labels(self, *_, **__):
+        def labels(self, *_, **__):  # noqa: D401
             return self
+
         def inc(self, *_): ...
         def set(self, *_): ...
         def observe(self, *_): ...
+
     PromCounter = Gauge = Histogram = _Stub  # type: ignore
 
 try:
     from noor.motif_memory_manager import get_global_memory_manager
 except ImportError:  # pragma: no cover
-    def get_global_memory_manager():
+    # fallback dummy memory manager
+    def get_global_memory_manager():  # type: ignore
         class _Null:
             def retrieve(self, *_, **__):
                 return []
+
             def access(self, *_, **__): ...
+
             def export_state(self):
                 return {}, {}
+
             def _log(self, *_, **__): ...
+
         return _Null()
 
+
 # ──────────────────────────────────────────────────────────────
-__version__ = "2.4.1"
-_SCHEMA_VERSION__ = "2025-Q4-symbolic-task-engine-v2.2"
-SCHEMA_COMPAT = ("RFC-0004", "RFC-0005:4")
+__version__ = "2.1.0"
+_SCHEMA_VERSION__ = "2025-Q3-symbolic-autonomous"
 # ──────────────────────────────────────────────────────────────
 
-import logging
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.NullHandler())
 
 @dataclass(slots=True)
 class TripletTask:
     """A symbolic instruction with motif context."""
+
     input_motif: List[str]
     instruction: str
     expected_output: Optional[List[str]] = None
@@ -88,10 +75,10 @@ class TripletTask:
 
     # internal ids / timestamps
     triplet_id: str = field(default_factory=lambda: uuid4().hex, init=False)
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc), init=False)
+    created_at: datetime = field(
+        default_factory=lambda: datetime.now(timezone.utc), init=False
+    )
 
-    # RFC-0005 extensions (ctx_ratio, trust_vector, resurrection_hint, field_signature)
-    extensions: Dict[str, Any] = field(default_factory=dict)
 
 @dataclass(slots=True)
 class Attempt:
@@ -99,17 +86,19 @@ class Attempt:
     score: Dict[str, float]
     attempted_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
+
 class SymbolicTaskEngine:
     """Singleton engine that coordinates symbolic tasks."""
 
     METRIC_FUNCS: Dict[str, Callable[[TripletTask, Attempt], float]] = {}
-    INSTANCE: Optional["SymbolicTaskEngine"] = None
+    INSTANCE: Optional["SymbolicTaskEngine"] = None  # global pointer
 
     @classmethod
     def register_metric(cls, name: str):
         def decorator(fn: Callable[[TripletTask, Attempt], float]):
             cls.METRIC_FUNCS[name] = fn
             return fn
+
         return decorator
 
     def __init__(
@@ -124,6 +113,8 @@ class SymbolicTaskEngine:
         adapt_rate: float = 0.05,
         compress_quantile: float = float(os.getenv("NOOR_COMPRESS_QUANTILE", "0.95")),
         engine_id: str = "symbolic@default",
+        infer_motifs_from_text: Callable[[str], List[str]] | None = None,
+        render_motifs_to_text: Callable[[List[str]], str] | None = None,
         autoloop_interval: float = 5.0,
     ) -> None:
         # queues & registries
@@ -153,6 +144,8 @@ class SymbolicTaskEngine:
         self.engine_id = engine_id
 
         # llm hooks
+        self._infer_motifs = infer_motifs_from_text
+        self._render_motifs = render_motifs_to_text
         self._autoloop_interval = autoloop_interval
 
         # presence-field prototype map
@@ -175,6 +168,8 @@ class SymbolicTaskEngine:
         self.COMPRESS_GAUGE = Gauge(
             "symbolic_compression_cap", "Adaptive motif-cap length", ["engine_id"]
         )
+
+        # new in v2.0.1
         self.QUEUE_GAUGE = Gauge(
             "symbolic_queue_depth", "Current pending tasks", ["engine_id"]
         )
@@ -188,37 +183,16 @@ class SymbolicTaskEngine:
                 ["engine_id"],
                 buckets=(0.001, 0.01, 0.05, 0.1, 0.25, 1, 2, 5),
             )
-        except Exception:
+        except Exception:  # pragma: no cover
             self.SOLVE_LATENCY = Gauge(
                 "symbolic_solve_latency_seconds",
                 "Last solve latency (stub gauge)",
                 ["engine_id"],
             )
 
-        # RFC-0005 feedback receive counter
-        self.FEEDBACK_RX = PromCounter(
-            "symbolic_engine_feedback_received_total",
-            "Times receive_feedback_packet() called",
-            ["engine_id"],
-        )
-
         # prime gauges
         self.QUEUE_GAUGE.labels(self.engine_id).set(0)
         self.MEM_GAUGE.labels(self.engine_id).set(0)
-
-        # new in v2.2.0 – Prometheus metrics for feedback export and adaptive cap
-        self.ENGINE_FEEDBACK_EXPORT = PromCounter(
-            "symbolic_engine_feedback_requests_total",
-            "Times export_feedback_packet() called",
-            ["engine_id"],
-        )
-        self.ADAPTIVE_CAP_GAUGE = Gauge(
-            "symbolic_engine_cap_len_current",
-            "Current adaptive motif-cap length",
-            ["engine_id"],
-        )
-        # prime adaptive cap gauge
-        self.ADAPTIVE_CAP_GAUGE.labels(self.engine_id).set(self._calc_cap_len())
 
         # autoloop metric
         self.AUTOLOOP_BACKOFF = PromCounter(
@@ -226,57 +200,125 @@ class SymbolicTaskEngine:
             "Autonomous-loop back-off events",
             ["engine_id"],
         )
-        
-        # Autonomous Abstraction Trigger
-        self.abstraction_trigger = AbstractionTrigger(agent_id=self.engine_id)
 
         # global singleton registration
         if SymbolicTaskEngine.INSTANCE is None:
             SymbolicTaskEngine.INSTANCE = self
 
-        # v2.2.0 – track last fallback reason for diagnostics
-        self._last_fallback_reason: Optional[str] = None
+    # ──────────────────────────────────────────────
+    # Reflection loader (legacy support)
+    # ──────────────────────────────────────────────
 
-    def tool_hello(self) -> Dict[str, Any]:
-        """RFC-0004 handshake: announce engine capabilities."""
-        return {
-            "engine_id": self.engine_id,
-            "role": "composer",
-            "supported_methods": [
-                "propose_from_motifs",
-                "solve",
-                "export_feedback_packet",
-                "receive_feedback_packet"
-            ],
-            "__version__": __version__,
-            "_schema": _SCHEMA_VERSION__,
+    @staticmethod
+    def _load_reflections_from_reef(path: str | Path) -> Dict[str, str]:
+        lookup: Dict[str, str] = {}
+        try:
+            with Path(path).open("r", encoding="utf-8") as fp:
+                current = None
+                for line in fp:
+                    stripped = line.strip()
+                    if stripped.startswith("motif_id"):
+                        current = stripped.split("=", 1)[1].strip().lower()
+                    elif stripped.startswith("expression") and current:
+                        lookup[current] = stripped.split("=", 1)[1].strip()
+                        current = None
+        except Exception:
+            pass
+        return lookup
+
+    # ──────────────────────────────────────────────
+    # Presence-field helpers
+    # ──────────────────────────────────────────────
+
+    def _load_proto_map(self, path: Path) -> Dict[str, set[str]]:
+        default = {
+            "ψ-bind@Ξ": {"grief", "silence", "loss", "still"},
+            "ψ-spar@Ξ": {"joy", "conflict", "anger", "delight"},
+            "ψ-null@Ξ": {"mirror", "solitude", "trust", "emptiness"},
+            "ψ-resonance@Ξ": set(),
         }
+        if not path.exists():
+            return {k: set(v) for k, v in default.items()}
+        try:
+            with path.open("r", encoding="utf-8") as fp:
+                raw = json.load(fp)
+            return {fld: set(vals) for fld, vals in raw.items()}
+        except Exception:
+            return {k: set(v) for k, v in default.items()}
 
-    def export_feedback_packet(self) -> Dict[str, Any]:
-        """RFC-0005 §4: export internal metrics and last fallback reason."""
-        self.ENGINE_FEEDBACK_EXPORT.labels(self.engine_id).inc()
-        pkt: Dict[str, Any] = {
-            "coherence_ema":    self._coherence_ema,
-            "entropy_ema":      self._entropy_ema,
-            "task_queue_depth": len(self.task_queue),
-            "solved_log_size":  len(self.solved_log),
-            "cap_len":          self._calc_cap_len(),
-            "recent_entropy":   list(self.entropy_buffer)[-5:],
-            "coherence_thresh": max(0.3, self._coherence_ema * 0.6),
-            "entropy_thresh":   min(0.97, self._entropy_ema * 2.5),
-        }
-        if self._last_fallback_reason:
-            pkt["last_fallback_reason"] = self._last_fallback_reason
-        return pkt
+    def register_field_prototype(self, field: str, motif: str) -> None:
+        """
+        Extend (or create) a prototype set.
 
-    def receive_feedback_packet(self, packet: Dict[str, Any]) -> None:
-        """Reserved stub for future inter-agent trust sync; logs unknown keys."""
-        logger.debug("[STE] receive_feedback_packet: %s", packet)
+        Validation
+        ----------
+        * *field* must start with ``ψ-``.
+        * *motif* must be ASCII, space-free, and ≤ 32 chars.
+        """
+        if not field.startswith("ψ-"):
+            raise ValueError("field must start with 'ψ-'")
+        if (not motif.isascii()) or (" " in motif) or len(motif) > 32:
+            raise ValueError(
+                "motif id must be ASCII, ≤ 32 chars, and contain no spaces"
+            )
+
+        self._proto_map.setdefault(field, set()).add(motif)
+        try:
+            with open("presence_field_prototypes.json", "w", encoding="utf-8") as fp:
+                json.dump(
+                    {k: sorted(v) for k, v in self._proto_map.items()},
+                    fp,
+                    ensure_ascii=False,
+                    indent=2,
+                )
+        except Exception:
+            pass
+
+    def resolve_presence_field(self, motifs: List[str]) -> str:
+        """
+        Return the ψ-field with the highest weighted match to *motifs*.
+
+        We sum STMM+LTMM weights for motifs that appear in each prototype set.
+        If no prototype matches (or all sums are 0) we fall back to
+        ``ψ-resonance@Ξ``.
+        """
+        mem = get_global_memory_manager()
+        stmm, ltmm = mem.export_state()
+        merged_weights = {m: stmm.get(m, 0.0) + ltmm.get(m, 0.0) for m in motifs}
+
+        field_scores: Dict[str, float] = {f: 0.0 for f in self._proto_map}
+        for motif, weight in merged_weights.items():
+            for fld, proto in self._proto_map.items():
+                if motif in proto:
+                    field_scores[fld] += weight
+
+        best = max(field_scores, key=field_scores.get, default="ψ-resonance@Ξ")
+        return best if field_scores[best] > 0 else "ψ-resonance@Ξ"
+
+    # ──────────────────────────────────────────────
+    # Adaptive length cap
+    # ──────────────────────────────────────────────
+
+    def _calc_cap_len(self) -> int:
+        if not self._length_buf:
+            return 5
+        if _np:
+            return max(
+                3,
+                int(
+                    _np.quantile(
+                        list(self._length_buf), float(self.compress_quantile)
+                    )
+                ),
+            )
+        qt = statistics.quantiles(
+            list(self._length_buf), n=100, method="inclusive"
+        )[int(self.compress_quantile * 100) - 1]
+        return max(3, int(qt))
 
     # ──────────────────────────────────────────────
     # Task proposer
     # ──────────────────────────────────────────────
-    # ⚠️ INTERNAL-ONLY: This method is not part of the external API. Use via tool module interface.
 
     async def propose_from_motifs(self, recent: List[str]) -> TripletTask:
         mem = get_global_memory_manager()
@@ -300,7 +342,6 @@ class SymbolicTaskEngine:
             input_motif=seed, instruction="compose", expected_output=seed[::-1]
         )
         task.presence_field = self.resolve_presence_field(seed)
-        task.extensions.update(field_signature=task.presence_field)
         self.FIELD_COUNTER.labels(self.engine_id, task.presence_field).inc()
 
         async with self._lock:
@@ -310,36 +351,9 @@ class SymbolicTaskEngine:
         return task
 
     # ──────────────────────────────────────────────
-    # Adaptive length cap
-    # ──────────────────────────────────────────────
-    def _calc_cap_len(self) -> int:
-        if not self._length_buf:
-            result = 5
-            self.ADAPTIVE_CAP_GAUGE.labels(self.engine_id).set(result)
-            return result
-
-        if _np:
-            result = max(
-                3,
-                int(
-                    _np.quantile(
-                        list(self._length_buf), float(self.compress_quantile)
-                    )
-                ),
-            )
-            self.ADAPTIVE_CAP_GAUGE.labels(self.engine_id).set(result)
-            return result
-
-        qt = statistics.quantiles(
-            list(self._length_buf), n=100, method="inclusive"
-        )[int(self.compress_quantile * 100) - 1]
-        result = max(3, int(qt))
-        self.ADAPTIVE_CAP_GAUGE.labels(self.engine_id).set(result)
-        return result
-
-    # ──────────────────────────────────────────────
     # Dyad completion helper
     # ──────────────────────────────────────────────
+
     def _complete_dyad(self, m1: str, m2: str, *, top_k: int = 1) -> List[str]:
         mem = get_global_memory_manager()
         thirds: List[str] = []
@@ -358,7 +372,6 @@ class SymbolicTaskEngine:
     # ──────────────────────────────────────────────
     # Solver
     # ──────────────────────────────────────────────
-    # ⚠️ INTERNAL-ONLY: Exposed for tool module use; not part of external diagnostic API.
 
     async def solve_task(self, task: TripletTask) -> None:
         async with asyncio.TaskGroup() as tg:
@@ -374,19 +387,6 @@ class SymbolicTaskEngine:
         attempt = Attempt(produced_output=produced, score={})
         attempt.score = self.evaluate_attempt(task, attempt)
         await self.log_feedback(task, attempt)
-        
-        dyads = [
-            (task.input_motif[i], task.input_motif[j])
-            for i in range(len(task.input_motif))
-            for j in range(i + 1, len(task.input_motif))
-        ]
-        if self.abstraction_trigger.should_abstract(dyads, self.solved_log):
-            synth = self.abstraction_trigger.synthesize_motif()
-            if synth:
-                logger.info(f"[STE] Synthesized new motif: {synth['label']} from {synth['parents']}")
-                get_global_memory_manager().access(synth["label"], source="abstraction")
-                self.abstraction_trigger.emit_abstraction_event(tuple(synth["parents"]))
-        
 
         latency = time.perf_counter() - start
         self.SOLVE_LATENCY.labels(self.engine_id).observe(latency)
@@ -395,14 +395,88 @@ class SymbolicTaskEngine:
         """
         Public interface: Solve a symbolic task using current engine logic.
         Updates internal logs, metrics, and feedback tracking.
+
+        Args:
+            task (TripletTask): Symbolic task with motif context and instruction.
+
+        Returns:
+            Attempt: Resulting attempt object with generated output and score.
         """
-        await self._solve_impl(task)
-        # Note: For simplicity, return the last attempt for this task
-        return self.attempt_registry[task.triplet_id][-1]
+        async with self._lock:
+            await self._solve_impl(task)
+            attempts = self.attempt_registry.get(task.triplet_id, [])
+            return attempts[-1] if attempts else Attempt(produced_output=["[no-result]"], score={})
+
+    # ──────────────────────────────────────────────
+    # Safe LLM wrapper
+    # ──────────────────────────────────────────────
+
+    async def _safe_generate_response(self, motifs: List[str], instruction: str) -> str:
+        if self._render_motifs and self._infer_motifs:
+            try:
+                text = self._render_motifs(motifs)
+                inferred = self._infer_motifs(text)
+                return " ".join(inferred)
+            except Exception:
+                return "⟂"
+        try:
+            from noor.llm_adapter import generate_response
+            return await generate_response(motifs, instruction)
+        except Exception:
+            return "⟂"
+
+    # ──────────────────────────────────────────────
+    # Autonomous reasoning loop
+    # ──────────────────────────────────────────────
+
+    async def start_autonomous_loop(
+        self,
+        interval: float | None = None,
+        stop_evt: asyncio.Event | None = None,
+    ):
+        interval = interval or self._autoloop_interval
+        mem = get_global_memory_manager()
+        while not (stop_evt and stop_evt.is_set()):
+            # queue back-pressure
+            if len(self.task_queue) > self.task_queue.maxlen * 0.8:
+                self.AUTOLOOP_BACKOFF.labels(self.engine_id).inc()
+                await asyncio.sleep(interval * 2)
+                continue
+
+            stmm, _ = mem.export_state()
+            recent = sorted(stmm.items(), key=lambda t: -t[1])
+            recent_motifs = [m for m, _ in recent[:3]]
+            if recent_motifs:
+                task = await self.propose_from_motifs(recent_motifs)
+                await self.solve(task)
+            await self.flush_old_tasks()
+            await asyncio.sleep(interval)
+
+    # ──────────────────────────────────────────────
+    # Presence-field helper / balancing
+    # ──────────────────────────────────────────────
+
+    def _least_used_field(self) -> str:
+        counts = Counter(t.presence_field for t in self.task_queue)
+        return min(self._proto_map, key=lambda f: counts.get(f, 0))
+
+    # ──────────────────────────────────────────────
+    # SSE helper for API
+    # ──────────────────────────────────────────────
+
+    async def stream_attempt_counts(self) -> AsyncGenerator[dict, None]:
+        prev = 0
+        while True:
+            cur = sum(len(v) for v in self.attempt_registry.values())
+            if cur != prev:
+                yield {"attempts": cur, "ts": datetime.utcnow().isoformat()}
+                prev = cur
+            await asyncio.sleep(1)
 
     # ──────────────────────────────────────────────
     # Evaluator
     # ──────────────────────────────────────────────
+
     def evaluate_attempt(
         self, task: TripletTask, attempt: Attempt
     ) -> Dict[str, float]:
@@ -438,6 +512,7 @@ class SymbolicTaskEngine:
     # ──────────────────────────────────────────────
     # Fallback spawner
     # ──────────────────────────────────────────────
+
     def _spawn_fallback(
         self, parent: TripletTask, coherence: float, entropy: float
     ) -> None:
@@ -458,14 +533,6 @@ class SymbolicTaskEngine:
         fb_task.fallback_reason = f"c{coherence:.2f}_e{entropy:.2f}"
         fb_task.is_fallback = True
 
-        # record reason for feedback export
-        self._last_fallback_reason = fb_task.fallback_reason
-        # extensions scaffold
-        fb_task.extensions.update(
-            ctx_ratio=self._coherence_ema,
-            trust_vector=None,
-        )
-
         async def _run():
             await self.solve_task(fb_task)
 
@@ -475,13 +542,11 @@ class SymbolicTaskEngine:
     # ──────────────────────────────────────────────
     # Feedback / journalling
     # ──────────────────────────────────────────────
+
     async def log_feedback(self, task: TripletTask, attempt: Attempt) -> None:
         async with self._lock:
             self.attempt_registry[task.triplet_id].append(attempt)
             coherence = attempt.score.get("coherence", 0.0)
-            for motif in task.input_motif:
-                self.abstraction_trigger.update_feedback(motif, success=(coherence >= 0.9))
-
             entropy = attempt.score.get("entropy", 1.0)
             if coherence >= 0.9 and entropy <= 0.2:
                 self.solved_log.append(task)
@@ -502,6 +567,7 @@ class SymbolicTaskEngine:
     # ──────────────────────────────────────────────
     # Maintenance utilities
     # ──────────────────────────────────────────────
+
     async def flush_old_tasks(self) -> None:
         now = datetime.now(timezone.utc)
         async with self._lock:
@@ -510,30 +576,40 @@ class SymbolicTaskEngine:
                 or self.task_queue[0] in self.solved_log
             ):
                 self.task_queue.popleft()
-                self.QUEUE_GAUGE.labels(self.engine_id).set(len(self.task_queue))
+            self.QUEUE_GAUGE.labels(self.engine_id).set(len(self.task_queue))
 
-    # ──────────────────────────────────────────────
-    # Presence-field helper / balancing
-    # ──────────────────────────────────────────────
-    def register_field_prototype(self, field: str, values: List[str]) -> None:
-        """Restore v2.1 API: add prototypes for a presence field."""
-        self._proto_map.setdefault(field, set()).update(values)
+    def list_pending_tasks(self, limit: int = 50) -> List[TripletTask]:
+        return list(self.task_queue)[:limit]
 
-    def _least_used_field(self) -> str:
-        counts = Counter(t.presence_field for t in self.task_queue)
-        return min(self._proto_map, key=lambda f: counts.get(f, 0))
+    def get_triplet_score(self, triplet_id: str) -> Optional[List[Attempt]]:
+        return self.attempt_registry.get(triplet_id)
 
-    # ──────────────────────────────────────────────
-    # SSE helper for API
-    # ──────────────────────────────────────────────
-    async def stream_attempt_counts(self) -> AsyncGenerator[dict, None]:
-        prev = 0
-        while True:
-            cur = sum(len(v) for v in self.attempt_registry.values())
-            if cur != prev:
-                yield {"attempts": cur, "ts": datetime.utcnow().isoformat()}
-                prev = cur
-            await asyncio.sleep(1)
+
+@SymbolicTaskEngine.register_metric("entropy")
+def _entropy_metric(task: TripletTask, attempt: Attempt) -> float:
+    """Normalised Shannon entropy of produced motif distribution."""
+    from math import log2
+
+    counter: Dict[str, int] = defaultdict(int)
+    for motif in attempt.produced_output:
+        counter[motif] += 1
+    total = sum(counter.values()) or 1
+    probs = [c / total for c in counter.values()]
+    h = -(sum(p * log2(p) for p in probs))
+    return min(h / 5.0, 1.0)
+
+
+@SymbolicTaskEngine.register_metric("coherence")
+def _coherence_metric(task: TripletTask, attempt: Attempt) -> float:
+    """Edit-distance similarity between expected and produced lists."""
+    if task.expected_output is None:
+        return 0.0
+    import difflib
+
+    s1 = " ".join(task.expected_output)
+    s2 = " ".join(attempt.produced_output)
+    return difflib.SequenceMatcher(None, s1, s2).ratio()
+
 
 __all__ = ["TripletTask", "Attempt", "SymbolicTaskEngine"]
 
