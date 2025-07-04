@@ -1,0 +1,174 @@
+{
+  "file": "motif_memory_manager.py",
+  "version": "v1.2.0",
+  "schema_version": "2025-Q3-motif-memory-v1.2",
+  "author": "Noor Collective Labs",
+  "license": "MIT",
+  "purpose": "RFC-compliant symbolic memory engine that models motif access, field-curved recall, and triadic inheritance across recursive temporal cycles. It forms the symbolic cortex of Noor, responsible for continuity, resonance tracking, and motif decay dynamics.",
+  "constants": {
+    "DEFAULT_ST_HALF_LIFE": 25,
+    "DEFAULT_LT_HALF_LIFE": 10000,
+    "DEFAULT_PROMOTION_THRESH": 0.9,
+    "DEFAULT_DEMOTION_DELTA": 0.05,
+    "TRACE_BUFFER_LEN": 256,
+    "STMM_SOFT_CAP": 50000,
+    "DEFAULT_CACHE_SIZE": 10000
+  },
+  "functions": {
+    "_decay_factor": {
+      "params": ["half_life: int"],
+      "returns": "float",
+      "description": "Computes exponential decay multiplier per update cycle"
+    },
+    "_default_jaccard": {
+      "params": ["a: set[str]", "b: set[str]"],
+      "returns": "float",
+      "description": "Returns Jaccard similarity between motif token sets"
+    },
+    "get_global_memory_manager": {
+      "params": [],
+      "returns": "MotifMemoryManager",
+      "description": "Initializes or returns a singleton global memory manager with tracing enabled"
+    }
+  },
+  "classes": {
+    "MotifMemoryTrace": {
+      "description": "Time-indexed circular buffer for motif event traces (access, retrieve, promote, demote)",
+      "methods": {
+        "__init__": { "params": ["cap: int = TRACE_BUFFER_LEN"] },
+        "append": {
+          "params": ["event: dict"],
+          "description": "Appends structured event with timestamp, motif, and context to the ring buffer"
+        },
+        "export": {
+          "params": [],
+          "returns": "List[dict]",
+          "description": "Returns the chronologically ordered list of recorded memory events"
+        }
+      }
+    },
+    "MotifMemoryManager": {
+      "description": "Dual-layer adaptive memory engine with REEF-aware dyad completion, decay dynamics, triadic motif linkage, emission-based continuity tracking, and density-aware recall adaptation.",
+      "init_params": [
+        "stmm_half_life: int",
+        "ltmm_half_life: int",
+        "promotion_thresh: float",
+        "demotion_delta: float",
+        "similarity_fn: Callable",
+        "enable_trace: bool",
+        "reef_path: Optional[str]",
+        "agent_id: Optional[str]",
+        "stmm_soft_cap: int",
+        "reload_reef_on_mtime_change: bool",
+        "cache_size: int",
+        "ontology_path: Optional[str]"
+      ],
+      "fields": [
+        "self._stmm: Dict[str, float]",
+        "self._ltmm: Dict[str, float]",
+        "self._trace: Optional[MotifMemoryTrace]",
+        "self._tlock: threading.RLock",
+        "self._alock: asyncio.Lock",
+        "self._dyad_cache: OrderedDict[Tuple[str, str], str]",
+        "self._reef_index: Optional[Dict[str, set[str]]]",
+        "self._reef_mtime: float",
+        "self._sim_fn: Callable",
+        "self._st_factor: float",
+        "self._lt_factor: float",
+        "self._promo_thresh: float",
+        "self._demote_thresh: float",
+        "self._reef_path: Path",
+        "self._reload_reef: bool",
+        "self._cache_size: int",
+        "self._stmm_cap: int",
+        "self._prom_lbls: Dict",
+        "self.emission_count: Dict[str, int]",
+        "self.triad_links: Dict[str, List[str]]",
+        "self.triad_depth: Dict[str, int]",
+        "self.adjacency_map: Dict[str, List[str]]",
+        "self.bias_field: Dict[str, str]",
+        "self.stmm: Optional[PRMBuffer]",
+        "self.monitor: Optional[ConsciousnessMonitor]"
+      ],
+      "methods": {
+        "__init__": {},
+        "access": {
+          "params": ["motif_id: str", "boost: float = 0.2"],
+          "description": "Boosts activation of a motif; promotes STMM presence"
+        },
+        "retrieve": {
+          "params": ["query_motif: str", "top_k: int = 3", "exclude_stmm: bool = True"],
+          "returns": "List[str]",
+          "description": "Returns top-k motifs from LTMM by activation × similarity"
+        },
+        "update_cycle": {
+          "description": "Applies decay and promotion/demotion logic across motif stores. Triggers pruning of obsolete motifs. (RFC‑0006 §4.3)"
+        },
+        "export_state": {
+          "returns": "Tuple[Dict[str, float], Dict[str, float]]",
+          "description": "Returns snapshot of STMM and LTMM states"
+        },
+        "export_trace": {
+          "returns": "List[dict]",
+          "description": "Returns all logged memory events if tracing is enabled"
+        },
+        "log_emission": {
+          "params": ["motif_id: str"],
+          "description": "Increments ρᵢ count for motif (RFC‑0006 §4.1)"
+        },
+        "compute_lambda": {
+          "params": ["motif_id: str"],
+          "description": "DFS-based λᵢ computation for recursion depth (RFC‑0007 §4.2)"
+        },
+        "log_adjacency": {
+          "params": ["m1: str", "m2: str"],
+          "description": "Records motif linkage in adjacency map (RFC‑0006 §4.3, RFC‑0007 §5)"
+        },
+        "prune": {
+          "description": "Clears motifs with low ρᵢ or stale adjacency edges (RFC‑0006 §4.3)"
+        },
+        "export_density_report": {
+          "returns": "Dict",
+          "description": "Thread-safe motif density snapshot (RFC‑0006 §4)"
+        },
+        "export_ontology_bundle": {
+          "returns": "Dict",
+          "description": "RFC‑0007-compliant export of triadic, adjacency, and bias state (RFC‑0007 §6)"
+        },
+        "complete_dyad": {
+          "params": ["dyad: Tuple[str, str]", "top_k: int = 1"],
+          "returns": "List[str]",
+          "description": "Returns REEF-based completions weighted by similarity + memory"
+        },
+        "suggest_completion_from_ltmm": {
+          "params": ["dyad: Tuple[str, str]", "top_k: int = 1"],
+          "returns": "List[str]",
+          "description": "Fallback completions from LTMM memory patterns"
+        },
+        "query_reef_for_completion": {
+          "params": ["dyad: Tuple[str, str]"],
+          "returns": "Optional[str]",
+          "description": "Wrapper for single best REEF-based completion"
+        },
+        "load_ontology_bundle": {
+          "params": ["path: str"],
+          "description": "Imports prior state (ρᵢ, λᵢ, bias field) from RFC‑0007 motif ontology file"
+        }
+      },
+      "private_helpers": [
+        "_apply_decay",
+        "_promote_and_demote",
+        "_log",
+        "_load_reef_reflections"
+      ]
+    }
+  },
+  "public_exports": [
+    "MotifMemoryTrace",
+    "MotifMemoryManager",
+    "get_global_memory_manager"
+  ],
+  "main_test": {
+    "description": "Runs 40 tick cycles with repeated access to two motifs (α, β), logging trace and final memory state"
+  }
+}
