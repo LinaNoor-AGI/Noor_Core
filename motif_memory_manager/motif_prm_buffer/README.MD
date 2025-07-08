@@ -21,21 +21,11 @@ flowchart TD
     A[record_access(motif)] --> B[Current Tick Bucket]
     B --> C[Apply Reinforcement]
     C --> D[decay_pass()]
-    D --> E[Advance Tick & Decay Salience]
+    D --> E[Advance Tick and Decay Salience]
     E --> F[Purge Old Buckets]
     F --> G[promotion_candidates()]
-    G --> H{Salience ≥ θ↑}
+    G --> H{Salience ≥ theta_up}
     H -->|Yes| I[Promote to LTMM]
-
-    style A fill:#e3f2fd,stroke:#2196f3
-    style B fill:#fff8e1,stroke:#ffc107
-    style C fill:#f1f8e9,stroke:#8bc34a
-    style D fill:#ede7f6,stroke:#673ab7
-    style E fill:#e0f7fa,stroke:#00acc1
-    style F fill:#fbe9e7,stroke:#ff7043
-    style G fill:#fce4ec,stroke:#ec407a
-    style H fill:#fffde7,stroke:#fbc02d
-    style I fill:#c8e6c9,stroke:#4caf50
 ````
 
 ---
