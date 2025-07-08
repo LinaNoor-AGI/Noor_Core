@@ -1,98 +1,122 @@
 {
   "file": "motif_prm_buffer.py",
   "version": "v1.0.0",
-  "purpose": "Implements the Short-Term Motif Memory (STMM) using a Partial-Retention Memory (PRM) buffer. This lightweight in-memory structure captures motif access patterns, applies exponential decay, and identifies motifs eligible for long-term promotion based on symbolic salience thresholds.",
-  "rfc_compliance": [
-    { "rfc": "RFC‑0005 §4.1", "aspect": "tick tracking" },
-    { "rfc": "RFC‑0005 §4.2", "aspect": "salience decay via PRM model" },
-    { "rfc": "RFC‑0005 §4.3", "aspect": "promotion thresholding and decay logic" },
-    { "rfc": "RFC‑0006 §2", "aspect": "interface boundary with motif manager" },
-    { "rfc": "RFC‑0007 §3", "aspect": "short-term rebirth and continuity tracking" }
-  ],
+  "purpose": "Implements the Short-Term Motif Memory (STMM) via a Partial-Retention Memory (PRM) buffer. This lightweight, in-memory buffer captures motif access patterns, decays relevance over time, and surfaces candidates for long-term promotion.",
   "class": "PRMBuffer",
-  "init": {
-    "params": {
-      "window": { "type": "int", "default": 3, "description": "Number of recent ticks to retain" },
-      "theta_up": { "type": "float", "default": 0.90, "description": "Threshold salience for long-term promotion" },
-      "delta_down": { "type": "float", "default": 0.85, "description": "Minimum salience retention cutoff" },
-      "decay_rate": { "type": "float", "default": 0.95, "description": "Decay multiplier per tick" }
-    }
+  "init_args": {
+    "window": 3,
+    "theta_up": 0.90,
+    "delta_down": 0.85,
+    "decay_rate": 0.95,
+    "reinforcement_strength": 0.1
   },
   "fields": [
-    { "name": "self.window", "type": "int", "description": "Sliding window width for active motif retention" },
-    { "name": "self.theta_up", "type": "float", "description": "Promotion threshold" },
-    { "name": "self.delta_down", "type": "float", "description": "Decay floor cutoff" },
-    { "name": "self.decay_rate", "type": "float", "description": "Exponential decay factor" },
-    { "name": "self.current_tick", "type": "int", "description": "Internal symbolic time index" },
-    { "name": "self.buffer", "type": "Dict[int, Dict[str, float]]", "description": "Tick-bucketed salience values" }
+    "self.window",
+    "self.theta_up",
+    "self.delta_down",
+    "self.decay_rate",
+    "self.reinforcement_strength",
+    "self.current_tick = 0",
+    "self.buffer: Dict[int, Dict[str, float]] = {}"
   ],
   "methods": [
     {
       "name": "record_access",
-      "signature": "(motif_id: str) -> None",
-      "description": "Reinforces the salience of the given motif in the current tick bucket",
-      "rfc": ["RFC‑0005 §4.1"],
-      "mutates_state": true
+      "signature": "record_access(motif_id: str) -> None",
+      "description": "Reinforces motif salience in the current tick by `reinforcement_strength`. Adds motif if absent.",
+      "mutates_state": true,
+      "thread_safe": false,
+      "rfc_anchors": ["RFC‑0005 §4.1"]
     },
     {
       "name": "decay_pass",
-      "signature": "() -> None",
-      "description": "Advances symbolic tick, applies decay to all stored motif saliences, and purges expired buckets",
-      "rfc": ["RFC‑0005 §4.3"],
-      "mutates_state": true
+      "signature": "decay_pass() -> None",
+      "description": "Applies exponential decay to motif salience, increments tick, and purges expired buckets (older than window).",
+      "mutates_state": true,
+      "thread_safe": false,
+      "rfc_anchors": ["RFC‑0005 §4.3"]
     },
     {
       "name": "get_active_motifs",
-      "signature": "() -> Dict[str, float]",
-      "description": "Returns combined motif salience across current windowed ticks",
-      "rfc": ["RFC‑0005 §4.2", "RFC‑0006 §2"],
-      "mutates_state": false
+      "signature": "get_active_motifs() -> Dict[str, float]",
+      "description": "Returns motifs within current window, aggregating salience by sum. Motifs may appear in multiple ticks.",
+      "mutates_state": false,
+      "rfc_anchors": ["RFC‑0005 §4.2", "RFC‑0006 §2"]
     },
     {
       "name": "promotion_candidates",
-      "signature": "() -> List[str]",
-      "description": "Returns motif IDs with salience ≥ theta_up within window range; candidates for long-term promotion",
-      "rfc": ["RFC‑0005 §4.3"],
-      "mutates_state": false
+      "signature": "promotion_candidates() -> List[str]",
+      "description": "Returns motifs with salience ≥ theta_up within the window. Uses latest values per motif.",
+      "mutates_state": false,
+      "rfc_anchors": ["RFC‑0005 §4.3"]
     },
     {
       "name": "reset",
-      "signature": "() -> None",
-      "description": "Clears internal tick state and motif salience buffer",
-      "rfc": ["RFC‑0006 §2"],
-      "mutates_state": true
+      "signature": "reset() -> None",
+      "description": "Clears all buffer contents and resets tick counter to 0.",
+      "mutates_state": true,
+      "rfc_anchors": ["RFC‑0006 §2"]
     },
     {
       "name": "export_state",
-      "signature": "() -> Dict[int, Dict[str, float]]",
-      "description": "Exports the current internal buffer for debugging or snapshot inspection",
-      "rfc": ["RFC‑0006 §2"],
-      "mutates_state": false
+      "signature": "export_state(verbose: bool = false) -> Dict[int, Dict[str, float]]",
+      "description": "Returns the internal buffer. If verbose is false, omits motifs below delta_down.",
+      "mutates_state": false,
+      "rfc_anchors": ["RFC‑0006 §2"]
     }
   ],
   "integration": {
-    "receives_from": ["MotifMemoryManager.access()"],
-    "sends_to": ["MotifMemoryManager._promote_and_demote()"],
-    "used_by": ["consciousness_monitor (rebirth tracking)", "symbolic_abstraction (for motif loopback)"]
+    "receives_from": ["MotifMemoryManager.record_motif_usage"],
+    "sends_to": ["MotifMemoryManager.promote_motifs"]
   },
   "test_vectors": [
     {
-      "scenario": "Simple decay and promotion",
-      "steps": [
-        "Initialize with window=3, theta_up=0.9, decay_rate=0.95",
-        "Tick 0: record_access('α'), record_access('α')",
-        "Tick 1: decay_pass()",
-        "Tick 2: record_access('β')",
-        "Tick 3: decay_pass()",
-        "Assert 'α' ∈ get_active_motifs()",
-        "Assert promotion_candidates() == ['α']"
-      ]
+      "description": "Basic access and decay",
+      "sequence": [
+        "record_access('joy')",
+        "decay_pass()",
+        "record_access('joy')",
+        "get_active_motifs()"
+      ],
+      "expected_motifs": ["joy"]
+    },
+    {
+      "description": "Promotion eligibility",
+      "sequence": [
+        "record_access('focus') * 10",
+        "decay_pass()",
+        "promotion_candidates()"
+      ],
+      "expected_candidates": ["focus"]
+    },
+    {
+      "description": "Drop below delta_down",
+      "sequence": [
+        "record_access('hesitation')",
+        "decay_pass() * 10",
+        "export_state(verbose=false)"
+      ],
+      "expected_output": "Does not include 'hesitation'"
     }
   ],
-  "thread_safety": "Not thread-safe (single-threaded symbolic tick loop assumed)",
   "future_hooks": [
-    "ψ-field curved decay (RFC‑0006 §3.1)",
-    "Swirl-modulated retention (RFC‑0007 §4.2)",
-    "Symbolic motif tagging with source annotations"
+    "ψ-field curvature bias weighting",
+    "Swirl-modulated decay schema integration",
+    "Motif feedback tagging via consciousness_monitor"
+  ],
+  "thread_safety_notes": "Calling module must enforce locking if used concurrently. Not thread-safe by design.",
+  "rfc_compliance_mapping": [
+    {
+      "rfc": "RFC‑0005 §4",
+      "relevance": "PRM buffer design, decay logic, promotion threshold dynamics"
+    },
+    {
+      "rfc": "RFC‑0006 §2",
+      "relevance": "STMM interface guarantees, export semantics, rebirth/reset use cases"
+    },
+    {
+      "rfc": "RFC‑0007 §3",
+      "relevance": "Motif continuity and ontology layering at rebirth boundary"
+    }
   ]
 }
