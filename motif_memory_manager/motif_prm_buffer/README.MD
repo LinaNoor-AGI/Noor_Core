@@ -17,6 +17,7 @@ This module serves as a volatile working memory buffer, tuned for responsiveness
 ---
 
 ```mermaid
+flowchart TD
     A["record_access"] --> B["Add to Tick Bucket"]
     B --> C["Apply Reinforcement"]
     C --> D["decay_pass"]
@@ -26,6 +27,16 @@ This module serves as a volatile working memory buffer, tuned for responsiveness
     G --> H["promotion_candidates"]
     H --> I{"Salience >= theta_up"}
     I -->|Yes| J["Promote to LTMM"]
+
+    style A fill:#e3f2fd,stroke:#2196f3
+    style B fill:#fff8e1,stroke:#ffc107
+    style C fill:#f1f8e9,stroke:#8bc34a
+    style D fill:#ede7f6,stroke:#673ab7
+    style E fill:#e0f7fa,stroke:#00acc1
+    style F fill:#fbe9e7,stroke:#ff7043
+    style G fill:#fce4ec,stroke:#ec407a
+    style H fill:#fffde7,stroke:#fbc02d
+    style I fill:#c8e6c9,stroke:#4caf50
 ````
 
 ---
