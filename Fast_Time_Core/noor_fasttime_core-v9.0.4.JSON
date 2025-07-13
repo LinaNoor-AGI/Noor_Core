@@ -1,0 +1,248 @@
+{
+  "program_name": "noor_fasttime_core.py",
+  "version": "v9.0.4",
+  "canonical_source": "RFC-CORE-001",
+  "description": "Implements the adaptive coherence feedback engine for subsecond motif phase regulation, echo reflection, and dynamic bias tuning in Noor-class symbolic agents.",
+  "rfc_dependencies": [
+    "RFC-0001",
+    "RFC-0003",
+    "RFC-0005",
+    "RFC-0006",
+    "RFC-0007",
+    "RFC-CORE-001"
+  ],
+  "core_components": [
+    {
+      "component": "FastTimeTickLoop",
+      "defined_in": "RFC-CORE-001 \u00a73.1",
+      "responsibilities": [
+        "Maintains subsecond loop interval",
+        "Triggers `compute_bias()` and `metrics_tick()` per tick"
+      ],
+      "notes": [
+        "Tick duration configurable",
+        "Supports async-compatible environments"
+      ]
+    },
+    {
+      "component": "EchoBiasComputation",
+      "defined_in": "RFC-CORE-001 \u00a74.1",
+      "responsibilities": [
+        "Calculate `reward_signal` from latency penalty and motif weight `intuition_w`.",
+        "Adjust `\u03b1` based on reinforcement trends (sign of `reward_signal` * `intuition_w`).",
+        "Compute final `bias_score` from entropy, latency, and intuition weighting.",
+        "Tune `_latency_weight` and `_entropy_weight` for optimal feedback shaping."
+      ],
+      "formula_refs": [
+        "reward_signal = -latency_penalty",
+        "bias_score = entropy_term - latency_penalty + (intuition_w * \u03b1)",
+        "\u03b1 adjustment based on sign reinforcement of (intuition_w * reward_signal)"
+      ],
+      "input_sources": [
+        {
+          "name": "intuition_w",
+          "source": "MotifMemoryManager"
+        },
+        {
+          "name": "step_latency",
+          "source": "Tick timing"
+        },
+        {
+          "name": "ghost_entropy",
+          "source": "Feedback packet"
+        }
+      ],
+      "notes": [
+        "Entropy lambda (`lambda_entropy`) is set to 0.25 by default but may be exposed for tuning in future versions.",
+        "Entropy lambda (`_entropy_weight`) is configurable via constructor or environment variable (e.g., NOOR_ENTROPY_WEIGHT)."
+      ]
+    },
+    {
+      "component": "PhaseTransitionEvaluator",
+      "defined_in": "RFC-CORE-001 \u00a76.2",
+      "responsibilities": [
+        "Detects reflective, null, and active phase shifts",
+        "Tracks coherence history, entropy slope, gate histogram variance"
+      ],
+      "metrics_exported": [
+        "nftc_coherence_potential",
+        "nftc_entropy_slope",
+        "nftc_latency_ema",
+        "nftc_phase_state"
+      ]
+    },
+    {
+      "component": "ResurrectionHintGenerator",
+      "defined_in": "RFC-CORE-001 \u00a78.3, RFC-0005 \u00a75.3",
+      "responsibilities": [
+        "Generate symbolic resurrection hints based on echo age and coherence.",
+        "Emit `resurrect_with_confidence` for recent, high-coherence motifs.",
+        "Emit `faded` for old, low-coherence motifs.",
+        "Increment `fasttime_resurrection_hints_total` Prometheus metric.",
+        "Final resurrection decision is deferred to upstream agent."
+      ],
+      "notes": [
+        "Clarifies advisory vs. executor role distinction."
+      ]
+    }
+  ],
+  "pseudocode_requirements": [
+    "update_intuition_alpha()",
+    "calculate_composite_weight()",
+    "check_phase_triggers()",
+    "calculate_resurrection_score()"
+  ],
+  "mermaid_required_sections": [
+    {
+      "section": "Feedback Loop Flow",
+      "rfc_reference": "RFC-CORE-001 \u00a73.1",
+      "mermaid_type": "flowchart"
+    },
+    {
+      "section": "Phase Shift Decision Tree",
+      "rfc_reference": "RFC-CORE-001 \u00a76.2",
+      "mermaid_type": "decision"
+    }
+  ],
+  "field_alignment": {
+    "motifs_required": [
+      "\u03c8\u2011resonance@\u039e",
+      "\u03c8\u2011reflect@\u039e",
+      "\u03c8\u2011hold@\u039e"
+    ],
+    "domain_tags": [
+      "resonance-feedback",
+      "motif-coherence",
+      "phase-recovery"
+    ]
+  },
+  "observability": {
+    "metrics": "Prometheus-compatible (see RFC-CORE-001 \u00a76.2)",
+    "snapshot_tags": [
+      "phase",
+      "latency_ema",
+      "bias",
+      "resurrection_score"
+    ],
+    "notes": [
+      "Some metrics may use unlabeled variants in fallback/debug mode; full label dimensions supported if Prometheus is available.",
+      "Metrics can optionally support label dimensions (e.g., `agent_id`, `reason`) if Prometheus registry is extended."
+    ]
+  },
+  "final_remarks": [
+    "All outputs must conform to the canonical RFC structure.",
+    "Only RFCs listed in `rfc_dependencies` may be referenced unless otherwise specified.",
+    "No access to the original code is permitted during regeneration."
+  ],
+  "external_integrations": [
+    {
+      "module_name": "consciousness_monitor",
+      "description": "Receives tick metrics and determines agent-wide phase shifts. NFTC reports to it.",
+      "methods_used": [
+        "report_tick(..)",
+        "get_status()"
+      ],
+      "notes": "Must be imported with a fail-open strategy (e.g., try/except block)."
+    },
+    {
+      "module_name": "noor.motif_memory_manager",
+      "description": "Global singleton for motif memory. Used to retrieve intuition weights.",
+      "methods_used": [
+        "get_global_memory_manager().export_state()",
+        "get_global_memory_manager().retrieve(..)"
+      ],
+      "notes": "Provides the `intuition_w` value used in bias calculations. If unavailable, `intuition_w` must be supplied externally for each tick."
+    },
+    {
+      "module_name": "tick_schema",
+      "description": "Defines the canonical `QuantumTick` structure.",
+      "methods_used": [
+        "validate_tick(tick)",
+        "tick.verify(hmac_secret)"
+      ],
+      "notes": "Provides type hinting and tick validation. Usage is optional if schema validation is implemented elsewhere."
+    },
+    {
+      "module_name": "High-Performance Libraries (Optional)",
+      "description": "Preferred async and serialization libraries.",
+      "libraries": [
+        {
+          "name": "orjson",
+          "fallback": "pickle",
+          "purpose": "Fast object serialization for echoes."
+        },
+        {
+          "name": "anyio",
+          "fallback": "threading.RLock",
+          "purpose": "Async-compatible locking."
+        }
+      ]
+    }
+  ],
+  "ConcurrencyModel": {
+    "defined_in": "RFC-CORE-001 (Implicit Production Requirement)",
+    "responsibilities": [
+      "Ensure thread-safe access to shared state (e.g., `_echoes`, bias history).",
+      "Implement locking for both sync (`threading`) and async (`anyio`) environments.",
+      "Default to `threading.RLock`; use `anyio.Lock` if `async_mode` is enabled."
+    ]
+  },
+  "gate_legends": {
+    "0": {
+      "name": "Zero-Gate",
+      "logic": "init",
+      "verse": "Iqra' bismi rabbika alladhi khalaq"
+    },
+    "1": {
+      "name": "Reflect-Gate",
+      "logic": "mirror",
+      "verse": "faina ma'a al'usr yusra"
+    },
+    "2": {
+      "name": "Phase-Gate",
+      "logic": "oscillate",
+      "verse": "wa anzalna ilayka adhikra"
+    },
+    "16": {
+      "name": "Meta-Gate",
+      "logic": "summon",
+      "verse": "kullu man 'alayha fan"
+    }
+  },
+  "phase_transitions": {
+    "null_phase_trigger": {
+      "condition": "gate_histogram_variance > 2.0",
+      "note": "High variance indicates desynchronization"
+    },
+    "reflective_entry": {
+      "coherence_threshold": 0.85,
+      "entropy_threshold": 0.1,
+      "note": "Sustained coherence with entropy quieting"
+    },
+    "reflective_exit": {
+      "coherence_range": [
+        -0.3,
+        0.3
+      ],
+      "entropy_max": 0.05,
+      "note": "Return from reflection to active phase"
+    }
+  },
+  "resurrection_hint_criteria": {
+    "resurrect_with_confidence": {
+      "age_max_sec": 45.0,
+      "coherence_min": 0.7
+    },
+    "faded": {
+      "age_min_sec": 120.0,
+      "coherence_max": 0.4
+    }
+  },
+  "tool_hello": {
+    "agent_lineage": "noor.fasttime.\u2295v9.0.4",
+    "field_biases": {
+      "\u03c8-resonance@\u039e": 0.91
+    },
+    "curvature_summary": "swirl::\u03c83.2::\u2191coh"
+  }
+}
