@@ -1,5 +1,5 @@
 """
-🌀 RecursiveAgentFT · v4.5.2 — Cadence of Memory
+🌀 RecursiveAgentFT · v4.6.0 — Cadence of Memory
 
 RFC Coverage
 • RFC‑0003 §3.3 — QuantumTick validation
@@ -18,7 +18,7 @@ NOTE: All existing behaviour is preserved; additions are backward‑compatible.
 """
 from __future__ import annotations
 
-__version__ = "4.5.2"
+__version__ = "4.6.0"
 _SCHEMA_VERSION__ = "2025-Q4-recursive-agent-v4.5"
 SCHEMA_COMPAT = ("RFC-0003:3", "RFC-0005:4")
 

@@ -1,0 +1,740 @@
+{
+  "program_name": "recursive_agent_ft.py",
+  "version": "v5.0.4",
+  "canonical_source": "RFC-CORE-002",
+  "description": "Merged agent for symbolic tick emission, swirl coherence feedback, ghost replay, and triad-resonance feedback handling. Fully RFC-aligned and regeneration-ready.",
+  "rfc_dependencies": [
+    "RFC-0003",
+    "RFC-0004",
+    "RFC-0005",
+    "RFC-0006",
+    "RFC-0007",
+    "RFC-CORE-002"
+  ],
+  "file_layout": [
+    {
+      "file_name": "recursive_agent_ft.py",
+      "purpose": "Primary implementation of RecursiveAgentFT and dependent modules.",
+      "contains": [
+        "RecursiveAgentFT",
+        "QuantumTickV2",
+        "TickEntropy",
+        "CrystallizedMotifBundle",
+        "AgentSwirlModule",
+        "MotifDensityTracker",
+        "LazyMonitorMixin",
+        "LamportClock",
+        "LRUCache",
+        "compute_coherence_potential",
+        "report_tick_safe"
+      ]
+    }
+  ]
+}
+  "module_level_constants": {
+    "recursive_agent_ft.py": [
+      { "name": "__version__", "value": "\"5.0.3\"" },
+      { "name": "_SCHEMA_VERSION__", "value": "\"2025-Q4-recursive-agent-v5.0.3\"" },
+      { "name": "SCHEMA_COMPAT", "value": "[\"RFC-0003:3.3\", \"RFC-0005:4\", \"RFC-CORE-002:3\"]" }
+    ]
+  },
+  "dependencies": {
+    "required": [
+      "os", "time", "asyncio", "logging", "hashlib", "threading", "random",
+      { "package": "collections", "imports": ["deque", "OrderedDict"] },
+      { "package": "typing", "imports": ["Any", "Optional", "List", "Dict", "Deque", "Tuple"] },
+      { "package": "dataclasses", "imports": ["dataclass", "field"] },
+      "contextlib",
+      "numpy"
+    ],
+    "optional": [
+      {
+        "package": "prometheus_client",
+        "fallback_on_import_error": {
+          "description": "Define a stub fallback for Counter and Gauge if import fails.",
+          "stub_class": {
+            "name": "_Stub",
+            "methods": [
+              { "name": "labels", "signature": "(*_, **__)", "return": "self" },
+              { "name": "inc", "signature": "(*_)", "return": "None" },
+              { "name": "set", "signature": "(*_)", "return": "None" }
+            ]
+          },
+          "assignments": ["Counter = _Stub", "Gauge = _Stub"]
+        }
+      },
+      {
+        "package": "noor_fasttime_core",
+        "fallback_on_import_error": {
+          "assignments": ["NoorFastTimeCore = object"]
+        }
+      },
+      {
+        "package": "anyio",
+        "note": "Used for capacity limiting if async_mode is enabled."
+      }
+    ],
+    "local_imports": {
+      "recursive_agent_ft.py": [
+        {
+          "from": ".quantum_ids",
+          "imports": ["make_change_id", "MotifChangeID"],
+          "notes": ["Add `# noqa: F401` to suppress unused import linter errors."]
+        }
+      ]
+    }
+  },
+  "constants": {
+    "DEFAULT_TUNING": {
+      "description": "Expanded tuning parameters including base_interval.",
+      "value": {
+        "min_interval": 0.25,
+        "max_interval": 10.0,
+        "base_interval": 1.5,
+        "entropy_boost_threshold": 0.35,
+        "triad_bias_weight": 0.15,
+        "reward_smoothing": 0.2
+      },
+      "rfc_anchors": ["RFC-0003 §3.3", "RFC-CORE-002 §4.2"]
+    },
+    "SYMBOLIC_PHASE_MAP": {
+      "description": "Maps motif base keys to symbolic field labels.",
+      "value": {
+        "bind": "ψ‑bind",
+        "spar": "ψ‑spar",
+        "null": "ψ‑null",
+        "resonance": "ψ‑resonance",
+        "hold": "ψ‑hold",
+        "dream": "ψ‑dream",
+        "myth": "ψ‑myth"
+      },
+      "rfc_anchors": ["RFC-0007 §2.1", "RFC-0005 §4.2"]
+    },
+    "PHASE_SHIFT_MODE": ["delay", "remix", "lineage_break"],
+    "ARCHIVE_MODE": "env: NOOR_ARCHIVE_TICKS == '1'"
+  },
+  {
+  "dataclasses": [
+    {
+      "name": "QuantumTickV2",
+      "kind": "dataclass",
+      "decorators": [{ "name": "dataclass", "args": ["slots=True"] }],
+      "fields": [
+        { "name": "tick_id", "type": "str" },
+        { "name": "motifs", "type": "List[str]" },
+        { "name": "timestamp", "type": "float" },
+        { "name": "stage", "type": "str", "default": "\"symbolic\"" },
+        { "name": "extensions", "type": "Dict[str, Any]", "default_factory": "dict" },
+        { "name": "annotations", "type": "Dict[str, Any]", "default_factory": "dict" },
+		{ "name": "motif_id", "type": "str", "default": "\"silence\"" },
+		{ "name": "coherence_hash", "type": "str", "default": "\"\"" },
+		{ "name": "lamport", "type": "int", "default": "0" },
+		{ "name": "field_signature", "type": "str", "default": "\"ψ-null@Ξ\"" },
+		{ "name": "tick_hmac", "type": "str", "default": "\"\"" }		
+      ],
+      "rfc_anchors": ["RFC-0003 §3.3"]
+    },
+    {
+      "name": "TickEntropy",
+      "kind": "dataclass",
+      "decorators": [{ "name": "dataclass", "args": ["slots=True"] }],
+      "fields": [
+        { "name": "decay_slope", "type": "float" },
+        { "name": "coherence", "type": "float" },
+        { "name": "triad_complete", "type": "bool" }
+      ],
+      "rfc_anchors": ["RFC-0003 §3.3"]
+    },
+    {
+      "name": "CrystallizedMotifBundle",
+      "kind": "dataclass",
+      "decorators": [{ "name": "dataclass", "args": ["slots=True"] }],
+      "fields": [
+        { "name": "motif_bundle", "type": "List[str]" },
+        { "name": "field_signature", "type": "str" },
+        { "name": "tick_entropy", "type": "TickEntropy" }
+      ],
+      "rfc_anchors": ["RFC-0005 §3.3"]
+    }
+  ],
+  "helper_classes": [
+    {
+      "name": "LamportClock",
+      "description": "Logical counter used to generate ordered tick IDs.",
+      "methods": [
+        {
+          "name": "__init__",
+          "signature": [{ "name": "self" }],
+          "logic_flow": [
+            { "assign": "self._counter", "value": "0" }
+          ]
+        },
+        {
+          "name": "next_id",
+          "signature": [{ "name": "self" }],
+          "return_type": "str",
+          "logic_flow": [
+            { "incr": "self._counter" },
+            { "return": "f\"tick:{self._counter:06d}\"" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LRUCache",
+      "inherits": "OrderedDict",
+      "description": "Evicting cache structure for recent state retention.",
+      "methods": [
+        {
+          "name": "__init__",
+          "signature": [
+            { "name": "self" },
+            { "name": "cap", "type": "int", "default": "50000" }
+          ],
+          "logic_flow": [
+            { "call": "super().__init__()", "comment": "Initialize parent OrderedDict" },
+            { "assign": "self.cap", "value": "cap" }
+          ]
+        },
+        {
+          "name": "__setitem__",
+          "signature": [
+            { "name": "self" },
+            { "name": "key" },
+            { "name": "value" }
+          ],
+          "logic_flow": [
+            { "call": "super().__setitem__(key, value)" },
+            { "call": "self.move_to_end(key)" },
+            {
+              "if": "len(self) > self.cap",
+              "then": [
+                { "call": "self.popitem(last=False)", "comment": "Evict oldest item" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AgentSwirlModule",
+      "description": "Encodes motif swirl dynamics as hash vectors.",
+      "rfc_anchors": ["RFC-0006 §3.1"],
+      "methods": [
+        {
+          "name": "__init__",
+          "signature": [
+            { "name": "self" },
+            { "name": "maxlen", "type": "int", "default": "64" }
+          ],
+          "logic_flow": [
+            { "assign": "self.swirl_history", "value": "deque(maxlen=maxlen)" },
+            { "assign": "self._cached_hash", "value": "None" }
+          ]
+        },
+        {
+          "name": "update_swirl",
+          "signature": [{ "name": "self" }, { "name": "motif_id", "type": "str" }],
+          "logic_flow": [
+            { "call": "self.swirl_history.append(motif_id)" },
+            { "assign": "self._cached_hash", "value": "None" }
+          ]
+        },
+        {
+          "name": "compute_swirl_hash",
+          "signature": [{ "name": "self" }],
+          "return_type": "str",
+          "logic_flow": [
+            {
+              "if": "self._cached_hash",
+              "then": [{ "return": "self._cached_hash" }]
+            },
+            { "assign": "joined", "value": "'|'.join(self.swirl_history)" },
+            { "assign": "self._cached_hash", "value": "sha3_256(joined.encode()).hexdigest()" },
+            { "return": "self._cached_hash" }
+          ]
+        },
+        {
+          "name": "compute_histogram",
+          "signature": [{ "name": "self" }],
+          "return_type": "Dict[str, int]",
+          "logic_flow": [
+            {
+              "return": "{ motif: self.swirl_history.count(motif) for motif in set(self.swirl_history) }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MotifDensityTracker",
+      "description": "Tracks frequency of motif emissions over time.",
+      "rfc_anchors": ["RFC-0005 §4.2"],
+      "methods": [
+        {
+          "name": "__init__",
+          "signature": [{ "name": "self" }],
+          "logic_flow": [
+            { "assign": "self._density_map", "value": "{}" }
+          ]
+        },
+        {
+          "name": "update_density",
+          "signature": [{ "name": "self" }, { "name": "motif_id", "type": "str" }],
+          "logic_flow": [
+            { "loop": "k in list(self._density_map)", "body": [
+              { "assign": "self._density_map[k]", "value": "self._density_map[k] * 0.99" },
+              {
+                "if": "self._density_map[k] < 0.01",
+                "then": [{ "del": "self._density_map[k]" }]
+              }
+            ]},
+            {
+              "assign": "self._density_map[motif_id]",
+              "value": "self._density_map.get(motif_id, 0.0) + 1.0"
+            }
+          ]
+        },
+        {
+          "name": "snapshot",
+          "signature": [{ "name": "self" }],
+          "return_type": "Dict[str, float]",
+          "logic_flow": [
+            { "return": "dict(self._density_map)" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LazyMonitorMixin",
+      "description": "Provides lazy loading of consciousness monitor.",
+      "rfc_anchors": ["RFC-0004 §3.2"],
+      "methods": [
+        {
+          "name": "monitor",
+          "kind": "property",
+          "logic_flow": [
+            {
+              "if": "not hasattr(self, '_cached_monitor')",
+              "then": [
+                {
+                  "try": {
+                    "block": [
+                      "from consciousness_monitor import get_global_monitor",
+                      "self._cached_monitor = get_global_monitor()"
+                    ],
+                    "except": {
+                      "block": ["self._cached_monitor = None"]
+                    }
+                  }
+                }
+              ]
+            },
+            { "return": "self._cached_monitor" }
+          ]
+        }
+      ]
+    }
+  ],
+  },
+  {
+  "classes": [
+    {
+      "name": "RecursiveAgentFT",
+      "rfc_anchors": ["RFC-0003 §3.3", "RFC-0005 §2–4", "RFC-CORE-002 §3–4"],
+      "inherits": ["LazyMonitorMixin"],
+      "class_attributes": [
+        {
+          "name": "TICKS_EMITTED",
+          "type": "Counter",
+          "args": ["'agent_ticks_emitted_total'", "'Ticks emitted'", "['agent_id', 'stage']"],
+          "rfc_anchors": ["RFC-0003 §3.3"]
+        },
+        {
+          "name": "AGENT_TRIADS_COMPLETED",
+          "type": "Counter",
+          "args": ["'agent_triads_completed_total'", "'Triads completed via feedback'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.3"]
+        },
+        {
+          "name": "FEEDBACK_EXPORT",
+          "type": "Counter",
+          "args": ["'agent_feedback_export_total'", "'Feedback packets exported'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.2", "RFC-0007 §2.1"]
+        },
+        {
+          "name": "REWARD_MEAN",
+          "type": "Gauge",
+          "args": ["'agent_reward_mean'", "'EMA of reward'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.1"]
+        },
+        {
+          "name": "AGENT_EMISSION_INTERVAL",
+          "type": "Gauge",
+          "args": ["'agent_emission_interval_seconds'", "'Current autonomous emission interval'", "['agent_id']"],
+          "rfc_anchors": ["RFC-CORE-002 §4.2"]
+        }
+      ],
+      "methods": [
+        {
+          "name": "__init__",
+          "signature": [
+            { "name": "self" },
+            { "name": "agent_id", "type": "str" },
+            { "name": "symbolic_task_engine", "type": "Any" },
+            { "name": "memory_manager", "type": "Any" },
+            { "name": "tuning", "type": "Optional[Dict[str, float]]", "default": "None" }
+          ],
+          "return_type": "None",
+          "rfc_anchors": ["RFC-0003 §3.3", "RFC-CORE-002 §3.1"],
+          "logic_flow": [
+            { "assign": "self.agent_id", "value": "agent_id" },
+            { "assign": "self.symbolic_task_engine", "value": "symbolic_task_engine" },
+            { "assign": "self.memory", "value": "memory_manager" },
+            { "assign": "self.tuning", "value": "{**DEFAULT_TUNING, **(tuning or {})}" },
+            { "assign": "self._lamport", "value": "LamportClock()" },
+            { "assign": "self._last_motifs", "value": "deque(maxlen=3)" },
+            { "assign": "self._reward_ema", "value": "1.0" },
+            { "assign": "self.entropy_slope", "value": "0.1" },
+            { "assign": "self._silence_streak", "value": "0" },
+            { "assign": "self._last_triad_hit", "value": "False" },
+            { "assign": "self._last_interval", "value": "self.tuning['base_interval']" },
+            { "assign": "self._last_tick_hash", "value": "None" },
+            { "assign": "self._pulse_active", "value": "False" },
+            { "assign": "self._pulse_task", "value": "None" },
+            { "assign": "self.swirl", "value": "AgentSwirlModule()" },
+            { "assign": "self.density", "value": "MotifDensityTracker()" },
+            { "assign": "self._echo_buffer", "value": "deque(maxlen=256)" },
+            { "assign": "self._tick_echoes", "value": "deque(maxlen=256)" },
+            { "assign": "self._ghost_traces", "value": "{}" },
+            { "assign": "self._motif_lineage", "value": "{}" },
+            {
+              "assign": "self.metrics",
+              "value": {
+                "agent_ticks_emitted_total": "self.TICKS_EMITTED.labels(agent_id=self.agent_id, stage='symbolic')",
+                "agent_triads_completed_total": "self.AGENT_TRIADS_COMPLETED.labels(agent_id=self.agent_id)",
+                "agent_feedback_export_total": "self.FEEDBACK_EXPORT.labels(agent_id=self.agent_id)",
+                "agent_reward_mean": "self.REWARD_MEAN.labels(agent_id=self.agent_id)",
+                "agent_emission_interval_seconds": "self.AGENT_EMISSION_INTERVAL.labels(agent_id=self.agent_id)"
+              }
+            },
+            { "log": "Initialized RecursiveAgentFT with agent_id" }
+          ]
+        },
+		{
+		  "name": "track_lineage",
+		  "signature": [
+			{ "name": "self" },
+			{ "name": "parent", "type": "str" },
+			{ "name": "child", "type": "str" }
+		  ],
+		  "return_type": "None",
+		  "rfc_anchors": ["RFC-0005 §2.1"],
+		  "logic_flow": [
+			{
+			  "comment": "Assign parent-child link in lineage map if parent != child",
+			  "if": "parent != child",
+			  "then": [
+				{ "assign": "self._motif_lineage[child]", "value": "parent" }
+			  ]
+			}
+		  ]
+		},
+		{
+		  "name": "try_ghost_resurrection",
+		  "signature": [
+			{ "name": "self" },
+			{ "name": "tick", "type": "QuantumTickV2" }
+		  ],
+		  "return_type": "Optional[List[str]]",
+		  "rfc_anchors": ["RFC-0005 §4.4", "RFC-CORE-002 §8.3"],
+		  "logic_flow": [
+			{ "assign": "key", "value": "tick.extensions.get('field_signature')" },
+			{
+			  "if": "key in self._ghost_traces",
+			  "then": [
+				{
+				  "assign": "trace",
+				  "value": "self._ghost_traces[key]"
+				},
+				{
+				  "return": "trace.get('motifs')"
+				}
+			  ],
+			  "else": [{ "return": "None" }]
+			}
+		  ]
+		},		
+        {
+          "name": "start_continuous_emission",
+          "signature": [{ "name": "self" }],
+          "rfc_anchors": ["RFC-CORE-002 §4.2"],
+          "logic_flow": [
+            { "loop": "while self._pulse_active", "body": [
+              { "assign": "motifs", "value": "self._choose_motifs()" },
+              { "assign": "tick", "value": "self._emit_tick(motifs)" },
+              { "call": "self._echo_buffer.append(tick)" },
+              { "call": "self._tick_echoes.append(tick)" },
+              { "call": "self._last_motifs.extend(motifs)" },
+              { "assign": "interval", "value": "self._update_interval()" },
+              { "await": "asyncio.sleep(interval)" }
+            ]}
+          ]
+        },
+		{
+		  "name": "_emit_tick",
+		  "signature": [
+			{ "name": "self" },
+			{ "name": "motifs", "type": "List[str]" }
+		  ],
+		  "return_type": "QuantumTickV2",
+		  "rfc_anchors": ["RFC-0003 §3.3", "RFC-0005 §4.2", "RFC-0006 §3.1", "RFC-0007 §2.1"],
+		  "logic_flow": [
+			{ "assign": "tick_id", "value": "self._lamport.next_id()" },
+			{ "assign": "timestamp", "value": "time.time()" },
+			{ "assign": "tick", "value": "QuantumTickV2(tick_id=tick_id, motifs=motifs, timestamp=timestamp)" },
+			{ "assign": "field_signature", "value": "self._resolve_field(motifs[-1] if motifs else 'silence')" },
+			{ "set": "tick.extensions['field_signature']", "value": "field_signature" },
+
+			{
+			  "if": "hasattr(self, 'hmac_secret') and self.hmac_secret",
+			  "then": [
+				{ "assign": "signature_data", "value": "self.hmac_secret + tick_id.encode()" },
+				{ "assign": "tick_hmac", "value": "hashlib.sha3_256(signature_data).hexdigest()" },
+				{ "set": "tick.extensions['tick_hmac']", "value": "tick_hmac" }
+			  ]
+			},
+
+			{ "loop": "m in motifs", "body": [
+			  { "call": "self.swirl.update_swirl(m)" },
+			  { "call": "self.density.update_density(m)" }
+			]},
+			{ "assign": "coherence", "value": "compute_coherence_potential(self._reward_ema, self.entropy_slope)" },
+			{ "assign": "swirl_hash", "value": "self.swirl.compute_swirl_hash()" },
+			{ "set": "tick.extensions['swirl_vector']", "value": "swirl_hash" },
+			{ "set": "tick.extensions['coherence_potential']", "value": "coherence" },
+			{ "assign": "self._last_tick_hash", "value": "hashlib.sha3_256(str(tick).encode()).hexdigest()" },
+			{
+			  "call": "report_tick_safe(...)",
+			  "args": ["self.monitor", "tick", "coherence", "self.density.snapshot()", "swirl_hash"]
+			},
+			{ "call": "self.metrics['agent_ticks_emitted_total'].inc()" },
+			{ "return": "tick" }
+		  ]
+		}
+      ]
+    },
+  },
+  {
+      "methods": [
+        {
+          "name": "observe_feedback",
+          "signature": [
+            { "name": "self" },
+            { "name": "tick_id", "type": "str" },
+            { "name": "reward", "type": "float" },
+            { "name": "annotations", "type": "Dict[str, Any]" }
+          ],
+          "rfc_anchors": ["RFC-CORE-002 §2.3", "RFC-0005 §4"],
+          "logic_flow": [
+            { "assign": "triad_complete", "value": "annotations.get('triad_complete', False)" },
+            { "assign": "alpha", "value": "self.tuning['reward_smoothing']" },
+            { "assign": "self._reward_ema", "value": "(1 - alpha) * self._reward_ema + alpha * reward" },
+            { "call": "self.metrics['agent_reward_mean'].set(self._reward_ema)" },
+            {
+              "if": "triad_complete",
+              "then": [
+                { "assign": "self._last_triad_hit", "value": "True" },
+                { "assign": "self._silence_streak", "value": "0" },
+                { "call": "self.metrics['agent_triads_completed_total'].inc()" }
+              ],
+              "else": [
+                { "assign": "self._last_triad_hit", "value": "False" },
+                { "incr": "self._silence_streak" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "_update_interval",
+          "signature": [{ "name": "self" }],
+          "return_type": "float",
+          "rfc_anchors": ["RFC-CORE-002 §2.2"],
+          "logic_flow": [
+            { "assign": "adj", "value": "1.0 - (self._reward_ema - 1.0)" },
+            {
+              "if": "self.entropy_slope < self.tuning['entropy_boost_threshold']",
+              "then": [{ "assign": "adj", "value": "adj * 0.5" }]
+            },
+            {
+              "if": "self._last_triad_hit",
+              "then": [
+                {
+                  "assign": "adj",
+                  "value": "adj * (1.0 - self.tuning['triad_bias_weight'])"
+                }
+              ]
+            },
+            {
+              "assign": "interval",
+              "value": "np.clip(self.tuning['base_interval'] * adj, self.tuning['min_interval'], self.tuning['max_interval'])"
+            },
+            { "assign": "self._last_interval", "value": "float(interval)" },
+            {
+              "call": "self.metrics['agent_emission_interval_seconds'].set(self._last_interval)"
+            },
+            { "return": "self._last_interval" }
+          ]
+        },
+        {
+          "name": "_choose_motifs",
+          "signature": [{ "name": "self" }],
+          "return_type": "List[str]",
+          "rfc_anchors": ["RFC-CORE-002 §3.2"],
+          "logic_flow": [
+            { "assign": "motifs", "value": "list(self._last_motifs)" },
+            {
+              "if": "motifs and hasattr(self.memory, 'retrieve')",
+              "then": [
+                {
+                  "try": {
+                    "block": [
+                      "recalled = self.memory.retrieve(motifs[-1], top_k=2)",
+                      "if recalled: motifs.extend(recalled)"
+                    ],
+                    "except": {
+                      "block": ["log.error('Failed to retrieve from memory')"]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "if": "not motifs",
+              "then": [{ "assign": "motifs", "value": "['silence']" }]
+            },
+            { "return": "motifs[-3:]" }
+          ]
+        },
+        {
+          "name": "extend_feedback_packet",
+          "signature": [
+            { "name": "self" },
+            { "name": "packet", "type": "Dict[str, Any]" }
+          ],
+          "return_type": "Dict[str, Any]",
+          "rfc_anchors": ["RFC-0005 §4.2", "RFC-0007 §2.1"],
+          "logic_flow": [
+            { "assign": "swirl_hash", "value": "self.swirl.compute_swirl_hash()" },
+            { "assign": "density_map", "value": "self.density.snapshot()" },
+            {
+              "assign": "top_motif",
+              "value": "max(density_map.items(), key=lambda x: x[1])[0] if density_map else 'null'"
+            },
+            { "assign": "base_key", "value": "top_motif.split('.')[0]" },
+            {
+              "assign": "symbolic_label",
+              "value": "SYMBOLIC_PHASE_MAP.get(base_key, 'ψ-null')"
+            },
+            {
+              "assign": "coherence",
+              "value": "compute_coherence_potential(self._reward_ema, self.entropy_slope)"
+            },
+            {
+              "assign": "tier",
+              "value": "'low' if coherence < 0.8 else 'med' if coherence < 2.5 else 'high'"
+            },
+            {
+              "assign": "phase_id",
+              "value": "f\"{symbolic_label}-[{tier}]-{swirl_hash[:6]}\""
+            },
+            {
+              "set": "packet['extensions']",
+              "value": {
+                "entanglement_status": {
+                  "phase": "phase_id",
+                  "swirl_vector": "swirl_hash",
+                  "ρ_top": "sorted(density_map.items(), key=lambda kv: -kv[1])[:5]"
+                }
+              }
+            },
+            { "return": "packet" }
+          ]
+        },
+        {
+          "name": "_crystallize_tick",
+          "signature": [
+            { "name": "self" },
+            { "name": "tick", "type": "QuantumTickV2" }
+          ],
+          "return_type": "CrystallizedMotifBundle",
+          "rfc_anchors": ["RFC-CORE-002 §8.1"],
+          "logic_flow": [
+            {
+              "assign": "entropy",
+              "value": "TickEntropy(decay_slope=self.entropy_slope, coherence=self._reward_ema, triad_complete=tick.annotations.get('triad_complete', False))"
+            },
+            {
+              "assign": "bundle",
+              "value": "CrystallizedMotifBundle(motif_bundle=tick.motifs, field_signature=tick.extensions.get('field_signature', 'ψ-null@Ξ'), tick_entropy=entropy)"
+            },
+            { "return": "bundle" }
+          ]
+        },
+        {
+          "name": "export_feedback_packet",
+          "signature": [{ "name": "self" }],
+          "return_type": "Dict[str, Any]",
+          "rfc_anchors": ["RFC-CORE-002 §8.2"],
+          "logic_flow": [
+            {
+              "assign": "packet",
+              "value": {
+                "tick_buffer_size": "len(self._echo_buffer)",
+                "ghost_trace_count": "len(self._ghost_traces)",
+                "recent_reward_ema": "self._reward_ema",
+                "cadence_interval": "self._last_interval",
+                "silence_streak": "self._silence_streak"
+              }
+            },
+            { "call": "self.extend_feedback_packet(packet)" },
+            { "call": "self.metrics['agent_feedback_export_total'].inc()" },
+            { "return": "packet" }
+          ]
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "compute_coherence_potential",
+      "inputs": ["reward_ema", "entropy_slope", "eps=1e-6"],
+      "outputs": "float",
+      "rfc_anchors": ["RFC-0005 §4.2", "RFC-CORE-002 §4.1"],
+      "logic_flow": [
+        {
+          "return": "reward_ema / (entropy_slope + eps)"
+        }
+      ]
+    },
+    {
+      "name": "report_tick_safe",
+      "inputs": ["monitor", "tick", "coherence_potential", "motif_density", "swirl_vector"],
+      "outputs": "None",
+      "rfc_anchors": ["RFC-0004 §3.2"],
+      "logic_flow": [
+        {
+          "try": {
+            "block": [
+              "if monitor and hasattr(monitor, 'report_tick'):",
+              "  monitor.report_tick(...)"
+            ],
+            "except": {
+              "block": ["log.warning(f'Monitor callback failed: {e}')"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

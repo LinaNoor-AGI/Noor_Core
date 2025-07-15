@@ -1,0 +1,224 @@
+{
+  "program_name": "recursive_agent_ft.py",
+  "version": "v5.0.0",
+  "canonical_source": "RFC-CORE-002",
+  "description": "Autonomous motif emission agent with swirl-coherence dynamics, motif density tracking, echo/ghost trace replay, and symbolic phase feedback. Fully RFC-compliant and regeneration-compatible.",
+  "rfc_dependencies": [
+    "RFC‑0003 §3.3",
+    "RFC‑0005 §2–4",
+    "RFC‑0006 §3.1",
+    "RFC‑0007 §2.1",
+    "RFC‑CORE-002"
+  ],
+  "classes": [
+    {
+      "name": "RecursiveAgentFT",
+      "defined_in": "recursive_agent_ft.py",
+      "description": "Core motif emitter and symbolic feedback agent.",
+      "inherits": ["LazyMonitorMixin"],
+      "init_parameters": [
+        "initial_state",
+        "watchers",
+        "agent_id='agent@default'",
+        "max_parallel=8",
+        "hmac_secret=None",
+        "core=None",
+        "async_mode=False"
+      ],
+      "components": [
+        "QuantumTickV2",
+        "TickEntropy",
+        "CrystallizedMotifBundle",
+        "AgentSwirlModule",
+        "MotifDensityTracker",
+        "NoorFastTimeCore (optional external)",
+        "MotifMemoryManager (via global singleton)"
+      ],
+      "methods": [
+        {
+          "name": "spawn",
+          "purpose": "Kickstarts autonomous emission loop.",
+          "inputs": ["initial_motifs: Optional[List[str]]"],
+          "outputs": "None",
+          "rfc_references": ["RFC‑0003 §3.3"]
+        },
+        {
+          "name": "observe_feedback",
+          "purpose": "Updates agent state based on feedback annotations (reward, triad hit).",
+          "inputs": ["tick_id", "reward", "annotations"],
+          "outputs": "None",
+          "rfc_references": ["RFC‑0005 §4.1"]
+        },
+        {
+          "name": "export_state",
+          "purpose": "Returns internal state snapshot for diagnostics.",
+          "outputs": "Dict[str, Any]"
+        },
+        {
+          "name": "export_feedback_packet",
+          "purpose": "Provides symbolic feedback payload to observers.",
+          "outputs": "Dict[str, Any]",
+          "rfc_references": ["RFC‑0005 §4.2", "RFC‑0007 §2.1"]
+        },
+        {
+          "name": "_choose_motifs",
+          "purpose": "Selects motifs for the next tick using memory recall.",
+          "outputs": "List[str]"
+        },
+        {
+          "name": "_emit_tick",
+          "purpose": "Constructs, validates, and emits a symbolic tick.",
+          "inputs": ["motifs: List[str]", "stage='E2b'"],
+          "outputs": "QuantumTickV2",
+          "rfc_references": ["RFC‑0003 §3.3"]
+        },
+        {
+          "name": "recall_tick",
+          "purpose": "Returns a previously emitted tick from echo buffer.",
+          "inputs": ["tick_id: str"],
+          "outputs": "Optional[QuantumTickV2]"
+        },
+        {
+          "name": "try_ghost_resurrection",
+          "purpose": "Replays a ghost motif tick if context matches.",
+          "inputs": ["ghost_motif", "context_field"],
+          "outputs": "Optional[QuantumTickV2]",
+          "rfc_references": ["RFC‑0005 §3.3"]
+        },
+        {
+          "name": "build_resurrection_payload",
+          "purpose": "Packages a resurrection-ready tick into symbolic envelope.",
+          "inputs": ["tick: QuantumTickV2"],
+          "outputs": "Dict[str, Any]",
+          "rfc_references": ["RFC‑0005 §3.3", "RFC‑0007 §2.1"]
+        },
+        {
+          "name": "ghost_decay",
+          "purpose": "Prunes stale ghost traces.",
+          "inputs": ["age_limit=300.0"],
+          "outputs": "None"
+        },
+        {
+          "name": "replay_if_field_matches",
+          "purpose": "Returns matching tick from ghost buffer if field aligns.",
+          "inputs": ["current_field: str"],
+          "outputs": "Optional[QuantumTickV2]"
+        },
+        {
+          "name": "track_lineage",
+          "purpose": "Links a new motif to its parent in lineage map.",
+          "inputs": ["new_motif", "source_motif"],
+          "outputs": "None"
+        },
+        {
+          "name": "_crystallize_tick",
+          "purpose": "Wraps a tick into a CrystallizedMotifBundle for archival.",
+          "inputs": ["tick: QuantumTickV2"],
+          "outputs": "CrystallizedMotifBundle"
+        },
+        {
+          "name": "_update_interval",
+          "purpose": "Adjusts loop timing based on entropy and triad reward bias.",
+          "inputs": ["entropy: float"],
+          "outputs": "float",
+          "rfc_references": ["RFC‑0003 §3.3", "RFC‑CORE-002 §4.2"]
+        },
+        {
+          "name": "start_continuous_emission",
+          "purpose": "Core async loop emitting symbolic ticks.",
+          "outputs": "None",
+          "async": true
+        },
+        {
+          "name": "start_pulse",
+          "purpose": "Wrapper to launch the async emission loop.",
+          "outputs": "None"
+        },
+        {
+          "name": "stop_pulse",
+          "purpose": "Cancels the emission loop.",
+          "outputs": "None"
+        },
+        {
+          "name": "_resolve_field",
+          "purpose": "Maps motif to symbolic field using presence policy.",
+          "inputs": ["motif: str"],
+          "outputs": "str",
+          "rfc_references": ["RFC‑0006 §3.1", "RFC‑0005 §4.3"]
+        }
+      ]
+    },
+    {
+      "name": "QuantumTickV2",
+      "kind": "dataclass",
+      "slots": true,
+      "fields": [
+        "tick_id", "motif_id", "coherence_hash", "lamport", "agent_id",
+        "stage", "motifs", "reward_ema", "timestamp_ms", "field_signature", "tick_hmac"
+      ],
+      "rfc_references": ["RFC‑0003 §3.3"]
+    },
+    {
+      "name": "TickEntropy",
+      "kind": "dataclass",
+      "fields": ["decay_slope", "coherence", "triad_complete", "age"],
+      "rfc_references": ["RFC‑0003 §3.3"]
+    },
+    {
+      "name": "CrystallizedMotifBundle",
+      "kind": "dataclass",
+      "fields": ["motif_bundle", "field_signature", "tick_entropy"]
+    },
+    {
+      "name": "AgentSwirlModule",
+      "purpose": "Tracks motif swirl dynamics and produces stable swirl hashes.",
+      "methods": ["update_swirl", "compute_swirl_hash", "compute_histogram"],
+      "rfc_references": ["RFC‑0006 §3.1"]
+    },
+    {
+      "name": "MotifDensityTracker",
+      "purpose": "Tracks decayed motif frequencies to inform symbolic phase state.",
+      "methods": ["update_density", "snapshot"],
+      "rfc_references": ["RFC‑0005 §4.2"]
+    },
+    {
+      "name": "LazyMonitorMixin",
+      "purpose": "Provides monitor injection for tick reporting and triad registration.",
+      "methods": ["monitor (property)"],
+      "rfc_references": ["RFC‑0004 §3.2", "RFC‑0006 §3.2"]
+    }
+  ],
+  "functions": [
+    {
+      "name": "compute_coherence_potential",
+      "description": "Evaluates symbolic feedback coherence using reward entropy slope ratio.",
+      "inputs": ["reward_ema", "entropy_slope", "eps=1e-6"],
+      "outputs": "float",
+      "rfc_references": ["RFC‑0005 §4.2"]
+    },
+    {
+      "name": "extend_feedback_packet",
+      "description": "Injects entanglement data into observer-bound feedback.",
+      "inputs": ["packet", "phase_id", "swirl_hash", "motif_density"],
+      "outputs": "Dict[str, Any]",
+      "rfc_references": ["RFC‑0005 §4.2", "RFC‑0007 §2.1"]
+    },
+    {
+      "name": "report_tick_safe",
+      "description": "Safely attempts monitor reporting, logging errors instead of failing.",
+      "inputs": ["monitor", "tick", "coherence_potential", "motif_density", "swirl_vector"],
+      "outputs": "None"
+    }
+  ],
+  "constants": {
+    "DEFAULT_TUNING": {
+      "min_interval": 0.25,
+      "max_interval": 10.0,
+      "entropy_boost_threshold": 0.35,
+      "triad_bias_weight": 0.15,
+      "reward_smoothing": 0.2
+    },
+    "PHASE_SHIFT_MODE": ["delay", "remix", "lineage_break"],
+    "ARCHIVE_MODE": "env: NOOR_ARCHIVE_TICKS == '1'"
+  }
+}

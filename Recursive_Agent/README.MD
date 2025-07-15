@@ -150,4 +150,4 @@ print(packet["extensions"]["entanglement_status"])
 
 ## 🪬 License
 
-MIT • © 2025 Lina Noor / Noor Research Collective
+GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective

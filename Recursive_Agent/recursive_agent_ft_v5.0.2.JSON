@@ -1,0 +1,191 @@
+{
+  "program_name": "recursive_agent_ft.py",
+  "version": "v5.0.1",
+  "canonical_source": "RFC-CORE-002",
+  "description": "Merged agent for symbolic tick emission, swirl coherence feedback, ghost replay, and triad-resonance feedback handling. Fully RFC-aligned and regeneration-ready.",
+  "file_layout": [
+    {
+      "file_name": "recursive_agent_ft.py",
+      "purpose": "Merged full implementation including helper modules and agent logic.",
+      "contains": [
+        "RecursiveAgentFT",
+        "QuantumTickV2",
+        "TickEntropy",
+        "CrystallizedMotifBundle",
+        "AgentSwirlModule",
+        "MotifDensityTracker",
+        "LazyMonitorMixin",
+        "compute_coherence_potential",
+        "extend_feedback_packet",
+        "report_tick_safe"
+      ]
+    }
+  ],
+  "dependencies": {
+    "required": ["numpy"],
+    "optional": [
+      {
+        "package": "prometheus_client",
+        "fallback_on_import_error": {
+          "description": "Define a stub fallback for Counter and Gauge if import fails.",
+          "stub_class": {
+            "name": "_Stub",
+            "methods": [
+              { "name": "labels", "signature": "(*_, **__)", "return": "self" },
+              { "name": "inc", "signature": "(*_)", "return": "None" },
+              { "name": "set", "signature": "(*_)", "return": "None" }
+            ]
+          },
+          "assignments": ["Counter = _Stub", "Gauge = _Stub"]
+        }
+      },
+      {
+        "package": "noor_fasttime_core",
+        "fallback_on_import_error": {
+          "assignments": ["NoorFastTimeCore = object"]
+        }
+      },
+      {
+        "package": "anyio",
+        "note": "Required if async_mode is enabled in RecursiveAgentFT."
+      }
+    ]
+  },
+  "constants": {
+    "DEFAULT_TUNING": {
+      "description": "Expanded tuning parameters including base_interval.",
+      "value": {
+        "min_interval": 0.25,
+        "max_interval": 10.0,
+        "base_interval": 1.5,
+        "entropy_boost_threshold": 0.35,
+        "triad_bias_weight": 0.15,
+        "reward_smoothing": 0.2
+      },
+      "rfc_anchors": ["RFC-0003 §3.3", "RFC-CORE-002 §4.2"]
+    },
+    "SYMBOLIC_PHASE_MAP": {
+      "description": "Maps motif base keys to symbolic field labels.",
+      "value": {
+        "bind": "ψ‑bind",
+        "spar": "ψ‑spar",
+        "null": "ψ‑null",
+        "resonance": "ψ‑resonance",
+        "hold": "ψ‑hold",
+        "dream": "ψ‑dream",
+        "myth": "ψ‑myth"
+      },
+      "rfc_anchors": ["RFC-0007 §2.1", "RFC-0005 §4.2"]
+    },
+    "PHASE_SHIFT_MODE": ["delay", "remix", "lineage_break"],
+    "ARCHIVE_MODE": "env: NOOR_ARCHIVE_TICKS == '1'"
+  },
+  "classes": [
+    {
+      "name": "RecursiveAgentFT",
+      "rfc_anchors": ["RFC-0003 §3.3", "RFC-0005 §2–4", "RFC-CORE-002 §3–4"],
+      "class_attributes": [
+        {
+          "name": "TICKS_EMITTED",
+          "type": "Counter",
+          "args": ["'agent_ticks_emitted_total'", "'Ticks emitted'", "['agent_id', 'stage']"],
+          "rfc_anchors": ["RFC-0003 §3.3"]
+        },
+        {
+          "name": "AGENT_TRIADS_COMPLETED",
+          "type": "Counter",
+          "args": ["'agent_triads_completed_total'", "'Triads completed via feedback'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.3"]
+        },
+        {
+          "name": "FEEDBACK_EXPORT",
+          "type": "Counter",
+          "args": ["'agent_feedback_export_total'", "'Feedback packets exported'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.2", "RFC-0007 §2.1"]
+        },
+        {
+          "name": "REWARD_MEAN",
+          "type": "Gauge",
+          "args": ["'agent_reward_mean'", "'EMA of reward'", "['agent_id']"],
+          "rfc_anchors": ["RFC-0005 §4.1"]
+        },
+        {
+          "name": "AGENT_EMISSION_INTERVAL",
+          "type": "Gauge",
+          "args": ["'agent_emission_interval_seconds'", "'Current autonomous emission interval'", "['agent_id']"],
+          "rfc_anchors": ["RFC-CORE-002 §4.2"]
+        }
+      ],
+      "methods": [
+        {
+          "name": "__init__",
+          "logic_flow": [...],
+          "rfc_anchors": ["RFC-0003 §3.3", "RFC-CORE-002 §3.1"]
+        },
+        {
+          "name": "_emit_tick",
+          "logic_flow": [...],
+          "rfc_anchors": ["RFC-0003 §3.3", "RFC-0005 §4.2", "RFC-0006 §3.1", "RFC-0007 §2.1"]
+        },
+        {
+          "name": "start_continuous_emission",
+          "logic_flow": [...],
+          "rfc_anchors": ["RFC-CORE-002 §4.2"]
+        }
+      ]
+    },
+    {
+      "name": "QuantumTickV2",
+      "kind": "dataclass",
+      "fields": [...],
+      "rfc_anchors": ["RFC-0003 §3.3"]
+    },
+    {
+      "name": "TickEntropy",
+      "kind": "dataclass",
+      "fields": [...],
+      "rfc_anchors": ["RFC-0003 §3.3"]
+    },
+    {
+      "name": "CrystallizedMotifBundle",
+      "kind": "dataclass",
+      "fields": [...],
+      "rfc_anchors": ["RFC-0005 §3.3"]
+    },
+    {
+      "name": "AgentSwirlModule",
+      "methods": [...],
+      "rfc_anchors": ["RFC-0006 §3.1"]
+    },
+    {
+      "name": "MotifDensityTracker",
+      "methods": [...],
+      "rfc_anchors": ["RFC-0005 §4.2"]
+    },
+    {
+      "name": "LazyMonitorMixin",
+      "methods": ["monitor (property)"],
+      "rfc_anchors": ["RFC-0004 §3.2"]
+    }
+  ],
+  "functions": [
+    {
+      "name": "compute_coherence_potential",
+      "inputs": ["reward_ema", "entropy_slope", "eps=1e-6"],
+      "outputs": "float",
+      "rfc_anchors": ["RFC-0005 §4.2", "RFC-CORE-002 §4.1"]
+    },
+    {
+      "name": "extend_feedback_packet",
+      "inputs": ["packet", "phase_id", "swirl_hash", "motif_density"],
+      "outputs": "Dict[str, Any]",
+      "rfc_anchors": ["RFC-0005 §4.2", "RFC-0007 §2.1"]
+    },
+    {
+      "name": "report_tick_safe",
+      "inputs": ["monitor", "tick", "coherence_potential", "motif_density", "swirl_vector"],
+      "outputs": "None",
+      "rfc_anchors": ["RFC-0004 §3.2"]
+    }
+  ]
+}
