@@ -1,0 +1,217 @@
+{
+  "agent_id": "LogicalAgentAT",
+  "version": "v3.8.0",
+  "schema": "2025-Q4-logical-agent-v1.2",
+  "description": "Observer/evaluator for QuantumTick events with symbolic triad detection, field feedback, and handshake abilities.",
+  "rfc_anchors": [
+    { "id": "RFC-0003", "sections": ["3", "4"] },
+    { "id": "RFC-0004" },
+    { "id": "RFC-0005", "sections": ["2", "3", "4"] }
+  ],
+  "symbolic_contracts": {
+    "tick_annotations": "TickAnnotations (RFC-0003 §4)",
+    "feedback_packet": "FeedbackPacket (RFC-0005 §4)"
+  },
+  "constructor": {
+    "defaults": {
+      "agent_id": "logical@default",
+      "observer_mode": false,
+      "enable_quantum_ticks": true,
+      "enable_memory_coupling": true,
+      "tick_buffer_size": "@DEFAULT_WINDOW_SIZE",
+      "pi_max_classes": 20000,
+      "enable_ghost_tracking": true
+    },
+    "env_overrides": {
+      "BOOST_BASE": "NOOR_WATCHER_BOOST_BASE",
+      "MEM_CAP_WARN": "NOOR_WATCHER_MEMORY_CAP"
+    },
+    "feature_flags": [
+      "enable_resurrection_hints",
+      "adaptive_memory_boost",
+      "enable_topology",
+      "enable_cluster_algebra",
+      "enable_sheaf_transport",
+      "enable_laplacian",
+      "enable_pi_groupoid",
+      "enable_ghost_tracking",
+      "enable_motif_embeddings",
+      "enable_decay_adjustment"
+    ]
+  },
+  "dynamic_parameters": {
+    "max_fields": {
+      "default": "_compute_default_max_fields",
+      "overridable": true
+    },
+    "dyad_window": {
+      "default": "_compute_default_dyad_window",
+      "overridable": true
+    }
+  },
+  "metrics": {
+    "type": "PrometheusCompatible",
+    "fallback": "Stub",
+    "telemetry": [
+      "STEP_LATENCY_HIST",
+      "TOPOLOGY_CONFLICT_COUNTER",
+      "LAPLACIAN_CALL_COUNTER",
+      "CLUSTER_MUTATION_COUNTER",
+      "PI_MERGE_COUNTER",
+      "CONTRADICTION_COUNTER",
+      "GHOST_COUNTER",
+      "FEATURE_TOGGLE_COUNTER"
+    ]
+  },
+  "dependencies": [
+    "tick_schema.validate_tick",
+    "field_feedback.make_field_feedback",
+    "logical_agent_at_update_0001"
+  ],
+  "methods": {
+    "register_tick": {
+      "rfc_anchor": "RFC-0003 §3",
+      "returns": "QuantumTick"
+    },
+    "evaluate_tick": {
+      "rfc_anchor": ["RFC-0003 §4", "RFC-0005 §4"],
+      "returns": "TickAnnotations"
+    },
+    "a_evaluate_tick": {
+      "note": "Async façade for evaluate_tick",
+      "type": "async"
+    },
+    "export_feedback_packet": {
+      "rfc_anchor": "RFC-0005 §4",
+      "returns": "FeedbackPacket"
+    },
+    "tool_hello": {
+      "rfc_anchor": "RFC-0004",
+      "returns": "ψ-hello@Ξ compatible packet"
+    },
+    "get_latest_tick": {},
+    "export_tick_histogram": {},
+    "export_epoch_histogram": {},
+    "export_dyad_metrics": {},
+    "render_entanglement_graph": {},
+    "to_dict": {},
+    "from_dict": {}
+  },
+  "helpers": {
+    "motif_processing": [
+      "_flatten_motifs",
+      "_short_hash",
+      "_compute_knot_id"
+    ],
+    "dyad_triad_detection": [
+      "_detect_dyad",
+      "_complete_triad",
+      "_complete_recursive_triad",
+      "_seed_from_partial_dyad"
+    ],
+    "cluster_mutation": [
+      "_cluster_energy",
+      "_can_mutate",
+      "_queue_cooldown",
+      "_mutate_motif_name",
+      "_perform_mutation"
+    ],
+    "pi_groupoid": [
+      "register_path_equivalence",
+      "_find_root"
+    ],
+    "entropy_context": [
+      "_track_entropy_drift",
+      "_log_contradiction",
+      "_log_contradiction_context"
+    ],
+    "ghost_logic": [
+      "_record_ghost"
+    ],
+    "laplacian_topology": [
+      "_laplacian_smooth",
+      "_apply_laplacian_smoothing",
+      "_sheaf_stratify",
+      "_validate_ring_patches",
+      "_maybe_smooth_graph"
+    ]
+  },
+  "ghost_motif_api": {
+    "methods": [
+      "register_ghost_motif",
+      "promote_ghost_to_field",
+      "_ghost_seen_in_state",
+      "reinforce_ghost_resonance"
+    ],
+    "resonance_tracking": true,
+    "auto_promotion": true,
+    "decay_threshold": "1e-4",
+    "similarity_cutoff": 0.1
+  },
+  "field_cluster_api": {
+    "methods": [
+      "register_motif_cluster",
+      "_assign_stratum"
+    ],
+    "topology_flags": {
+      "enable_topology": true,
+      "enable_sheaf_transport": true
+    },
+    "payloads": [
+      "curvature_bias",
+      "vector_payload",
+      "ring_patch",
+      "persistence_vector",
+      "path_identities"
+    ],
+    "stratum_logic": {
+      "high_resonance": "> 0.8",
+      "mid_resonance": "> 0.4",
+      "low_resonance": "≤ 0.4"
+    }
+  },
+  "state_loop": {
+    "method": "observe_state",
+    "steps": [
+      "ghost resonance",
+      "cluster mutation",
+      "field decay & pruning",
+      "topology conflict detection",
+      "laplacian smoothing",
+      "housekeeping"
+    ]
+  },
+  "dynamic_flag_system": {
+    "audit_supported": true,
+    "auto_patch": true,
+    "flags": [
+      "enable_quantum_ticks",
+      "enable_memory_coupling",
+      "enable_topology",
+      "enable_cluster_algebra",
+      "enable_sheaf_transport",
+      "enable_laplacian",
+      "enable_pi_groupoid",
+      "enable_ghost_tracking",
+      "enable_motif_embeddings",
+      "enable_decay_adjustment"
+    ],
+    "methods": [
+      "set_feature",
+      "get_feature",
+      "list_dynamic_flags"
+    ]
+  },
+  "self_test": {
+    "enabled": true,
+    "tests": [
+      "tick registry",
+      "embedding roundtrip",
+      "observe_state execution"
+    ]
+  },
+  "serialization": {
+    "export": "to_dict",
+    "import": "from_dict"
+  }
+}

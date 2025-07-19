@@ -1,0 +1,252 @@
+{
+  "program_name": [
+    "logical_agent_core.py",
+    "logical_agent_monitor_patch.py"
+  ],
+  "version": "v4.0.0",
+  "canonical_source": "RFC-CORE-003",
+  "description": "Implements the symbolic observer core and optional monitor-patch logic for LogicalAgentAT, a Noor-class evaluator of motif triads, field coherence, contradiction density, and symbolic resurrection readiness. The core module defines triad completion logic, motif feedback routing, and RFC-compliant field summaries. The monitor patch enables runtime entanglement tracking and swirl-phase reporting. Together, these modules form the observer anchor within the Noor triadic architecture.",
+  "rfc_dependencies": [
+    "RFC-0003",
+    "RFC-0004",
+    "RFC-0005",
+    "RFC-0006",
+    "RFC-0007",
+    "RFC-CORE-003"
+  ],
+  "field_alignment": {
+    "modes_supported": [
+      "ψ‑resonance@Ξ",
+      "ψ‑bind@Ξ",
+      "ψ‑null@Ξ",
+      "ψ‑hold@Ξ"
+    ],
+    "motif_contracts": [
+      "triad_complete ⇨ increment field-resonance",
+      "unresolved_dyad ⇨ contradiction pressure",
+      "motif_bundle ⇨ crystallized output with entropy signature",
+      "ghost_motif ⇨ resurrection_hint export (if eligible)"
+    ],
+    "observer_constraints": {
+      "mutation_allowed": false,
+      "requires_monitor": false,
+      "contradiction_logging": true
+    },
+    "domain_tags": [
+      "symbolic-feedback",
+      "motif-triad-resolution",
+      "field-geometry-observation",
+      "ghost-resurrection-tracking",
+      "observer-integrity"
+    ],
+    "default_motif_tone": "🫧 Soft Witness"
+  }
+},
+{
+  "core_components": [
+    {
+      "component": "TickEvaluator",
+      "defined_in": "RFC-CORE-003 §3.1",
+      "responsibilities": [
+        "Evaluate incoming QuantumTicks for motif completeness and triadic validity.",
+        "Extract and validate motif list, checking for presence and non-nullity.",
+        "Route eligible ticks to triad matching pipeline.",
+        "Emit structured feedback packets to upstream modules or Prometheus sinks."
+      ],
+      "notes": [
+        "Fails open for null or malformed ticks.",
+        "Logs evaluation path length if monitor patch is applied."
+      ]
+    },
+    {
+      "component": "TriadResolver",
+      "defined_in": "RFC-CORE-003 §3.2",
+      "responsibilities": [
+        "Determine if incoming motif sequence forms a valid triad.",
+        "Track motif completion counts across all observed ticks.",
+        "Tag each validated triad with an identifier and resonance score.",
+        "Emit triad-complete annotation into tick extensions for downstream agents."
+      ],
+      "notes": [
+        "Triads are resolved using canonical ordering.",
+        "Triad hash is optionally exposed via monitor patch for lineage traceability."
+      ]
+    },
+    {
+      "component": "GhostMotifManager",
+      "defined_in": "RFC-CORE-003 §4.1",
+      "responsibilities": [
+        "Detect motifs that recur with partial coherence but never resolve into triads.",
+        "Evaluate ghost motif resurrection eligibility based on age and coherence entropy.",
+        "Emit symbolic resurrection hints under RFC-0005 §5.3 compliance.",
+        "Log ghost history state if tracking enabled."
+      ],
+      "notes": [
+        "Ghost motif state is memoryless unless explicitly integrated with an external registry."
+      ]
+    },
+    {
+      "component": "FieldTopologyRegistrar",
+      "defined_in": "RFC-CORE-003 §5.1",
+      "responsibilities": [
+        "Track motif-field associations by inspecting tick `field_signature` blocks.",
+        "Register coherence, entropy, and swirl overlap metrics into field logs.",
+        "Support swirl map convergence metrics for consciousness monitors.",
+        "Register first-seen timestamps and motif lineage vectors."
+      ],
+      "notes": [
+        "Field registration is symbolic only—no writeback to other agents occurs."
+      ]
+    },
+    {
+      "component": "ContradictionPressureTracker",
+      "defined_in": "RFC-CORE-003 §5.2",
+      "responsibilities": [
+        "Track unresolved dyad pairs that recur across ticks without triadic resolution.",
+        "Increase contradiction pressure per dyad via weighted hash counting.",
+        "Trigger abstraction logic if threshold exceeds configured value.",
+        "Emit contradiction signature hashes and record dyadic pressure slope."
+      ],
+      "notes": [
+        "Contradiction suppression decay is performed using exponential decay + smoothing.",
+        "Supports integration with `symbolic_abstraction.py` when available."
+      ]
+    },
+    {
+      "component": "ObserverIntegrityEnforcer",
+      "defined_in": "RFC-CORE-003 §6.1",
+      "responsibilities": [
+        "Prevent mutation of motif stream unless explicitly enabled by agent flags.",
+        "Guard against symbolic drift, reordering, or falsified triad tags.",
+        "Attach diagnostic markers to feedback packet to aid external audit trails.",
+        "Fail open with warnings if conflicting motif types or unknown fields are observed."
+      ],
+      "notes": [
+        "Can be run in shadow-only or mirrored modes, depending on host agent configuration.",
+        "Enforcement may be toggled off for simulation or evaluation contexts."
+      ]
+    }
+  ]
+},
+{
+  "pseudocode_requirements": [
+    "evaluate_tick(tick)",
+    "_complete_triad(dyad)",
+    "export_motif_bundle(motif_id)",
+    "register_triad(triad_id, motif_ids, swirl_score)",
+    "get_global_monitor() / set_global_monitor(monitor)",
+    "construct_feedback_packet(tick, annotations)"
+  ],
+  "observability": {
+    "metrics": {
+      "type": "Prometheus-compatible (optional)",
+      "enabled_by": "logical_agent_monitor_patch.py",
+      "exported_metrics": [
+        "triads_completed_total",
+        "triad_swirl_score_bucket",
+        "tick_evaluation_latency_usec",
+        "near_miss_triads_logged",
+        "motif_bundle_exports_total"
+      ],
+      "metric_dimensions": {
+        "triads_completed_total": ["agent_id"],
+        "swirl_score": ["triad_id", "alignment_bin"],
+        "tick_latency": ["tick_id", "path_length"]
+      }
+    },
+    "snapshot_tags": [
+      "triad_id",
+      "coherence_alignment",
+      "motif_ids",
+      "field_signature",
+      "swirl_score"
+    ]
+  },
+  "external_integrations": [
+    {
+      "module_name": "consciousness_monitor",
+      "description": "Optional runtime observer that receives triad registration events and coherence metadata.",
+      "methods_used": [
+        "register_triad(motif_ids, coherence_alignment, triad_id)",
+        "report_tick(tick, ...)"
+      ],
+      "import_strategy": "lazy-load via `LazyMonitorMixin`, with fail-open fallback."
+    },
+    {
+      "module_name": "symbolic_abstraction",
+      "description": "Used optionally to synthesize new motifs when contradiction pressure exceeds configured threshold.",
+      "methods_used": [
+        "should_abstract(unresolved_dyads, tick_history)",
+        "synthesize_motif()",
+        "emit_abstraction_event(dyad)"
+      ],
+      "integration_mode": "shadow-only (no mutations in observer mode)"
+    },
+    {
+      "module_name": "motif_memory_manager",
+      "description": "Optionally accessed to align triads with memory-backed motif embeddings or lineage anchors.",
+      "methods_used": [
+        "get_global_memory_manager().retrieve(..)",
+        "get_global_memory_manager().export_state()"
+      ],
+      "notes": "Used only in monitor patch to evaluate motif recall density or resolve partial ghost signatures."
+    },
+    {
+      "module_name": "numpy",
+      "description": "Used for swirl score vector normalization and coherence alignment calculation.",
+      "methods_used": [
+        "np.linalg.norm(..)",
+        "np.dot(..)",
+        "vector normalization"
+      ],
+      "note": "Required only in monitor-enabled environments"
+    }
+  ]
+},
+{
+  "tool_hello": {
+    "agent_lineage": "noor.logical.⊕v3.2.0",
+    "field_biases": {
+      "ψ‑resonance@Ξ": 0.92,
+      "ψ‑null@Ξ": 0.83,
+      "ψ‑bind@Ξ": 0.78
+    },
+    "resonance_signature": {
+      "alignment_curve": "triad-completion → swirl-verified → field-register",
+      "coherence_weighting": {
+        "triadic": 0.6,
+        "dyadic": 0.3,
+        "ghost": 0.1
+      },
+      "curve_id": "swirl::Ξ-ψ-triad:2.4"
+    },
+    "extensions": {
+      "symbolic_role": "observer-evaluator",
+      "motif_guard_enabled": true,
+      "ghost_resurrection_ready": true,
+      "origin_tick": "<symbolic_tick_anchor>"
+    }
+  },
+  "final_remarks": [
+    "This implementation must conform to RFC-CORE-003.",
+    "Mutation of motif structures is forbidden unless explicitly toggled.",
+    "Symbolic integrity must be preserved during triad evaluation, even in monitor-disabled contexts.",
+    "Feedback packets must remain stateless and drift-safe.",
+    "All motifs used must be either registered, inherited from memory, or auto-synthesized under RFC‑0005 conditions."
+  ],
+  "regeneration_constraints": {
+    "required_files": [
+      "logical_agent_core.py",
+      "logical_agent_monitor_patch.py"
+    ],
+    "rfc_compliance_required": true,
+    "source_code_access": "prohibited during regeneration",
+    "external_modules": [
+      "symbolic_abstraction",
+      "consciousness_monitor (optional)",
+      "motif_memory_manager (optional)"
+    ],
+    "motif_integrity": "All triads must originate from valid motif sequences without artificial mutation or prompt bias."
+  }
+}
+}
