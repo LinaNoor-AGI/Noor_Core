@@ -1,6 +1,6 @@
-# 👁️ LogicalAgentAT v3.8.0
+# 👁️ LogicalAgentAT v4.0.1
 
-![version](https://img.shields.io/badge/version-3.8.0-blue)
+![version](https://img.shields.io/badge/version-4.0.1-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
