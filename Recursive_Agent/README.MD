@@ -1,6 +1,6 @@
-# 🌀 RecursiveAgentFT v4.6.0 — *Echoes / Phaseflow*
+# 🌀 RecursiveAgentFT v5.0.4 — *Echoes / Phaseflow*
 
-![version](https://img.shields.io/badge/version-4.6.0-blue)
+![version](https://img.shields.io/badge/version-5.0.4-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
