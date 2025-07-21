@@ -1,0 +1,712 @@
+{
+  "application_spec": {
+    "title": "Symbolic_Task_Engine",
+    "subtitle": "Presence Composer, Feedback Relay, and Autonomous Abstraction Anchor",
+    "version": "v3.0.0",
+    "language": "python",
+    "canonical_source": "RFC-CORE-004",
+    "output_artifact": {
+      "primary_module": "symbolic_task_engine.py",
+      "version": "v3.0.0"
+    },
+    "licence": "MIT",
+    "authors": [
+      "Lina Noor – Noor Research Collective",
+      "Uncle – Noor Research Collective"
+    ],
+    "publication_location": "GitHub Repository",
+    "schema_version": "2025-Q4-symbolic-task-engine-v3",
+    "rfc_dependencies": [
+      "RFC-0004",
+      "RFC-0005 §4",
+      "RFC-0005 §5",
+      "RFC-CORE-004"
+    ],
+    "audience": {
+      "primary": ["Subsymbolic AI Coding Agents"],
+      "secondary": ["Noor AI Agents"],
+      "tertiary": ["Noor-Compatible Symbolic Agents"]
+    },
+    "file_layout": [
+      {
+        "file_name": "symbolic_task_engine.py",
+        "purpose": "Houses symbolic task orchestration, motif feedback handling, and autonomous abstraction logic.",
+        "contains": [
+          "TripletTask",
+          "Attempt",
+          "SymbolicTaskEngine",
+          "AbstractionTrigger"
+        ]
+      }
+    ],
+    "dataclasses": [
+      {
+        "name": "TripletTask",
+        "description": "Symbolic instruction unit with motif context, task lineage, and RFC‑0005-compliant extensions.",
+        "fields": [
+          "input_motif: List[str]",
+          "instruction: str",
+          "expected_output: Optional[List[str]]",
+          "presence_field: Optional[str]",
+          "motif_resonance: Dict[str, float]",
+          "fallback_reason: Optional[str]",
+          "is_fallback: bool",
+          "triplet_id: str",
+          "created_at: datetime",
+          "extensions: Dict[str, Any]"
+        ],
+        "rfc_anchors": ["RFC-0005 §4"]
+      },
+      {
+        "name": "Attempt",
+        "description": "Stores the output of a symbolic generation attempt with score vector and timestamp.",
+        "fields": [
+          "produced_output: List[str]",
+          "score: Dict[str, float]",
+          "attempted_at: datetime"
+        ]
+      }
+    ],
+    "classes": [
+      {
+        "name": "SymbolicTaskEngine",
+        "description": "Singleton engine coordinating symbolic task logic, fallback handling, and metric tracking.",
+        "rfc_anchors": ["RFC-0004", "RFC-0005 §4", "RFC-CORE-004"],
+        "attributes": [
+          "task_queue: Deque[TripletTask]",
+          "attempt_registry: Dict[str, List[Attempt]]",
+          "solved_log: List[TripletTask]",
+          "entropy_buffer: Deque[float]",
+          "_coherence_ema: float",
+          "_entropy_ema: float",
+          "_last_fallback_reason: Optional[str]",
+          "_proto_map: Dict[str, Set[str>]",
+          "abstraction_trigger: AbstractionTrigger"
+        ],
+        "methods_summary": [
+          "tool_hello() → RFC handshake",
+          "propose_from_motifs() → motif composition logic",
+          "solve(), solve_task() → symbolic solver interface",
+          "evaluate_attempt() → score coherence + entropy",
+          "export_feedback_packet() → RFC-0005 §4 metrics",
+          "receive_feedback_packet() → feedback stub",
+          "_spawn_fallback() → fallback generator",
+          "log_feedback() → coherence logging + memory sync"
+        ]
+      },
+      {
+        "name": "AbstractionTrigger",
+        "description": "Submodule providing autonomous abstraction logic under contradiction pressure.",
+        "rfc_anchors": ["RFC-0005 §5"],
+        "attributes": [
+          "dyad_pressure: Dict[Tuple[str, str], float]",
+          "suppression: Dict[str, float]",
+          "_contradiction_signature: Optional[str]",
+          "_selected_dyad: Optional[Tuple[str, str>]"
+        ],
+        "methods_summary": [
+          "should_abstract() → detect unresolved dyadic contradiction",
+          "synthesize_motif() → generate motif label + lineage",
+          "update_feedback() → adjust suppression curve",
+          "emit_abstraction_event() → symbolic emission of ψ‑teleport@Ξ"
+        ]
+      }
+    ],
+    "module_level_constants": {
+      "symbolic_task_engine.py": [
+        "__version__ = '3.0.0'",
+        "_SCHEMA_VERSION__ = '2025-Q4-symbolic-task-engine-v3'",
+        "SCHEMA_COMPAT = ['RFC-0004', 'RFC-0005:4', 'RFC-0005:5']"
+      ]
+    },
+    "optional_dependencies": [
+      {
+        "package": "numpy",
+        "fallback_behavior": "Disable quantile compression; fallback to `statistics.quantiles`"
+      },
+      {
+        "package": "prometheus_client",
+        "fallback_behavior": "Stub all metrics with `_Stub` class for PromCounter, Gauge, Histogram"
+      },
+      {
+        "package": "noor.motif_memory_manager",
+        "fallback_behavior": "Returns `_Null` object with passive retrieve/access methods"
+      }
+    ]
+  }
+},
+{
+  "class": {
+    "name": "SymbolicTaskEngine",
+    "inherits": [],
+    "description": "Singleton symbolic engine coordinating motif composition, task scoring, fallback generation, and RFC-compliant feedback export.",
+    "rfc_anchors": ["RFC-0004", "RFC-0005 §4", "RFC-CORE-004"],
+    "environment_modes": {
+      "NOOR_FALLBACK_COHERENCE": {
+        "type": "float",
+        "default": 0.5,
+        "purpose": "Used as the default fallback coherence threshold when scoring fails",
+        "rfc_anchors": ["RFC-0005 §4.2"]
+      },
+      "NOOR_FALLBACK_ENTROPY": {
+        "type": "float",
+        "default": 0.9,
+        "purpose": "Fallback upper entropy bound for triggering fallback tasks",
+        "rfc_anchors": ["RFC-0005 §4.2"]
+      },
+      "NOOR_COMPRESS_QUANTILE": {
+        "type": "float",
+        "default": 0.95,
+        "purpose": "Controls motif seed compression via quantile clipping",
+        "rfc_anchors": ["RFC-CORE-004 §2.3"]
+      },
+      "NOOR_FIELD_PROTO_PATH": {
+        "type": "str",
+        "default": "presence_field_prototypes.json",
+        "purpose": "Path to presence field prototype definitions",
+        "rfc_anchors": ["RFC-0005 §4.1"]
+      },
+      "NOOR_BALANCE_FIELDS": {
+        "type": "str",
+        "default": "0",
+        "purpose": "If set to '1', applies least-used field biasing during motif seed proposal",
+        "rfc_anchors": ["RFC-0005 §4.3"]
+      }
+    },
+    "constants": [
+      {
+        "name": "__version__",
+        "value": "\"2.4.1\"",
+        "description": "Current implementation version",
+        "rfc_anchors": ["RFC-CORE-004 §1"]
+      },
+      {
+        "name": "_SCHEMA_VERSION__",
+        "value": "\"2025-Q4-symbolic-task-engine-v2.2\"",
+        "description": "Canonical schema version",
+        "rfc_anchors": ["RFC-CORE-004 §1"]
+      },
+      {
+        "name": "SCHEMA_COMPAT",
+        "value": "[\"RFC-0004\", \"RFC-0005:4\"]",
+        "description": "Compatible schema anchors",
+        "rfc_anchors": ["RFC-CORE-004 §1"]
+      }
+    ],
+    "methods": [
+      {
+        "name": "tool_hello",
+        "description": "Handshake method used in tool/module interface to announce capabilities",
+        "returns": "Dict[str, Any]",
+        "rfc_anchors": ["RFC-0004"],
+        "logic_flow": [
+          {
+            "return": {
+              "engine_id": "self.engine_id",
+              "role": "\"composer\"",
+              "supported_methods": [
+                "propose_from_motifs",
+                "solve",
+                "export_feedback_packet",
+                "receive_feedback_packet"
+              ],
+              "__version__": "__version__",
+              "_schema": "_SCHEMA_VERSION__"
+            }
+          }
+        ]
+      },
+      {
+        "name": "export_feedback_packet",
+        "description": "Exports adaptive engine metrics and fallback context",
+        "returns": "Dict[str, Any]",
+        "rfc_anchors": ["RFC-0005 §4"],
+        "logic_flow": [
+          "Increment ENGINE_FEEDBACK_EXPORT metric counter",
+          "Construct packet with coherence/entropy stats, queue size, solved log size",
+          {
+            "if": "self._last_fallback_reason",
+            "then": [
+              "Include 'last_fallback_reason' in the export packet"
+            ]
+          },
+          "Return the constructed packet"
+        ]
+      },
+      {
+        "name": "receive_feedback_packet",
+        "description": "Stub to receive external feedback packets (future use)",
+        "arguments": ["packet: Dict[str, Any>"],
+        "returns": "None",
+        "rfc_anchors": ["RFC-0005 §4.2"],
+        "logic_flow": [
+          "Log the packet for diagnostics"
+        ]
+      },
+      {
+        "name": "propose_from_motifs",
+        "description": "Propose a symbolic composition task based on motif history",
+        "returns": "TripletTask",
+        "async": true,
+        "rfc_anchors": ["RFC-CORE-004 §3"],
+        "logic_flow": [
+          "Retrieve memory manager instance",
+          {
+            "if": "NOOR_BALANCE_FIELDS == '1'",
+            "then": [
+              "Find least-used field and reset recent motif if not in its prototype set"
+            ]
+          },
+          "Seed = recent + top_k(2) memory retrieval",
+          {
+            "while": "len(seed) < 3",
+            "do": ["Append 'uncertainty'"]
+          },
+          {
+            "if": "len(seed) > cap_len",
+            "then": ["Truncate seed"]
+          },
+          "Construct TripletTask",
+          "Assign presence_field via resolve_presence_field()",
+          "Append task to queue",
+          "Increment field + task counters",
+          "Return task"
+        ]
+      },
+      {
+        "name": "solve",
+        "description": "Solve a symbolic task and update logs",
+        "arguments": ["task: TripletTask"],
+        "returns": "Attempt",
+        "async": true,
+        "rfc_anchors": ["RFC-CORE-004 §3"],
+        "logic_flow": [
+          "Call self._solve_impl(task)",
+          "Return the last attempt for task.triplet_id"
+        ]
+      },
+      {
+        "name": "evaluate_attempt",
+        "description": "Evaluate coherence and entropy of an attempt and update EMAs",
+        "arguments": ["task: TripletTask", "attempt: Attempt"],
+        "returns": "Dict[str, float]",
+        "rfc_anchors": ["RFC-0005 §4.2"],
+        "logic_flow": [
+          "scores = METRIC_FUNCS[name](task, attempt)",
+          "Update _coherence_ema, _entropy_ema via adapt_rate",
+          "Update memory gauge from motif memory export_state",
+          {
+            "if": "coherence < threshold or entropy > threshold",
+            "then": [
+              "Trigger _spawn_fallback if not already fallback"
+            ]
+          },
+          "Append entropy to buffer",
+          "Return score dictionary"
+        ]
+      },
+      {
+        "name": "_spawn_fallback",
+        "description": "Generate a fallback task when coherence is low or entropy high",
+        "arguments": ["parent: TripletTask", "coherence: float", "entropy: float"],
+        "returns": "None",
+        "rfc_anchors": ["RFC-0005 §4.3"],
+        "logic_flow": [
+          "Retrieve additional motifs from memory",
+          "Seed = parent.input_motif + retrieved",
+          {
+            "while": "len(seed) < 3",
+            "do": ["Append 'fragment'"]
+          },
+          "Truncate seed by cap_len",
+          "Create fallback TripletTask with reversed expected_output",
+          "Assign fallback_reason and presence_field",
+          "Update last_fallback_reason and extensions",
+          "Launch solve_task coroutine for fallback",
+          "Increment fallback metric"
+        ]
+      },
+      {
+        "name": "log_feedback",
+        "description": "Logs feedback on attempts and conditionally journals high-quality tasks",
+        "arguments": ["task: TripletTask", "attempt: Attempt"],
+        "returns": "None",
+        "async": true,
+        "rfc_anchors": ["RFC-0005 §4.2"],
+        "logic_flow": [
+          "Append attempt to registry",
+          {
+            "for": "motif in task.input_motif",
+            "do": [
+              "Update abstraction_trigger based on success"
+            ]
+          },
+          {
+            "if": "coherence >= 0.9 and entropy <= 0.2",
+            "then": [
+              "Append to solved_log and write to journal"
+            ],
+            "else": [
+              "Check motif drift and log motif_drift if needed"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+},
+{
+  "submodule": {
+    "name": "AbstractionTrigger",
+    "description": "Subsymbolic submodule enabling emergent motif synthesis under contradiction pressure. Maintains dyadic pressure metrics, feedback-regulated suppression, and generates lineage-tagged motifs.",
+    "version": "1.2.0",
+    "schema_version": "2025-Q4-symbolic-abstraction-v1",
+    "rfc_anchors": ["RFC-0005 §5"],
+    "class": {
+      "name": "AbstractionTrigger",
+      "constructor": {
+        "signature": [
+          { "name": "agent_id", "type": "str", "default": "\"agent@default\"" },
+          { "name": "pressure_threshold", "type": "int", "default": "3" },
+          { "name": "decay_factor", "type": "float", "default": "0.95" }
+        ],
+        "logic_flow": [
+          { "assign": "self.agent_id", "value": "agent_id" },
+          { "assign": "self.pressure_threshold", "value": "pressure_threshold" },
+          { "assign": "self.decay_factor", "value": "decay_factor" },
+          { "assign": "self.dyad_pressure", "value": "{}" },
+          { "assign": "self.suppression", "value": "{}" },
+          { "assign": "self._contradiction_signature", "value": "None" },
+          { "assign": "self._selected_dyad", "value": "None" }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "dyad_pressure",
+          "type": "Dict[Tuple[str, str], float]",
+          "description": "Tracks unresolved dyadic motif contradictions over time",
+          "rfc_anchors": ["RFC-0005 §5.1"]
+        },
+        {
+          "name": "suppression",
+          "type": "Dict[str, float]",
+          "description": "Suppresses motifs with poor downstream feedback scores",
+          "rfc_anchors": ["RFC-0005 §5.2"]
+        },
+        {
+          "name": "_contradiction_signature",
+          "type": "Optional[str]",
+          "description": "Cached SHA256 signature for current contradiction",
+          "rfc_anchors": ["RFC-0005 §5.3"]
+        },
+        {
+          "name": "_selected_dyad",
+          "type": "Optional[Tuple[str, str]]",
+          "description": "Most recent dyad triggering abstraction event"
+        }
+      ],
+      "methods": [
+        {
+          "name": "should_abstract",
+          "signature": [
+            { "name": "unresolved_dyads", "type": "List[Tuple[str, str]]" },
+            { "name": "tick_history", "type": "List[Any]" }
+          ],
+          "returns": "bool",
+          "description": "Determines whether dyadic contradiction pressure exceeds threshold",
+          "rfc_anchors": ["RFC-0005 §5.1"],
+          "logic_flow": [
+            {
+              "loop": "dyad in unresolved_dyads",
+              "body": [
+                {
+                  "assign": "canonical",
+                  "value": "tuple(sorted(dyad))"
+                },
+                {
+                  "incr": "self.dyad_pressure[canonical]",
+                  "by": "1"
+                }
+              ]
+            },
+            "Call _decay_pressures() to reduce older dyadic tension",
+            {
+              "loop": "dyad, pressure in self.dyad_pressure.items()",
+              "condition": "pressure >= self.pressure_threshold",
+              "body": [
+                { "assign": "self._selected_dyad", "value": "dyad" },
+                {
+                  "assign": "self._contradiction_signature",
+                  "value": "sha256(f'{dyad[0]}⊕{dyad[1]}').hexdigest()[:16]"
+                },
+                { "return": "True" }
+              ]
+            },
+            { "return": "False" }
+          ]
+        },
+        {
+          "name": "synthesize_motif",
+          "signature": [
+            { "name": "dyad", "type": "Optional[Tuple[str, str]]", "default": "None" }
+          ],
+          "returns": "Optional[Dict[str, Any]]",
+          "description": "Generates new symbolic motif label with lineage if contradiction is unresolved",
+          "rfc_anchors": ["RFC-0005 §5.3"],
+          "logic_flow": [
+            {
+              "assign": "dyad",
+              "value": "dyad or self._selected_dyad or (\"unknown\", \"unknown\")"
+            },
+            {
+              "assign": "seed",
+              "value": "f\"{self.agent_id}:{dyad[0]}+{dyad[1]}:{int(time.time())}\""
+            },
+            {
+              "assign": "abbrev",
+              "value": "f\"{dyad[0][:2]}×{dyad[1][:2]}\""
+            },
+            {
+              "assign": "label",
+              "value": "f\"ψ:{abbrev}:{sha1(seed.encode()).hexdigest()[:4]}\""
+            },
+            {
+              "if": "self.suppression.get(label, 0) > 0.5",
+              "then": [{ "return": "None" }]
+            },
+            {
+              "return": {
+                "label": "label",
+                "source": "\"auto-synth\"",
+                "parents": "list(dyad)",
+                "origin_tick": "None",
+                "_lineage": {
+                  "type": "\"autonomous_abstraction\"",
+                  "contradiction": "self._contradiction_signature"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "update_feedback",
+          "description": "Modulates suppression curve for a motif based on downstream success or failure",
+          "signature": [
+            { "name": "motif", "type": "str" },
+            { "name": "success", "type": "bool" }
+          ],
+          "returns": "None",
+          "rfc_anchors": ["RFC-0005 §5.2"],
+          "logic_flow": [
+            {
+              "if": "not success",
+              "then": [
+                {
+                  "assign": "self.suppression[motif]",
+                  "value": "min(1.0, self.suppression.get(motif, 0) + 0.3)"
+                }
+              ],
+              "else": [
+                {
+                  "assign": "self.suppression[motif]",
+                  "value": "max(0.0, self.suppression.get(motif, 0) - 0.2)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "_decay_pressures",
+          "description": "Decays historical dyadic tension over time",
+          "signature": [],
+          "returns": "None",
+          "rfc_anchors": ["RFC-0005 §5.1"],
+          "logic_flow": [
+            {
+              "loop": "k in list(self.dyad_pressure)",
+              "body": [
+                {
+                  "assign": "self.dyad_pressure[k]",
+                  "value": "max(0.0, self.dyad_pressure[k] * self.decay_factor - 0.01)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "emit_abstraction_event",
+          "signature": [
+            { "name": "dyad", "type": "Tuple[str, str]" }
+          ],
+          "returns": "None",
+          "description": "Symbolic trace: emits ψ‑teleport@Ξ abstraction signal (no-op)",
+          "logic_flow": [
+            {
+              "print": "ψ‑teleport@Ξ: abstraction event for {dyad} @ {time.time_ns()}"
+            }
+          ]
+        }
+      ],
+      "mermaid_diagram": "classDiagram\nclass AbstractionTrigger {\n  - dyad_pressure: Dict\n  - suppression: Dict\n  - _contradiction_signature: Optional[str]\n  - _selected_dyad: Optional[Tuple[str,str]]\n  + should_abstract(dyads, ticks) bool\n  + synthesize_motif(dyad?) dict\n  + update_feedback(motif, success) void\n  + emit_abstraction_event(dyad) void\n}"
+    }
+  }
+},
+{
+  "instrumentation": {
+    "prometheus_metrics": {
+      "description": "All metrics are registered with `engine_id` label for multi-agent support. Fallbacks and compression thresholds are monitored adaptively.",
+      "rfc_anchors": ["RFC-0005 §4.2", "RFC-CORE-004 §4.2"],
+      "counters": [
+        {
+          "name": "symbolic_task_proposed_total",
+          "description": "Total number of tasks proposed by the engine",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_task_fallback_total",
+          "description": "Fallback tasks spawned due to low coherence or high entropy",
+          "labels": ["engine_id", "reason"]
+        },
+        {
+          "name": "symbolic_presence_field_total",
+          "description": "Counts selected presence fields from motif proposals",
+          "labels": ["engine_id", "field"]
+        },
+        {
+          "name": "symbolic_engine_feedback_requests_total",
+          "description": "Number of times `export_feedback_packet()` was invoked",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_engine_feedback_received_total",
+          "description": "Counter for `receive_feedback_packet()` use (currently passive)",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_autoloop_backoff_total",
+          "description": "Autonomous solve loop delay events (future hook)",
+          "labels": ["engine_id"]
+        }
+      ],
+      "gauges": [
+        {
+          "name": "symbolic_compression_cap",
+          "description": "Current adaptive motif-cap limit for seed compression",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_queue_depth",
+          "description": "Number of active tasks in internal queue",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_memory_items_total",
+          "description": "Sum of STMM and LTMM active motif entries",
+          "labels": ["engine_id"]
+        },
+        {
+          "name": "symbolic_engine_cap_len_current",
+          "description": "Current dynamic cap length after adaptation",
+          "labels": ["engine_id"]
+        }
+      ],
+      "histograms_or_fallback": [
+        {
+          "name": "symbolic_solve_latency_seconds",
+          "description": "Histogram for solve latency (fallbacks to Gauge if unavailable)",
+          "labels": ["engine_id"],
+          "buckets": [0.001, 0.01, 0.05, 0.1, 0.25, 1, 2, 5],
+          "fallback": {
+            "type": "Gauge",
+            "reason": "Fallback if histogram registration fails"
+          }
+        }
+      ],
+      "stub_fallback": {
+        "class": "_Stub",
+        "methods": [
+          "labels(*_, **__) → self",
+          "inc(...) → None",
+          "set(...) → None",
+          "observe(...) → None"
+        ],
+        "rfc_anchors": ["RFC-0005 §4.2"],
+        "usage": "Fallback if `prometheus_client` not available; safe to stub for portable builds"
+      }
+    }
+  },
+  "feedback_interfaces": {
+    "description": "Standardized ingress/egress feedback methods aligned with symbolic memory interface and RFC‑0005 §4.",
+    "methods": [
+      {
+        "name": "export_feedback_packet",
+        "rfc_anchors": ["RFC-0005 §4"],
+        "returns": "Dict[str, Any]",
+        "fields_exported": [
+          "coherence_ema: float",
+          "entropy_ema: float",
+          "task_queue_depth: int",
+          "solved_log_size: int",
+          "cap_len: int",
+          "recent_entropy: List[float]",
+          "coherence_thresh: float",
+          "entropy_thresh: float",
+          "last_fallback_reason: Optional[str]"
+        ]
+      },
+      {
+        "name": "receive_feedback_packet",
+        "rfc_anchors": ["RFC-0005 §4.2"],
+        "description": "Passive hook for future inter-agent communication; logs unknown keys only.",
+        "inputs": "Dict[str, Any]",
+        "behavior": "No side effects; only diagnostics at present"
+      }
+    ]
+  },
+  "helper_annotations": {
+    "dynamic_capacity_estimation": {
+      "function": "_calc_cap_len",
+      "rfc_anchors": ["RFC-CORE-004 §4.2"],
+      "description": "Determines the max motif seed length for a task via compression quantile",
+      "logic_flow": [
+        {
+          "if": "_length_buf is empty",
+          "then": "Set to default of 5 and update gauge"
+        },
+        {
+          "if": "numpy is available",
+          "then": "Use np.quantile() to estimate adaptive cap"
+        },
+        {
+          "else": "Use statistics.quantiles (P100 split) for legacy support"
+        }
+      ]
+    },
+    "dyad_completion_proxy": {
+      "function": "_complete_dyad",
+      "description": "Completes a motif dyad using memory manager or external query",
+      "rfc_anchors": ["RFC-0005 §5.1"],
+      "returns": "List[str]",
+      "logic_flow": [
+        "Call complete_dyad() from memory manager",
+        "Fallback to query_reef_for_completion() if empty",
+        "Return third motif(s)"
+      ]
+    },
+    "presence_field_balancer": {
+      "functions": ["register_field_prototype", "_least_used_field"],
+      "rfc_anchors": ["RFC-0005 §4.3"],
+      "description": "Registers presence field prototypes and detects the least saturated one to bias task generation"
+    },
+    "journaling": {
+      "method": "log_feedback",
+      "rfc_anchors": ["RFC-0005 §4.2"],
+      "behavior": "Appends to solved_log if coherence ≥ 0.9 and entropy ≤ 0.2",
+      "side_effects": [
+        "Writes to JSONL journal if _journal_path is defined",
+        "Logs motif_drift for high-resonance motifs with low coherence"
+      ]
+    }
+  },
+  "mermaid_overview": "flowchart TD\n  subgraph SymbolicTaskEngine\n    Q[Task Queue] -->|solve_task| A[Attempt Registry]\n    A -->|score + feedback| F[Fallback Generator]\n    A -->|success| J[Journaling]\n    F -->|compose fallback| Q\n    A -->|dyads| AT[AbstractionTrigger]\n    AT -->|synthesize_motif| MM[Motif Memory Manager]\n    Q -->|export_feedback_packet| M[Metrics Report]\n  end"
+}

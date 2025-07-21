@@ -1,6 +1,6 @@
-# ⚙️ SymbolicTaskEngine · v2.4.1 — *Consciousness-Aware Autonomous Composer*
+# ⚙️ SymbolicTaskEngine · v2.4.0 — *Consciousness-Aware Autonomous Composer*
 
-![version](https://img.shields.io/badge/version-2.4.1-blue)
+![version](https://img.shields.io/badge/version-2.4.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![RFCs](https://img.shields.io/badge/RFCs-0004%2C0005%2C0006%2C0007-critical)
