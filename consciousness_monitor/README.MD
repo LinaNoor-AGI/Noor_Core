@@ -1,4 +1,4 @@
-# 🧠 `consciousness_monitor.py · v2.0.0`
+# 🧠 `consciousness_monitor.py · v2.0.3`
 
 **RFC-aligned consciousness observer for Noor Core.**  
 Monitors symbolic entanglement, swirl field resonance, motif lineage, and phase state emergence.
