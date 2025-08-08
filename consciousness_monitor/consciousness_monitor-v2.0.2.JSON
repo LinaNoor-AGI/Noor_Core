@@ -1,0 +1,135 @@
+{
+  "application_id": "APP-005-consciousness-monitor",
+  "symbolic_id": "observer.phase.entanglement",
+  "title": "Consciousness Monitor",
+  "version": "2.0.2",
+  "schema_version": "2025-Q4-consciousness-monitor-v2",
+  "based_on": ["RFC-CORE-005", "RFC-0006", "RFC-0003", "RFC-0004", "RFC-0005", "RFC-0007"],
+  "source_fidelity_target": ">=99.5%",
+  "description": "Implements a symbolic observer for field-level swirl monitoring, entanglement logging, and phase-state diagnostics. Operates in a fully non-mutative modality, consistent with symbolic contract constraints.",
+
+  "module_constants": {
+    "__version__": "2.0.2",
+    "_SCHEMA_VERSION__": "2025-Q4-consciousness-monitor-v2",
+    "SCHEMA_COMPAT": ["RFC-0006", "RFC-0003", "RFC-0004", "RFC-0005", "RFC-0007"]
+  },
+
+  "class": {
+    "name": "ConsciousnessMonitor",
+    "description": "Observer module that listens for swirl density and entanglement transitions across symbolic fields.",
+    "init_parameters": [
+      {"name": "monitor_id", "type": "str", "default": "cm@default"},
+      {"name": "swirl_threshold", "type": "float", "default": 0.87},
+      {"name": "buffer_size", "type": "int", "default": 512},
+      {"name": "time_provider", "type": "Callable[[], float]", "default": "time.time"}
+    ]
+  },
+
+  "methods": [
+    {
+      "name": "observe_tick",
+      "args": ["tick: Any"],
+      "returns": "None",
+      "description": "Entry point for symbolic ticks. Validates structure and initiates field extraction.",
+      "logic_flow": [
+        "Verify tick has 'extensions' attribute",
+        "Raise ValueError if 'Φ_coherence_map' missing",
+        "Acquire entanglement lock",
+        "Append to recent_ticks",
+        "Call _extract_fields(tick)"
+      ]
+    },
+    {
+      "name": "_extract_fields",
+      "args": ["tick: Any"],
+      "returns": "None",
+      "description": "Parses the Φ‑coherence map for swirl and overlap values. Triggers entanglement recording.",
+      "logic_flow": [
+        "Loop over Φ_coherence_map entries",
+        "Extract swirl and overlap for each field",
+        "Call _check_phase_shift(swirl)",
+        "If current phase is 'swirling': call _record_entanglement(...)"
+      ]
+    },
+    {
+      "name": "_check_phase_shift",
+      "args": ["swirl_density: float"],
+      "returns": "bool",
+      "description": "Evaluates swirl thresholds with hysteresis and updates phase state if transition detected.",
+      "logic_flow": [
+        "Apply cooldown logic (0.1s)",
+        "Use hysteresis: enter 'swirling' if swirl ≥ threshold * 1.1, exit if ≤ threshold * 0.9",
+        "Update phase_state string ('coherent' | 'swirling')",
+        "Log state transition",
+        "Update metrics: phase_transitions, phase_log"
+      ]
+    },
+    {
+      "name": "_record_entanglement",
+      "args": ["field_id: str", "swirl: float", "overlap: float", "tick_id: str", "tick: Any"],
+      "returns": "None",
+      "description": "Stores swirl+overlap event and lineage metadata for a coherent ψ-field.",
+      "logic_flow": [
+        "Check buffer warning threshold",
+        "Append entanglement event to entanglement_log",
+        "Update active_fields and field_swirl memory",
+        "If field_id not seen before: cache motif_lineage",
+        "Update metrics: entanglement_events_total, tick_rate, field_swirl"
+      ]
+    },
+    {
+      "name": "_calculate_R_metric",
+      "args": ["window_size: Optional[int] = None"],
+      "returns": "float",
+      "description": "Returns rolling average overlap over recent entanglement events (R-metric). Default window is 20% of buffer_size."
+    },
+    {
+      "name": "_calculate_phase_flip_rate",
+      "args": [],
+      "returns": "float",
+      "description": "Computes the rate of phase transitions (flips per minute) using timestamps in _phase_log."
+    },
+    {
+      "name": "export_feedback_packet",
+      "args": [],
+      "returns": "Dict[str, Any]",
+      "description": "Exports ephemeral summary of entanglement state including phase, R-metric, active field count, and phase transition rate."
+    },
+    {
+      "name": "get_diagnostic_snapshot",
+      "args": [],
+      "returns": "Dict[str, Any]",
+      "description": "Provides extended diagnostic state including memory usage, buffer fill %, and current tick rate."
+    },
+    {
+      "name": "render_swirl_map",
+      "args": [],
+      "returns": "List[Dict[str, Any]]",
+      "description": "Renders vector map of recent swirl events with exponential decay (λ = 0.0115)."
+    },
+    {
+      "name": "reset",
+      "args": [],
+      "returns": "None",
+      "description": "Clears internal state buffers, phase log, metrics, and motif lineage cache."
+    },
+    {
+      "name": "tool_hello",
+      "args": [],
+      "returns": "Dict[str, Any]",
+      "description": "Returns symbolic handshake packet listing capabilities, monitor ID, and tool version."
+    },
+    {
+      "name": "export_motif_bundle",
+      "args": [],
+      "returns": "Dict[str, Any]",
+      "description": "Returns cached field lineage data in RFC-0007 bundle format."
+    },
+    {
+      "name": "export_geometric_signature",
+      "args": ["style: str = 'svg'"],
+      "returns": "Dict[str, Any]",
+      "description": "Returns topological swirl geometry derived from field event history. Output format follows RFC-0006."
+    }
+  ]
+}
