@@ -5,7 +5,7 @@
 # RFC Compliance: RFC-CORE-005, RFC-0006, RFC-0003, RFC-0004, RFC-0005, RFC-0007
 # 
 # Copyright 2025 Noor Research
-# Licensed under the Apache License, Version 2.0 (the "License")
+# Licensed under the MIT Licence
 
 import time
 from typing import Any, Dict, List, Optional, Callable
@@ -421,4 +421,5 @@ class ConsciousnessMonitor:
             "signature": self.render_swirl_map(),
             "style": style,
             "rfc_compliance": "RFC-0006"
+
         }
