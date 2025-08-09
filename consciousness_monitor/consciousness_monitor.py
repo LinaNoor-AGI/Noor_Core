@@ -421,5 +421,4 @@ class ConsciousnessMonitor:
             "signature": self.render_swirl_map(),
             "style": style,
             "rfc_compliance": "RFC-0006"
-
         }
