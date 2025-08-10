@@ -33,7 +33,7 @@
       ]
     }
   ]
-},
+}
   "module_level_constants": {
     "recursive_agent_ft.py": [
       { "name": "__version__", "value": "\"5.0.3\"" },
