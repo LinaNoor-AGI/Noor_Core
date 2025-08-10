@@ -1,4 +1,4 @@
-# 🕰️ NoorFastTimeCore v9.0.2-1.0.0 — *Presence / Kernel*
+# 🕰️ NoorFastTimeCore v8.5.0 — *Presence / Kernel*
 
 ![version](https://img.shields.io/badge/version-8.5.0-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
