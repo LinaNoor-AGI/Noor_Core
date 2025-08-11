@@ -1,5 +1,5 @@
 # noor_fasttime_core.py
-# version: v9.0.5
+# version: v9.0.5a
 # canonical_source: RFC-CORE-001
 # description: Implements the adaptive coherence feedback engine for subsecond motif 
 #              phase regulation, echo reflection, and dynamic bias tuning in
