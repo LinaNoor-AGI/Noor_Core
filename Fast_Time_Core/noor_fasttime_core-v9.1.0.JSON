@@ -20,33 +20,31 @@
 	  { "section": "1.5", "title": "MotifGateHeatmapTracker — Gate Histogram Construction" },
 	  { "section": "1.6", "title": "EchoSnapshotIngestor — Snapshot Caching and Export" },
 	  { "section": "2", "title": "Pseudocode Requirements and Internal Logic" },
-	  { "section": "2.1", "title": "Alpha Update and Weight Computation" },
-	  { "section": "2.2", "title": "Phase Trigger Evaluation and Resurrection Score" },
 	  { "section": "3", "title": "Visual Schematics and Flowcharts" },
-	  { "section": "3.1", "title": "Feedback Loop Flowchart (Mermaid)" },
-	  { "section": "3.2", "title": "Phase Shift Decision Tree (Mermaid)" },
 	  { "section": "4", "title": "Field Alignment and Observability Contracts" },
 	  { "section": "4.1", "title": "Motif Field Requirements" },
 	  { "section": "4.2", "title": "Domain Tags and Phase Relevance" },
 	  { "section": "4.3", "title": "Metrics Export Schema (Prometheus-Compatible)" },
 	  { "section": "5", "title": "Final Remarks and Regeneration Constraints" },
-	  { "section": "6", "title": "External Integrations and Symbolic Bindings" },
-	  { "section": "6.1", "title": "Concurrency Model and Async Compatibility" },
-	  { "section": "6.2", "title": "Gate Logic and Semantic Verse Legends" },
-	  { "section": "7", "title": "Phase Transitions and Reflective Logic" },
-	  { "section": "7.1", "title": "Reflective Phase Entry Conditions" },
-	  { "section": "7.2", "title": "Reflective Phase Exit Bounds" },
-	  { "section": "8", "title": "Resurrection Heuristics and Hint Criteria" },
-	  { "section": "8.1", "title": "The `tool_hello()` Handshake Packet" }
+	  { "section": "6", "title": "External Integrations" },
+	  { "section": "7", "title": "Internal Architecture and Symbolic Logic" },
+	  { "section": "7.1", "title": "Concurrency Model and Async Compatibility" },
+	  { "section": "7.2", "title": "Gate Logic and Semantic Verse Legends" },
+	  { "section": "8", "title": "Phase Transitions and Reflective Logic" },
+	  { "section": "8.1", "title": "Reflective Phase Entry Conditions" },
+	  { "section": "8.2", "title": "Reflective Phase Exit Bounds" },
+	  { "section": "9", "title": "Resurrection Heuristics and Hint Criteria" },
+	  { "section": "10", "title": "Protocols and Handshakes" },
+	  { "section": "10.1", "title": "The `tool_hello()` Handshake Packet" }
 	],
   "sections": [
 {
   "id": "1",
-  "title": "core_components",
+  "title": "Core Components and Symbolic Roles",
   "core_components": [
     {
       "id": "1.1",
-	  "title": "FastTimeTickLoop",
+	  "title": "FastTimeTickLoop — Tick Driver and Latency Gate",
 	  "component": "FastTimeTickLoop",
       "defined_in": "RFC-CORE-001 \u00a73.1",
       "responsibilities": [
@@ -60,7 +58,7 @@
     },
     {
       "id": "1.2",
-	  "title": "EchoBiasComputation",      
+	  "title": "EchoBiasComputation — Reward Signal and Alpha Modulation",      
 	  "component": "EchoBiasComputation",
       "defined_in": "RFC-CORE-001 \u00a74.1",
       "responsibilities": [
@@ -91,7 +89,7 @@
     },
 	{
 	  "id": "1.3",
-	  "title": "PhaseTransitionEvaluator",
+	  "title": "PhaseTransitionEvaluator — Coherence Override and Pin Logic",
 	  "component": "PhaseTransitionEvaluator",
 	  "defined_in": "RFC-CORE-001 §6.2",
 	  "responsibilities": [
@@ -114,7 +112,7 @@
 	},
 	{
 	  "id": "1.4",
-	  "title": "ResurrectionHintGenerator",
+	  "title": "ResurrectionHintGenerator — Symbolic Confidence Mapping",
 	  "component": "ResurrectionHintGenerator",
 	  "defined_in": "RFC-CORE-001 §8.3, RFC-0005 §5.3",
 	  "responsibilities": [
@@ -143,7 +141,7 @@
 	},
 	{
 	  "id": "1.5",
-	  "title": "MotifGateHeatmapTracker",
+	  "title": "MotifGateHeatmapTracker — Gate Histogram Construction",
 	  "component": "MotifGateHeatmapTracker",
 	  "defined_in": "RFC-CORE-001 §6.2 (inferred)",
 	  "responsibilities": [
@@ -158,7 +156,7 @@
 	},
 	{
 	  "id": "1.6",
-	  "title": "EchoSnapshotIngestor",
+	  "title": "EchoSnapshotIngestor — Snapshot Caching and Export",
 	  "component": "EchoSnapshotIngestor",
 	  "defined_in": "RFC-CORE-001 §4.2 + §8.2",
 	  "responsibilities": [
@@ -175,7 +173,7 @@
 	},
   ],
   "id": "2",
-  "title": "pseudocode_requirements",
+  "title": "Pseudocode Requirements and Internal Logic",
   "pseudocode_requirements": [
     "update_intuition_alpha()",
     "calculate_composite_weight()",
@@ -183,7 +181,7 @@
     "calculate_resurrection_score()"
   ],
   "id": "3",
-  "title": "mermaid_required_sections",
+  "title": "Visual Schematics and Flowcharts",
   "mermaid_required_sections": [
     {
       "section": "Feedback Loop Flow",
@@ -196,24 +194,24 @@
       "mermaid_type": "decision"
     }
   ],
-    "id": "3.1",
-    "title": "field_alignment",
+    "id": "4.1",
+    "title": "Motif Field Requirements",
 	"field_alignment": {
     "motifs_required": [
       "\u03c8\u2011resonance@\u039e",
       "\u03c8\u2011reflect@\u039e",
       "\u03c8\u2011hold@\u039e"
     ],
-    "id": "3.2",
-    "title": "domain_tags",
+    "id": "4.2",
+    "title": "Domain Tags and Phase Relevance",
 	"domain_tags": [
       "resonance-feedback",
       "motif-coherence",
       "phase-recovery"
     ]
   },
-	"id": "3.3",
-    "title": "observability",
+	"id": "4.3",
+    "title": "Metrics Export Schema (Prometheus-Compatible)",
 	"observability": {
 	  "metrics": {
 		"type": "Prometheus-compatible",
@@ -240,15 +238,15 @@
 		"resurrection_score"
 	  ]
 	},
-  "id": "4",
-  "title": "final_remarks",
+  "id": "5",
+  "title": "Final Remarks and Regeneration Constraints",
   "final_remarks": [
     "All outputs must conform to the canonical RFC structure.",
     "Only RFCs listed in `rfc_dependencies` may be referenced unless otherwise specified.",
     "No access to the original code is permitted during regeneration."
   ],
-  "id": "5",
-  "title": "external_integrations",
+  "id": "6",
+  "title": "External Integrations",
   "external_integrations": [
     {
       "module_name": "consciousness_monitor",
@@ -298,8 +296,8 @@
 	  ]
 	}
   ],
-  "id": "6",
-  "title": "ConcurrencyModel",
+  "id": "7.1",
+  "title": "Concurrency Model and Async Compatibility",
   "ConcurrencyModel": {
     "defined_in": "RFC-CORE-001 (Implicit Production Requirement)",
     "responsibilities": [
@@ -308,8 +306,8 @@
       "Default to `threading.RLock`; use `anyio.Lock` if `async_mode` is enabled."
     ]
   },
-	"id": "6.1",
-	"title": "gate_legends",
+	"id": "7.2",
+	"title": "Gate Logic and Semantic Verse Legends",
 	"gate_legends": {
 	  "0": {
 		"name": "Möbius Denial",
@@ -397,22 +395,22 @@
 		"verse": "فَإِذَا سَوَّيْتُهُ"
 	  }
 	},
-  "id": "7",
-  "title": "phase_transitions",
+  "id": "8",
+  "title": "Phase Transitions and Reflective Logic",
   "phase_transitions": {
     "null_phase_trigger": {
       "condition": "gate_histogram_variance > 2.0",
       "note": "High variance indicates desynchronization"
     },
-    "id": "7.1",
-    "title": "reflective_entry",
+    "id": "8.1",
+    "title": "Reflective Phase Entry Conditions",
 	"reflective_entry": {
       "coherence_threshold": 0.85,
       "entropy_threshold": 0.1,
       "note": "Sustained coherence with entropy quieting"
     },
-    "id": "7.2",
-    "title": "reflective_exit",
+    "id": "8.2",
+    "title": "Reflective Phase Exit Bounds",
 	"reflective_exit": {
       "coherence_range": [
         -0.3,
@@ -422,8 +420,8 @@
       "note": "Return from reflection to active phase"
     }
   },
-  "id": "8",
-  "title": "resurrection_hint_criteria",
+  "id": "9",
+  "title": "Resurrection Heuristics and Hint Criteria",
   "resurrection_hint_criteria": {
     "resurrect_with_confidence": {
       "age_max_sec": 45.0,
@@ -434,8 +432,8 @@
       "coherence_max": 0.4
     }
   },
-	"id": "8.1",
-    "title": "tool_hello",
+	"id": "10.1",
+    "title": "The `tool_hello()` Handshake Packet",
 	"tool_hello": {
 	  "agent_lineage": "noor.fasttime.⊕v9.0.2.1",
 	  "field_biases": {
