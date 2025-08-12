@@ -57,7 +57,7 @@
   { "section": "5.1.2.4", "title": "start_continuous_emission — Autonomous Symbolic Pulse Loop" },
   { "section": "5.1.2.5", "title": "_emit_tick — Construct and Annotate Symbolic Tick Packet" },
   { "section": "6", "title": "Feedback Integration, Emission Adaptation, and Observability Logic" },
-  { "section": "6.1.", "title": "Methods" },
+  { "section": "6.1", "title": "Methods" },
   { "section": "6.1.1", "title": "observe_feedback — Reward Integration and Triad Completion Update" },
   { "section": "6.1.2", "title": "_update_interval — Adaptive Cadence Modulation via Reward and Entropy" },
   { "section": "6.1.3", "title": "_choose_motifs — Retrieve and Select Symbolic Seeds for Emission" },
@@ -959,7 +959,7 @@
     },
     {
       "id": "6.2.2",
-	  "title": "compute_coherence_potential — Scalar Signal for Symbolic Alignment Strength",
+	  "title": "report_tick_safe — Nonblocking Callback to Observability Monitor",
 	  "name": "report_tick_safe",
       "inputs": ["monitor", "tick", "coherence_potential", "motif_density", "swirl_vector"],
       "outputs": "None",
