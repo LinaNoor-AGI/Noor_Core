@@ -1,6 +1,6 @@
 {
   "program_name": "recursive_agent_ft.py",
-  "version": "v5.1.0",
+  "version": "v5.2.0",
   "canonical_source": "RFC-CORE-002",
   "description": "Merged agent for symbolic tick emission, swirl coherence feedback, ghost replay, and triad-resonance feedback handling. Fully RFC-aligned and regeneration-ready.",
   "rfc_dependencies": [
@@ -75,7 +75,7 @@
   "title": "Module-Level Constants",
   "module_level_constants": {
     "recursive_agent_ft.py": [
-      { "name": "__version__", "value": "\"5.0.6\"" },
+      { "name": "__version__", "value": "\"5.2.0\"" },
       { "name": "_SCHEMA_VERSION__", "value": "\"2025-Q4-recursive-agent-v5.0.3\"" },
       { "name": "SCHEMA_COMPAT", "value": "[\"RFC-0003:3.3\", \"RFC-0005:4\", \"RFC-CORE-002:3\"]" }
     ]
