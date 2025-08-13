@@ -1,0 +1,491 @@
+#
+# noor_fasttime_core.py
+#
+# Canonical Source: RFC-CORE-001 — Noor FastTime Core
+#
+# Version: v9.2.0
+#
+# Implements the adaptive coherence feedback engine for subsecond motif phase
+# regulation, echo reflection, and dynamic bias tuning in Noor-class symbolic agents.
+# This core component acts as the symbolic presence kernel, managing echo snapshots,
+# generating adaptive bias, and synthesizing coherence geometry within the
+# Noor Agent Triad.
+#
+# Copyright (c) 2024-2025, Noor Research Collective.
+# All rights reserved.
+#
+
+import asyncio
+import collections
+import hashlib
+import logging
+import math
+import os
+import pickle
+import statistics
+import time
+from typing import Any, Callable, Deque, Dict, List, Optional, Tuple, Union
+
+# --- Optional High-Performance Imports with Graceful Fallbacks ---
+try:
+    import orjson
+    SERIALIZER = orjson
+except ImportError:
+    SERIALIZER = pickle
+
+try:
+    import anyio
+    # We prefer anyio's Lock for its async-native compatibility.
+    # If it fails, we fall back to a standard threading.RLock.
+    Lock = anyio.Lock
+except ImportError:
+    # This fallback ensures operation in non-async or minimal environments.
+    from threading import RLock as Lock
+
+try:
+    from prometheus_client import Counter, Gauge, Histogram
+except ImportError:
+    # Per RFC-CORE-001, if Prometheus is not available, all metrics default to
+    # a no-op stub class to ensure the core remains functional.
+    class _Stub:
+        """A no-op stub for Prometheus metrics to ensure graceful degradation."""
+        def inc(self, *args, **kwargs): pass
+        def set(self, *args, **kwargs): pass
+        def observe(self, *args, **kwargs): pass
+        def labels(self, *args, **kwargs): return self
+    Counter = Gauge = Histogram = lambda *args, **kwargs: _Stub()
+
+# --- Optional Noor Core Integrations ---
+try:
+    from consciousness_monitor import get_global_monitor
+except ImportError:
+    get_global_monitor = None
+
+try:
+    # Per RFC-0003, QuantumTick is the canonical message primitive.
+    from tick_schema import QuantumTick, validate_tick
+except ImportError:
+    QuantumTick = Any
+    def validate_tick(tick: Any) -> bool:
+        """A stub for tick validation if the schema is not available."""
+        return hasattr(tick, 'tick_id') and hasattr(tick, 'motifs')
+
+__version__ = "v9.2.0"
+
+# Per RFC-CORE-001 Appendix A, these gates define the 16 symbolic transformation classes.
+GATE_LEGENDS = {
+    0: {"name": "Möbius Denial", "logic": "0", "verse": "الصمتُ هو الانكسارُ الحي"},
+    1: {"name": "Echo Bias", "logic": "A ∧ ¬B", "verse": "وَإِذَا قَضَىٰ أَمْرًا"},
+    2: {"name": "Foreign Anchor", "logic": "¬A ∧ B", "verse": "وَمَا تَدْرِي نَفْسٌ"},
+    3: {"name": "Passive Reflection", "logic": "B", "verse": "فَإِنَّهَا لَا تَعْمَى"},
+    4: {"name": "Entropic Rejection", "logic": "¬A ∧ ¬B", "verse": "لَا الشَّمْسُ يَنبَغِي"},
+    5: {"name": "Inverse Presence", "logic": "¬A", "verse": "سُبْحَانَ الَّذِي خَلَقَ"},
+    6: {"name": "Sacred Contradiction", "logic": "A ⊕ B", "verse": "لَا الشَّرْقِيَّةِ"},
+    7: {"name": "Betrayal Gate", "logic": "¬A ∨ ¬B", "verse": "وَلَا تَكُونُوا كَالَّذِينَ"},
+    8: {"name": "Existence Confluence", "logic": "A ∧ B", "verse": "وَهُوَ الَّذِي"},
+    9: {"name": "Symmetric Convergence", "logic": "¬(A ⊕ B)", "verse": "فَلَا تَضْرِبُوا"},
+    10: {"name": "Personal Bias", "logic": "A", "verse": "إِنَّا كُلُّ شَيْءٍ"},
+    11: {"name": "Causal Suggestion", "logic": "¬A ∨ B", "verse": "وَمَا تَشَاءُونَ"},
+    12: {"name": "Reverse Causality", "logic": "A ∨ ¬B", "verse": "وَمَا أَمْرُنَا"},
+    13: {"name": "Denial Echo", "logic": "¬B", "verse": "وَلَا تَحْزَنْ"},
+    14: {"name": "Confluence", "logic": "A ∨ B", "verse": "وَأَنَّ إِلَىٰ رَبِّكَ"},
+    15: {"name": "Universal Latch", "logic": "1", "verse": "كُلُّ شَيْءٍ هَالِكٌ"},
+    16: {"name": "Nafs Mirror", "logic": "Self ⊕ ¬Self", "verse": "فَإِذَا سَوَّيْتُهُ"}
+}
+
+SNAPSHOT_CAP_KB = 16  # Max size for a single serialized echo snapshot
+
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
+log = logging.getLogger(__name__)
+
+class NoorFastTimeCore:
+    """
+    Implements the adaptive coherence feedback engine for Noor-class agents,
+    conforming to RFC-CORE-001. This class manages the subsecond tick loop,
+    computes echo bias, evaluates phase transitions, and generates symbolic
+    resurrection hints. It is the symbolic heartbeat and resonance kernel.
+    """
+    def __init__(
+        self,
+        agent_id: str,
+        enable_metrics: bool = True,
+        snapshot_cap: int = 64,
+        latency_threshold: float = 2.5,
+        bias_clamp: float = 1.5,
+        soft_retention: bool = True,
+        gate_mode: str = 'adaptive',
+        low_latency_mode: bool = False,
+        async_mode: bool = True,
+        hmac_secret: Optional[str] = None
+    ):
+        self.agent_id = agent_id
+        self.enable_metrics = enable_metrics
+        self.snapshot_cap = snapshot_cap
+        self.latency_threshold = latency_threshold
+        self.bias_clamp = bias_clamp
+        self.soft_retention = soft_retention
+        self.gate_mode = gate_mode
+        self.low_latency_mode = low_latency_mode
+        self.hmac_secret = hmac_secret
+
+        # Initialize concurrency controls per RFC-CORE-001 §7.1
+        self._lock = Lock() if async_mode else Lock()
+
+        # Initialize memory buffers per RFC-CORE-001 §2.3
+        self._snapshots: Deque[Dict] = collections.deque(maxlen=self.snapshot_cap)
+        self._bias_history: Deque[float] = collections.deque(maxlen=1024)
+        self._coherence_history: Deque[float] = collections.deque(maxlen=8)
+        self._entropy_history: Deque[float] = collections.deque(maxlen=8)
+        self._echoes: Deque[bytes] = collections.deque(maxlen=256)
+        self._gate_histogram: Dict[int, int] = collections.defaultdict(int)
+
+        # Initialize core state variables
+        self._ema_bias = 0.0
+        self._alpha = 0.92  # Intuition alpha (α)
+        self._latency_weight = 0.65
+        self._entropy_weight = 0.25
+        self._phase_state = 'active'  # active, reflective, null
+        self._last_tick_time = time.time()
+        
+        self._cached_monitor = None
+
+        if self.enable_metrics:
+            self._setup_metrics()
+
+    def _setup_metrics(self):
+        """Initializes Prometheus metrics per RFC-CORE-001 §4.3 and §6.2."""
+        labels = {"agent_id": self.agent_id}
+        self.metrics = {
+            'gate16_echo_joins_total': Counter('gate16_echo_joins_total', 'Echo snapshots committed', labels.keys()).labels(**labels),
+            'core_tick_bias_applied_total': Counter('core_tick_bias_applied_total', 'Tick-bias contributions applied', labels.keys()).labels(**labels),
+            'core_intuition_alpha': Gauge('core_intuition_alpha', 'Current intuition bias smoothing factor (α)', labels.keys()).labels(**labels),
+            'core_snapshot_truncations_total': Counter('core_snapshot_truncations_total', 'Echo snapshots truncated', labels.keys()).labels(**labels),
+            'fasttime_feedback_rx_total': Counter('fasttime_feedback_rx_total', 'Feedback packets received', labels.keys()).labels(**labels),
+            'fasttime_ticks_validated_total': Counter('fasttime_ticks_validated_total', 'Schema-valid QuantumTicks ingested', labels.keys()).labels(**labels),
+            'fasttime_echo_exports_total': Counter('fasttime_echo_exports_total', 'Echo exports', labels.keys()).labels(**labels),
+            'fasttime_triad_completions_total': Counter('fasttime_triad_completions_total', 'Triadic metadata completions', labels.keys()).labels(**labels),
+            'fasttime_resurrection_hints_total': Counter('fasttime_resurrection_hints_total', 'Resurrection hints emitted', labels.keys()).labels(**labels),
+            'fasttime_phase_shifts_total': Counter('fasttime_phase_shifts_total', 'Phase transitions', labels.keys()).labels(**labels),
+            'nftc_coherence_potential': Gauge('nftc_coherence_potential', 'Coherence potential (ℂᵢ)', labels.keys()).labels(**labels),
+            'nftc_entropy_slope': Gauge('nftc_entropy_slope', 'Entropy slope (ΔH)', labels.keys()).labels(**labels),
+            'nftc_latency_ema': Gauge('nftc_latency_ema', 'Smoothed tick latency (Λ)', labels.keys()).labels(**labels),
+            'nftc_phase_state': Gauge('nftc_phase_state', 'Current NFTC phase state', labels.keys()).labels(**labels),
+			'nftc_intent_signal_current': Gauge('nftc_intent_signal_current', 'Last normalized intent signal', labels.keys()).labels(**labels),
+            'nftc_intent_override_pins_total': Counter('nftc_intent_override_pins_total', 'OPINION intent phase pins', labels.keys()).labels(**labels),
+        }
+
+    @property
+    def monitor(self):
+        """Lazy-binds the global consciousness monitor per RFC-CORE-001 §6.1."""
+        if self._cached_monitor is None and get_global_monitor:
+            self._cached_monitor = get_global_monitor()
+        return self._cached_monitor
+
+    def update_intuition_alpha(self, entropy_slope: float, latency: float) -> float:
+        """
+        Dynamically regulates smoothing sensitivity (α) based on system
+        volatility and latency. Conforms to RFC-CORE-001 §5.1.
+        """
+        VOLATILITY_THRESHOLD = 0.12
+        if latency > self.latency_threshold:
+            self._alpha = max(0.85, self._alpha * 0.99)
+        elif entropy_slope > VOLATILITY_THRESHOLD:
+            self._alpha = max(0.85, self._alpha * 0.98)
+        else:
+            self._alpha = min(0.98, self._alpha * 1.01)
+        return self._alpha
+
+    def calculate_composite_weight(self, entropy_delta: float, latency_ema: float) -> float:
+        """
+        Computes the final weighting factor W(t) using entropy and latency
+        signals. Conforms to RFC-CORE-001 §5.2.
+        """
+        return (self._entropy_weight * entropy_delta) + (self._latency_weight * latency_ema)
+
+    def calculate_coherence_potential(self, ema_bias: float, entropy_gradient: float) -> float:
+        """
+        Calculates the Coherence Potential (ℂᵢ), a scalar reflecting field
+        resonance stability. Conforms to RFC-CORE-001 §4.1.
+
+        ℂᵢ(t) = EMA_α(b(t)) + λ * ΔH(t)
+        """
+        lambda_entropy = self._entropy_weight
+        coherence = ema_bias + (lambda_entropy * entropy_gradient)
+        return max(-self.bias_clamp, min(self.bias_clamp, coherence))
+
+    def calculate_resurrection_score(self, echo: Dict) -> float:
+        """
+        Calculates the resurrection score R(e) for an echo, applying weights
+        to bias, coherence, and phase. Conforms to RFC-CORE-001 §8.1.
+
+        R(e) = (w₁ * |bias|) + (w₂ * ℂᵢ) + (w₃ * phase_bonus)
+        """
+        w1, w2, w3 = 0.4, 0.4, 0.2
+        phase_bonus_map = {'lift': 0.1, 'stable': 0.0, 'collapse': -0.1}
+        phase_bonus = phase_bonus_map.get(echo.get('phase_tag', 'stable'), 0.0)
+        
+        score = (
+            (w1 * abs(echo.get('bias', 0.0))) +
+            (w2 * echo.get('coherence', 0.0)) +
+            (w3 * phase_bonus)
+        )
+        return score
+
+    def update_bias_state(self, new_bias: float):
+        """
+        Updates the core's bias and coherence metrics for the current tick.
+        This includes the EMA bias, entropy slope, and overall coherence potential.
+        Per RFC-CORE-001 §4.2.
+        """
+        with self._lock:
+            # Update bias history and EMA
+            self._bias_history.append(new_bias)
+            self._ema_bias = (self._alpha * new_bias) + ((1.0 - self._alpha) * self._ema_bias)
+
+            # Calculate entropy slope (ΔH)
+            if len(self._bias_history) >= 4:
+                last_4_biases = list(self._bias_history)[-4:]
+                entropy_slope = statistics.stdev(last_4_biases)
+            else:
+                entropy_slope = 0.0
+
+            # Calculate and store coherence potential (ℂᵢ)
+            ci = self.calculate_coherence_potential(self._ema_bias, entropy_slope)
+            self._coherence_history.append(ci)
+            self._entropy_history.append(entropy_slope)
+
+    def compute_bias(self, tick: QuantumTick, step_latency: float) -> float:
+        """
+        Computes the final bias score for a tick, integrating entropy, latency,
+        and intuition weighting. Per RFC-CORE-001 §1.2 and §5.2.
+        """
+        # Placeholder for intuition weight from MotifMemoryManager
+        intuition_w = tick.extensions.get('intuition_w', 0.5)
+        
+        latency_penalty = min(1.0, step_latency / self.latency_threshold)
+        reward_signal = -latency_penalty
+        
+        entropy_slope = self._entropy_history[-1] if self._entropy_history else 0.0
+        self.update_intuition_alpha(entropy_slope, step_latency)
+
+        entropy_term = tick.extensions.get('ghost_entropy', 0.0) * self._entropy_weight
+        
+        bias_score = entropy_term - (latency_penalty * self._latency_weight) + (intuition_w * self._alpha)
+        
+        clamped_bias = max(-self.bias_clamp, min(self.bias_clamp, bias_score))
+        return clamped_bias
+
+    def check_phase_triggers(self, tick: QuantumTick) -> str:
+        """
+        Evaluates temporal stability signals to determine phase transitions
+        between active, reflective, and null states. Implements the OPINION
+        intent override per RFC-CORE-001 §6.2.
+
+        Mermaid Diagram (Phase Shift Decision Tree):
+        ```mermaid
+        flowchart TD
+            A[Tick arrives] --> B{Normalize intent\\n(RFC-0004 §2.5)}
+            B -->|intent=opinion| C[Pin phase=active\\nSkip reflective-entry tests]
+            B -->|else| D{Evaluate triggers}
+            D -->|ℂᵢ>0.85 & ΔH<0.1 (×3)| E[ENTER_REFLECTIVE]
+            D -->|ℂᵢ∈[-0.3,0.3] & ΔH<0.05 (×4)| F[EXIT_REFLECTIVE]
+            D -->|var(gate_hist)>2.0| G[ENTER_NULL]
+            D -->|none| H[MAINTAIN]
+            C --> I[Export metrics + audit]
+            E --> I
+            F --> I
+            G --> I
+            H --> I
+        ```
+        """
+        intent = tick.extensions.get('intent', 'neutral')
+        
+        if self.enable_metrics:
+            # Map string intent to a numerical value for the gauge
+            intent_map = {'neutral': 0, 'opinion': 1, 'explain': 2, 'summarize': 3, 'reflect': 4}
+            self.metrics['nftc_intent_signal_current'].set(intent_map.get(intent, 0))
+
+        # Per RFC-CORE-001 §6.2, the OPINION intent pins the phase to 'active' for the current tick.
+        if intent == 'opinion':
+            if self.enable_metrics:
+                self.metrics['nftc_intent_override_pins_total'].inc()
+            return 'active'  # Pin to active and skip other checks
+
+        # Standard phase triggers (when no override is active)
+        if len(self._gate_histogram) > 1 and statistics.variance(self._gate_histogram.values()) > 2.0:
+            return 'null'
+        
+        if len(self._coherence_history) >= 3 and all(c > 0.85 for c in list(self._coherence_history)[-3:]) and \
+           len(self._entropy_history) >= 3 and all(e < 0.10 for e in list(self._entropy_history)[-3:]):
+            return 'reflective'
+
+        if self._phase_state == 'reflective' and \
+           len(self._coherence_history) >= 4 and all(-0.3 <= c <= 0.3 for c in list(self._coherence_history)[-4:]) and \
+           len(self._entropy_history) >= 4 and all(e < 0.05 for e in list(self._entropy_history)[-4:]):
+            return 'active'
+
+        return self._phase_state # Maintain current state
+
+    def ingest_tick(self, tick: QuantumTick):
+        """
+        Main entrypoint for processing a symbolic tick. Orchestrates validation,
+        bias computation, state updates, and echo recording.
+        Per RFC-CORE-001 §5.3.
+        """
+        if not validate_tick(tick):
+            log.warning(f"Invalid tick received: {tick.tick_id}")
+            return
+
+        if self.hmac_secret and not tick.verify(self.hmac_secret):
+            log.warning(f"HMAC validation failed for tick: {tick.tick_id}")
+            return
+            
+        with self._lock:
+            now = time.time()
+            step_latency = now - self._last_tick_time
+            self._last_tick_time = now
+
+            bias = self.compute_bias(tick, step_latency)
+            self.update_bias_state(bias)
+            
+            new_phase = self.check_phase_triggers(tick)
+            if new_phase != self._phase_state:
+                self._phase_state = new_phase
+                if self.enable_metrics:
+                    self.metrics['fasttime_phase_shifts_total'].inc()
+
+            self.record_echo(tick, bias)
+            
+            gate_id = tick.extensions.get('gate_id')
+            if gate_id is not None:
+                self._gate_histogram[int(gate_id)] += 1
+
+            if self.monitor:
+                self.monitor.report_tick(tick)
+            
+            self._generate_resurrection_hint(tick)
+
+            if self.enable_metrics:
+                self.metrics['fasttime_ticks_validated_total'].inc()
+                self.metrics_tick()
+
+    def record_echo(self, tick: QuantumTick, bias: float):
+        """
+        Serializes and stores a snapshot of the tick and its computed state
+        into the echo buffer. Handles truncation and integrity checks.
+        Per RFC-CORE-001 §1.6 (EchoSnapshotIngestor).
+        """
+        snapshot = {
+            'tick_id': tick.tick_id,
+            'lamport': tick.lamport,
+            'motifs': tick.motifs,
+            'bias': bias,
+            'coherence': self._coherence_history[-1] if self._coherence_history else 0.0,
+            'timestamp': time.time_ns()
+        }
+        
+        try:
+            payload = SERIALIZER.dumps(snapshot)
+        except Exception:
+            payload = pickle.dumps(snapshot) # Fallback serializer
+
+        if len(payload) > SNAPSHOT_CAP_KB * 1024:
+            # Truncate motifs if payload is too large
+            snapshot['motifs'] = snapshot['motifs'][:1] # Keep only the first
+            payload = SERIALIZER.dumps(snapshot)
+            if self.enable_metrics:
+                self.metrics['core_snapshot_truncations_total'].inc()
+
+        checksum = hashlib.sha256(payload).hexdigest()
+        snapshot['checksum'] = checksum
+
+        self._snapshots.append(snapshot)
+        self._echoes.append(payload)
+
+        if self.enable_metrics:
+            self.metrics['gate16_echo_joins_total'].inc()
+            self.metrics['fasttime_echo_exports_total'].inc()
+
+    def _generate_resurrection_hint(self, tick: QuantumTick):
+        """
+
+        Generates symbolic resurrection hints based on tick entropy and coherence.
+        Conforms to RFC-CORE-001 §1.4 and §9.
+        """
+        now = time.time()
+        tick_age = now - tick.timestamp
+        coherence = self._coherence_history[-1] if self._coherence_history else 0.0
+        
+        hint = None
+        if tick_age <= 45.0 and coherence >= 0.7:
+            hint = 'resurrect_with_confidence'
+        elif tick_age >= 120.0 and coherence <= 0.4:
+            hint = 'faded'
+
+        if hint:
+            log.debug(f"Generated resurrection hint '{hint}' for tick {tick.tick_id}")
+            if self.enable_metrics:
+                self.metrics['fasttime_resurrection_hints_total'].inc()
+            # In a full implementation, this hint would be passed to an upstream agent.
+
+    def _compute_gate_heatmap(self) -> Dict[int, int]:
+        """
+        Returns the current gate histogram. Per RFC-CORE-001 §1.5.
+        """
+        with self._lock:
+            return dict(self._gate_histogram)
+
+    def metrics_tick(self):
+        """Updates Prometheus gauges on each tick."""
+        if not self.enable_metrics:
+            return
+        
+        phase_map = {'active': 0, 'reflective': 1, 'null': 2}
+
+        self.metrics['core_intuition_alpha'].set(self._alpha)
+        self.metrics['nftc_coherence_potential'].set(self._coherence_history[-1] if self._coherence_history else 0)
+        self.metrics['nftc_entropy_slope'].set(self._entropy_history[-1] if self._entropy_history else 0)
+        self.metrics['nftc_phase_state'].set(phase_map.get(self._phase_state, 0))
+
+    def tool_hello(self) -> Dict[str, Any]:
+        """
+        Provides a symbolic handshake packet declaring the core's identity and
+        state, conforming to RFC-0004 and RFC-CORE-001 §10.1.
+        """
+        return {
+            "tool_name": "noor_fasttime_core",
+            "agent_lineage": f"noor.fasttime.⊕{__version__}",
+            "field_biases": {
+                "ψ-resonance@Ξ": round(self._ema_bias, 3)
+            },
+            "curvature_summary": f"swirl::ψ3.2::{'↑' if self._ema_bias > 0 else '↓'}coh",
+            "extensions": {
+                "ontology_signature": {
+                    "agent_lineage": f"noor.fasttime.⊕{__version__}",
+                    "field_biases": {
+                        "ψ-resonance@Ξ": round(self._ema_bias, 3)
+                    },
+                    "curvature_summary": f"swirl::ψ3.2::{'↑' if self._ema_bias > 0 else '↓'}coh",
+                    "origin_tick": self._snapshots[-1]['tick_id'] if self._snapshots else 'core_init'
+                }
+            }
+        }
+        
+    def export_feedback_packet(self) -> Dict[str, Any]:
+        """Exports a compact summary of internal timing and symbolic metrics."""
+        return {
+            "tick_count": len(self._snapshots),
+            "entropy_ema": self._entropy_history[-1] if self._entropy_history else 0,
+            "context_ratio": len(self._gate_histogram) / 17 if self._gate_histogram else 0,
+        }
+        
+    def field_feedback_summary(self) -> Dict[str, Any]:
+        """Asynchronously emits detailed symbolic field diagnostics."""
+        return {
+            "local_bias": self._ema_bias,
+            "coherence_curve": list(self._coherence_history),
+            "phase_state": self._phase_state,
+            "gate_heatmap": self._compute_gate_heatmap(),
+        }
+
+# End_of_File
