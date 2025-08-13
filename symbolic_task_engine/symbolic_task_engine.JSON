@@ -2,12 +2,12 @@
   "application_spec": {
     "title": "Symbolic_Task_Engine",
     "subtitle": "Presence Composer, Feedback Relay, and Autonomous Abstraction Anchor",
-    "version": "v3.0.0",
+    "version": "v3.1.0",
     "language": "python",
     "canonical_source": "RFC-CORE-004",
     "output_artifact": {
       "primary_module": "symbolic_task_engine.py",
-      "version": "v3.0.0"
+      "version": "v3.1.0"
     },
     "licence": "MIT",
     "authors": [

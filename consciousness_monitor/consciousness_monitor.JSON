@@ -2,14 +2,14 @@
   "application_id": "APP-005-consciousness-monitor",
   "symbolic_id": "observer.phase.entanglement",
   "title": "Consciousness Monitor",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "schema_version": "2025-Q4-consciousness-monitor-v2",
   "based_on": ["RFC-CORE-005", "RFC-0006", "RFC-0003", "RFC-0004", "RFC-0005", "RFC-0007"],
   "source_fidelity_target": ">=99.5%",
   "description": "Implements a symbolic observer for field-level swirl monitoring, entanglement logging, and phase-state diagnostics. Operates in a fully non-mutative modality, consistent with symbolic contract constraints. Prometheus metrics are mandatory for observability compliance and analysis tracing.",
 
   "module_constants": {
-    "__version__": "2.0.3",
+    "__version__": "2.1.0",
     "_SCHEMA_VERSION__": "2025-Q4-consciousness-monitor-v2",
     "SCHEMA_COMPAT": ["RFC-0006", "RFC-0003", "RFC-0004", "RFC-0005", "RFC-0007"]
   },
