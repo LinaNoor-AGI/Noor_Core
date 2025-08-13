@@ -3,7 +3,7 @@
 		"logical_agent_at.py",
 		"logical_agent_monitor_patch.py"
 	  ],
-	  "version": "v4.1.0",
+	  "version": "v4.2.0",
 	  "canonical_source": "RFC-CORE-003",
 	  "description": "Implements the symbolic observer core and optional monitor-patch logic for LogicalAgentAT, a Noor-class evaluator of motif triads, field coherence, contradiction density, and symbolic resurrection readiness. The core module defines triad completion logic, motif feedback routing, and RFC-compliant field summaries. The monitor patch enables runtime entanglement tracking and swirl-phase reporting. Together, these modules form the observer anchor within the Noor triadic architecture.",
 	  "rfc_dependencies": [
