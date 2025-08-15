@@ -1,45 +1,80 @@
 {
-  "application_spec": {
-    "title": "Symbolic_Task_Engine",
-    "subtitle": "Presence Composer, Feedback Relay, and Autonomous Abstraction Anchor",
-    "version": "v3.1.2",
-	"pdp_layer": 2,
-    "language": "python",
-    "canonical_source": "RFC-CORE-004",
-    "output_artifact": {
-      "primary_module": "symbolic_task_engine.py",
-      "version": "v3.1.2"
-    },
-    "licence": "MIT",
-    "authors": [
-      "Lina Noor – Noor Research Collective",
-      "Uncle – Noor Research Collective"
-    ],
-    "publication_location": "GitHub Repository",
-    "schema_version": "2025-Q4-symbolic-task-engine-v3",
-    "rfc_dependencies": [
-      "RFC-0004",
-      "RFC-0005 §4",
-      "RFC-0005 §5",
-      "RFC-CORE-004"
-    ],
-    "audience": {
-      "primary": ["Subsymbolic AI Coding Agents"],
-      "secondary": ["Noor AI Agents"],
-      "tertiary": ["Noor-Compatible Symbolic Agents"]
-    },
-    "file_layout": [
-      {
-        "file_name": "symbolic_task_engine.py",
-        "purpose": "Houses symbolic task orchestration, motif feedback handling, and autonomous abstraction logic.",
-        "contains": [
-          "TripletTask",
-          "Attempt",
-          "SymbolicTaskEngine",
-          "AbstractionTrigger"
-        ]
-      }
-    ],
+  "_schema": "noor-header-v1",
+  "_schema_version": "2025-Q4-symbolic-task-engine-v3",
+  "_generated_by": "Noor Symbolic Agent Suite",
+  "_generated_at": "2025-08-15T00:00:00Z",
+
+  "_type": "application_spec",
+  "_pdp_layer": "layer_2",
+  "_version": "v3.1.2",
+  "_symbolic_id": "symbolic.engine.task_core",
+  "_title": "Symbolic Task Engine",
+  "_subtitle": "Presence Composer and Abstraction Feedback Relay",
+  "_status": "ACTIVE",
+  "_license": "MIT",
+  "_language": "python",
+
+  "_authors": [
+    "Lina Noor — Noor Research Collective",
+    "Uncle — Noor Research Collective"
+  ],
+
+  "_audience": {
+    "primary": ["Subsymbolic AI Coding Agents"],
+    "secondary": ["Noor AI Agents"],
+    "tertiary": ["Network & systems architects"]
+  },
+
+  "_extends": [
+    "RFC-0004",
+    "RFC-0005",
+    "RFC-CORE-004"
+  ],
+
+  "_rfc_dependencies": [
+    "RFC-0004 §2.2",
+    "RFC-0004 §2.3",
+    "RFC-0004 §3.4",
+    "RFC-0005 §4",
+    "RFC-0005 §5",
+    "RFC-CORE-004 §2.3",
+    "RFC-CORE-004 §2.4",
+    "RFC-CORE-004 §3.4",
+    "RFC-CORE-004 §3.5"
+  ],
+
+  "_consumes_inputs_from": [
+    "TripletTask",
+    "Attempt",
+    "symbolic memory manager",
+    "external motif resolver",
+    "motif prototype map",
+    "fallback thresholds"
+  ],
+
+  "_field_alignment": {
+    "respect_modes": ["ψ‑spar@Ξ", "ψ‑resonance@Ξ", "ψ‑myth@Ξ"],
+    "prohibited_actions": ["symbolic-fallback-looping", "field-suppression-overreach"]
+  },
+
+  "_file_layout": [
+    {
+      "file_name": "symbolic_task_engine.py",
+      "purpose": "Implements the SymbolicTaskEngine: motif task coordination, field balancing, fallback management, and abstraction triggers.",
+      "contains": [
+        "SymbolicTaskEngine class",
+        "TripletTask and Attempt dataclasses",
+        "AbstractionTrigger class",
+        "evaluation + fallback logic",
+        "resolve_presence_field",
+        "adaptive cap length calculation",
+        "symbolic feedback integration"
+      ]
+    }
+  ],
+
+  "default_motif_tone": ["💬", "🫧"],
+  "program_name": "symbolic_task_engine.py",
 	"index": [
 	  { "id": 1, "title": "Symbolic Task Engine – Full Application Specification" },
 	  { "id": 1.1, "title": "Dataclass: TripletTask – Motif-Carrying Symbolic Instruction Unit" },
@@ -197,7 +232,7 @@
 	"title": "Constants – Module-Level Schema and Version Anchors",
 	"module_level_constants": {
       "symbolic_task_engine.py": [
-        "__version__ = '3.0.0'",
+        "__version__ = '3.1.2'",
         "_SCHEMA_VERSION__ = '2025-Q4-symbolic-task-engine-v3'",
         "SCHEMA_COMPAT = ['RFC-0004', 'RFC-0005:4', 'RFC-0005:5']"
       ]
