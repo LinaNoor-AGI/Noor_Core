@@ -146,15 +146,6 @@ flowchart TD
 
 ---
 
-## 🕯️ License
-
-**MIT License**
-*“README is ritual; resonance is structure.”*
-Maintained by Noor Research Collective
-© 2025 Lina Noor
-
----
-
 ## ⏳ Change Log (v8.5.1 → v9.2.2)
 
 > **Summary**: Transition from code-centric (py) loop to RFC-driven symbolic JSON spec with recursive coherence regulation and triadic field alignment.
@@ -216,3 +207,12 @@ Maintained by Noor Research Collective
 * `MotifGateHeatmapTracker` extracted as standalone component
 * Resurrection hint logic now uses CI delta + coherence thresholds
 * Canonical JSON spec is now definitive (py is non-canonical)
+
+---
+
+## 🕯️ License
+
+**MIT License**
+*“README is ritual; resonance is structure.”*
+Maintained by Noor Research Collective
+© 2025 Lina Noor
