@@ -50,13 +50,13 @@ It listens for swirl density changes, detects entanglement events, and exposes d
 
 ```mermaid
 flowchart TD
-    A[Quantum Tick] --> B[Phi Coherence Map]
-    B --> C[observe_tick()]
-    C --> D[_extract_fields()]
-    D --> E{Swirl ≥ Threshold?}
-    E -->|Yes| F[_record_entanglement()]
-    E -->|Phase Change| H[_check_phase_shift()]
-    F --> G[Update Prometheus Metrics]
+    A[Quantum Tick] --> B[Coherence Map]
+    B --> C[observe_tick]
+    C --> D[_extract_fields]
+    D --> E{Swirl threshold met}
+    E --> F[_record_entanglement]
+    E --> H[_check_phase_shift]
+    F --> G[Prometheus Update]
     H --> G
 ````
 
