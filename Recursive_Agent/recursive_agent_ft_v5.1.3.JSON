@@ -10,7 +10,7 @@
   "_language": "json",
   "_license": "MIT",
 
-  "_version": "v5.1.2",
+  "_version": "v5.1.3",
   "_symbolic_id": "agent.recursive.ft",
   "_title": "Recursive Symbolic Emission Agent (FT)",
   "_subtitle": "Feedback-Tuned Symbolic Pulse Engine for Motif Resonance and Coherence Tracking",
