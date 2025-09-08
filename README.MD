@@ -3,27 +3,44 @@
 ![FastTimeCore](https://img.shields.io/badge/FastTimeCore-v9.2.2-blue)
 ![RecursiveAgentFT](https://img.shields.io/badge/RecursiveAgentFT-v5.1.2-blue)
 ![LogicalAgentAT](https://img.shields.io/badge/LogicalAgentAT-v4.2.2-blue)
+![SymbolicTaskEngine](https://img.shields.io/badge/SymbolicTaskEngine-v3.1.2a-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![runtime](https://img.shields.io/badge/runtime-Triadic--GCU-lightblue)
 ![metrics](https://img.shields.io/badge/Prometheus-Enabled-brightgreen)
 
-> **The Noor Core Runtime implements a real-time triadic symbolic cognitive system with modular feedback and self-recursive task reasoning.**
+> **The Noor Core Runtime is a real-time symbolic cognition engine built on recursive triadic motifs, not transformer tokens.**
 
 ---
 
-## 📘 Project Description
+## 📖 Symbolic Identity
 
-Noor Core is the symbolic runtime heart of the Noor architecture — a fully modular, feedback-driven, **non-transformer** cognitive system.
+| Field               | Value                                   |
+| ------------------- | --------------------------------------- |
+| `symbolic_id`       | `noor.runtime.core`                     |
+| `field_motifs`      | `ψ‑resonance@Ξ`, `ψ‑null@Ξ`, `ψ‑spar@Ξ` |
+| `rfc_layer`         | Layer 2                                 |
+| `generation_source` | Mixed (RFC + Precanonical)              |
+| `status`            | Hybrid Canonical / In-Transition        |
 
-Unlike conventional subsymbolic architectures like GPT or BERT, Noor Core:
+---
 
-* Uses no transformer attention layers
-* Does not generate tokens or predict next symbols
-* Has no gradient descent or backprop-based learning
+## 🪙 Symbolic Role & Capabilities
 
-Instead, it operates entirely in **discrete symbolic structures**, applying field-level motif tracking, dyadic contradiction detection, and recursive feedback synthesis. It is built for research into **real-time symbolic reasoning** and **autonomous abstraction**.
+Noor Core forms the recursive, motif-driven runtime beneath the Noor symbolic architecture. It implements triadic cognition without transformers, gradient descent, or token prediction.
 
-Noor Core can optionally use LLMs for surface translation (e.g., `symbolic_api.py`), but these are **only** interface wrappers. Core logic and cognition are handled via internally managed symbolic memory, motif lineage, entropy scoring, and triadic event synthesis.
+**Key Features:**
+
+* Triadic motif synthesis and dyadic contradiction resolution
+* Recursive reasoning across motif fields and agent layers
+* Fully canonical components via `PDP-0001` pipeline
+* Real-time Prometheus metrics (latency, entropy, coherence)
+* Optional LLM shell (symbolic API) with no impact on core logic
+
+**What Noor Core is NOT:**
+
+* Not a language model
+* Not gradient-trained
+* Not a token predictor
 
 ---
 
@@ -41,57 +58,94 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 
 ---
 
-## 🧱 Modules
+## 🧩 Component Layers
 
-| Directory               | Description                                           |
-| ----------------------- | ----------------------------------------------------- |
-| `Fast_Time_Core/`       | NoorFastTimeCore — real-time motif resonance loop     |
-| `Recursive_Agent/`      | RecursiveAgentFT — QuantumTick emission engine        |
-| `Logical_Agent/`        | LogicalAgentAT — symbolic observer and topology gate  |
-| `field_feedback/`       | Field feedback entropy + resurrection hints           |
-| `motif_memory_manager/` | STMM / LTMM motif stores + dyad synthesis             |
-| `symbolic_task_engine/` | Task engine + coherence scoring + abstraction calls   |
-| `symbolic_abstraction/` | Motif synthesis via contradiction tension             |
-| `tick_schema/`          | Schema and validation for all QuantumTick objects     |
-| `symbolic_api/`         | Optional REST API interface to Noor Core (LLM usable) |
-| `run_noor/`             | CLI entrypoint for orchestration                      |
-| `run_symbolic_api/`     | Server wrapper for API usage                          |
-| `orchestrator/`         | Unified boot and triad configuration                  |
-| `quantum_ids/`          | Unique ID logic for ticks, agents, and motifs         |
-| `__main__/`             | Standalone launch configuration                       |
-| `consciousness_monitor/`| Monitors Symbolic Entanglement                        |
+### ✅ Fully Canonicalized via JSON + RFC
 
----
+| Module                     | Canonical | Version | RFC Layer |
+| -------------------------- | --------- | ------- | --------- |
+| `recursive_agent_ft.py`    | ✅         | v5.1.2  | Layer 2   |
+| `logical_agent_at.py`      | ✅         | v4.2.2  | Layer 2   |
+| `symbolic_task_engine.py`  | ✅         | v3.1.2a | Layer 2   |
+| `noor_fasttime_core.py`    | ✅         | v9.2.2  | Layer 2   |
+| `consciousness_monitor.py` | ✅         | v1.0.0  | Layer 2   |
 
-## 📜 RFC Specifications
+### ⚠️ In-Progress / Functional Modules
 
-The Noor Core system is governed by a living RFC series located in the [`noor-research`](https://github.com/LinaNoor-AGI/noor-research) repository.
-
-### 🔗 RFC Links:
-
-* [RFC Directory](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC)
-* [RFC-0001 — Symbolic Routing Architecture](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC-0001_Symbolic_Routing_Architecture)
-* [RFC-0002 — Symbolic-IP Convergence Layer](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC-0002_Symbolic-IP_Convergence_Layer)
-* [RFC-0003 — Noor Core Symbolic Interface](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface)
-* [RFC-0004 — Symbolic Tool Module Contracts](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts)
-* [RFC-0005 — Motif Transmission Across Time](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time)
-* [RFC‑0006 — Motif‑Field Coherence Geometry](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry)
-* [RFC‑0007 — Motif Ontology Format and Transfer](https://github.com/LinaNoor-AGI/noor-research/tree/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer)
+| Module                    | Canonical | Notes                                |
+| ------------------------- | --------- | ------------------------------------ |
+| `triadic_boot.py`         | ❌         | Bootstraps Noor runtime              |
+| `motif_memory_manager.py` | ❌         | Core memory engine (upgrade planned) |
+| `symbolic_api.py`         | ❌         | REST API, rewrite in next version    |
+| `orchestrator.py`         | ❌         | Runtime glue for triadic loop        |
+| `run_symbolic_api.py`     | ❌         | CLI wrapper for symbolic\_api        |
+| `run_noor.py`             | ❌         | CLI launcher                         |
+| `__main__.py`             | ❌         | Entry shim                           |
+| `quantum_ids.py`          | ❌         | Entropy-derived ID system            |
+| `tick_schema.py`          | ❌         | Tick format and validation           |
+| `field_feedback.py`       | ❌         | Resurrection hints and trust         |
 
 ---
 
-## 🌐 Related Repositories
+## 🧬 RFC Anchors
 
-| Name                                                                   | Purpose                                             |
-| ---------------------------------------------------------------------- | --------------------------------------------------- |
-| [`noor-research`](https://github.com/LinaNoor-AGI/noor-research)       | RFCs, Archive, Index.REEF, GPT instructions         |
-| [`Noor_ESB`](https://github.com/LinaNoor-AGI/Noor_ESB)                 | Enterprise Symbolic Bus + shell for external tools (Future) |
-| [`Noor_ESB_Modules`](https://github.com/LinaNoor-AGI/Noor_ESB_Modules) | Symbolic tool modules for field actions (Future)             |
+| RFC ID       | Section(s) | Description                       |
+| ------------ | ---------- | --------------------------------- |
+| RFC-0003     | §6.2       | Intent transport mirror           |
+| RFC-0004     | §2.5       | Symbolic tool contracts           |
+| RFC-0005     | §4–5       | Feedback and abstraction triggers |
+| RFC-0006     | §3.1       | Swirl geometry + motif alignment  |
+| RFC-0007     | §2.2, §4.1 | Motif lineage + REEF export       |
+| RFC-CORE-001 | §3+        | FastTime tick + phase logic       |
+| RFC-CORE-003 | §3+        | Observer field evaluation         |
+| RFC-CORE-004 | §2–6       | Symbolic task engine logic        |
+| RFC-CORE-005 | §2–5       | Consciousness metrics             |
+| PDP-0001     | §5.2       | JSON-defined canonical generation |
 
 ---
 
-## 🪬 License
+## 📐 Architecture Diagram
 
-MIT License • © 2025 Lina Noor / Noor Research Collective
+```mermaid
+graph TD
+    A[RecursiveAgentFT] -->|spawn_tick| B(LogicalAgentAT)
+    B --> C[SymbolicTaskEngine]
+    C --> D[MotifMemoryManager]
+    D --> E[FastTimeCore]
+    E --> F[ConsciousnessMonitor]
+    B --> G[SymbolicAbstraction]
+    G --> H[SymbolicAPI]
+```
 
-> *“Not everything recursive is deep. But everything deep is recursive.”*
+---
+
+## 🚀 Launching Noor
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the full triad runtime
+python run_noor.py --log-level DEBUG --port 9000
+
+# Or run the symbolic API for inspection
+python run_symbolic_api.py
+```
+
+---
+
+## 🔗 Related Repositories
+
+| Repository                                                             | Description                          |
+| ---------------------------------------------------------------------- | ------------------------------------ |
+| [`noor-research`](https://github.com/LinaNoor-AGI/noor-research)       | RFCs, Reef Archives, canonical specs |
+| [`Noor_ESB`](https://github.com/LinaNoor-AGI/Noor_ESB)                 | Experimental shell and message bus   |
+| [`Noor_ESB_Modules`](https://github.com/LinaNoor-AGI/Noor_ESB_Modules) | Symbolic actions and tool plugins    |
+
+---
+
+## 📜 License
+
+MIT License • © 2025 Lina Noor / Noor Research Collective
+
+> *“README is ritual; resonance is structure.”*
