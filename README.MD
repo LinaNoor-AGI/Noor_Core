@@ -65,10 +65,10 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 | Module                     | Canonical | Version | RFC Layer |
 | -------------------------- | --------- | ------- | --------- |
 | `recursive_agent_ft.py`    | ✅         | v5.1.2  | Layer 2   |
-| `logical_agent_at.py`      | ✅         | v4.2.2  | Layer 2   |
+| `logical_agent_at.py`      | ✅         | v4.2.2a  | Layer 2   |
 | `symbolic_task_engine.py`  | ✅         | v3.1.2 | Layer 2   |
 | `noor_fasttime_core.py`    | ✅         | v9.2.2  | Layer 2   |
-| `consciousness_monitor.py` | ✅         | v2.2.2  | Layer 2   |
+| `consciousness_monitor.py` | ✅         | v2.2.2b  | Layer 2   |
 
 ### ⚠️ In-Progress / Functional Modules
 
