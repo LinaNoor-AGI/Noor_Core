@@ -57,7 +57,7 @@ flowchart TD
     A[Start Emission] --> B[Loop: Select Motifs]
     B --> C[Emit Tick with Annotations]
     C --> D[Update Swirl + Density]
-    D --> E[Adjust Interval (Reward+Entropy)]
+    D --> E[Adjust Interval — Reward + Entropy]
     E --> F[Sleep Async]
     C --> G[Send to Monitor]
     G --> H[Buffer Echo + Feedback Export]
