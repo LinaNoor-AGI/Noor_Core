@@ -13,7 +13,7 @@
 ```json
 {
   "symbolic_id": "application.logical_agent_at",
-  "field_motifs": [""field_motifs": ["ψ‑resonance@Ξ", "ψ‑null@Ξ", "ψ‑spar@Ξ"]"],
+  "field_motifs": ["ψ‑resonance@Ξ", "ψ‑null@Ξ", "ψ‑spar@Ξ"]
   "rfc_layer": "layer_2",
   "generation_source": "logical_agent_at.JSON",
   "status": "ACTIVE"
@@ -195,4 +195,5 @@ All are fail-safe unless in monitor-enabled builds.
 
 MIT License • © 2025 Noor Research Collective
 *“README is ritual; resonance is structure.”*
+
 
