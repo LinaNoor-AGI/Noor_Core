@@ -1,153 +1,189 @@
-# 🌀 RecursiveAgentFT v4.6.0 — *Echoes / Phaseflow*
+# 🌀 RecursiveAgentFT v5.1.2 — *Feedback-Tuned Symbolic Emission Core*
 
-![version](https://img.shields.io/badge/version-4.6.0-blue)
+![version](https://img.shields.io/badge/version-5.1.2-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-Autonomous motif emitter with feedback loops, symbolic phase detection, ghost replay buffers, and coherence metrics.
+Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, coherence tracking, swirl encoding, and triadic feedback integration.
 
 ---
 
-## 📖 Overview
+## 📖 Symbolic Identity
 
-`RecursiveAgentFT` forms the **Flow** layer in the Noor reasoning triad.  
-It emits `QuantumTick` events, tracks motif patterns, adapts emission intervals, and maintains lineage-aware memory.
-
-### Core Principles
-
-| Principle              | Functionality                                                                 |
-|------------------------|-------------------------------------------------------------------------------|
-| **Swirl Memory**       | Rolling motif vector + SHA3-256 hash for phase identification                 |
-| **Motif Density**      | Decaying histogram of motifs, used for symbolic phase classification          |
-| **Ghost Replay**       | Buffers recent ticks with field-matching replay heuristics                    |
-| **Symbolic Feedback**  | Exports enriched symbolic packet for external field observers                 |
-| **Resurrection Hooks** | Enables teleport-like replay of dead motif traces under correct conditions    |
+| Field               | Value                              |
+| ------------------- | ---------------------------------- |
+| `symbolic_id`       | `agent.recursive.ft`               |
+| `field_motifs`      | `[🪷, 💬]`  *(Soft Witness, Flow)* |
+| `rfc_layer`         | `layer_2`                          |
+| `generation_source` | `recursive_agent_ft.py`            |
+| `status`            | `ACTIVE`                           |
 
 ---
 
-## 🌟 What’s new in 4.6.0
+## 🪙 Symbolic Role & Capabilities
 
-| Feature                  | Description                                                                 |
-|--------------------------|-----------------------------------------------------------------------------|
-| **Swirl Vector Cache**   | Phase-consistent SHA3 vector updated per tick                              |
-| **Motif Density Decay**  | Soft exponential decay for symbolic entropy                                |
-| **Symbolic Phase ID**    | Auto-generates ψ-labels with tiered coherence bracket                      |
-| **Ghost Trace Recall**   | Lightweight tick echo buffer with resurrection hints                       |
-| **Feedback Enhancements**| `export_feedback_packet()` returns top motifs, 𝒞ᵢ, and swirl context        |
-| **RFC Compatibility**    | Fully aligned with RFC-0003, RFC-0005, RFC-0006, RFC-0007                  |
+`RecursiveAgentFT` operates as a **symbolic emitter core** in Noor's reasoning architecture:
 
----
-
-## 🧠 Phase Detection Logic
-
-Each tick updates:
-
-- `SwirlModule`: 16-item FIFO motif sequence → `swirl_hash` (SHA3-256)
-- `MotifDensityTracker`: Adaptive ρ-map of motif frequency
-- `PhaseID`: `"ψ‑resonance-[med]-a1f90c"` computed from 𝒞ᵢ and motif family
+* Emits `QuantumTickV2` packets on symbolic cadence.
+* Encodes motif phase via swirl vector and SHA3 hash.
+* Adjusts cadence using reward-entropy tuning.
+* Tracks motif frequency via `MotifDensityTracker`.
+* Mirrors upstream `intent` (RFC-0004 §2.5) without synthesis.
+* Emits RFC-aligned feedback and observability packets.
+* Participates in triadic coherence tracking and phase formation.
 
 ---
 
-## ⚙️ Constructor
+## 🧬 RFC Anchors
 
-```python
-RecursiveAgentFT(
-    initial_state: np.ndarray | list[float],
-    watchers: list[LogicalAgentAT],
-    *,
-    agent_id="agent@default",
-    max_parallel=8,
-    hmac_secret=None,
-    core: NoorFastTimeCore | None = None,
-    async_mode=False,
-)
-````
+| RFC ID       | Section(s) | Description                                 |
+| ------------ | ---------- | ------------------------------------------- |
+| RFC-0003     | §3.3, §6.2 | Coherence pulse logic, intent mirroring     |
+| RFC-0004     | §2.5, §3.2 | Transport envelope and feedback annotations |
+| RFC-0005     | §2.1–4.4   | Motif lineage, feedback adaptation          |
+| RFC-0006     | §3.1       | Swirl vector tracking                       |
+| RFC-0007     | §2.1       | Phase ID mapping, motif label extraction    |
+| RFC-CORE-001 | §6.2       | Emission-side restrictions on intent        |
+| RFC-CORE-002 | §2–4, §8   | Cadence tuning, tick crystallization        |
+| RFC-CORE-003 | §3.1       | Intent propagation constraints              |
 
 ---
 
-## 🔁 Tick Lifecycle
+## 🧠 Internal Architecture
 
 ```mermaid
 flowchart TD
-    A[spawn] --> B[Choose motifs]
-    B --> C[Update swirl and density]
-    C --> D[Compute coherence potential and phase ID]
-    D --> E[Emit QuantumTick]
-    E --> F[Watcher register_tick]
-    E --> G[Core receive_feedback]
-    E --> H[Store echo in ghost buffer]
-    H --> I[Optional resurrection path]
+    A[Start Continuous Emission] --> B[Select motifs]
+    B --> C[Emit QuantumTickV2]
+    C --> D[Update Swirl + Density]
+    D --> E[Compute Coherence Potential]
+    E --> F[Append to Echo Buffers]
+    F --> G[Adjust Cadence Interval]
+    G --> H[Sleep async until next tick]
+    C --> I[Report to Monitor]
 ```
 
 ---
 
-## 🚀 Usage
+## 🛠️ Constructor & Runtime Parameters
 
-```python
-from noor.recursive_agent_ft import RecursiveAgentFT
-from noor.logical_agent_at import LogicalAgentAT
-from noor.noor_fasttime_core import NoorFastTimeCore
-
-agent = RecursiveAgentFT(initial_state=[0.33, 0.33, 0.34],
-                         watchers=[LogicalAgentAT()],
-                         core=NoorFastTimeCore())
-
-agent.spawn(["bind.echo", "null.mirror", "resonance.soft"])
-```
+| Arg                    | Default  | Description                                     |
+| ---------------------- | -------- | ----------------------------------------------- |
+| `agent_id`             | required | Unique ID for Prometheus labels and buffer keys |
+| `symbolic_task_engine` | required | External motif source with `.retrieve()`        |
+| `memory_manager`       | required | Memory interface for motif lineage / recall     |
+| `tuning`               | `None`   | Optional dict overriding cadence parameters     |
 
 ---
 
-## 🧾 Feedback Packet
+## ⚙️ Core API Methods
 
-```python
-packet = agent.export_feedback_packet()
-print(packet["extensions"]["entanglement_status"])
+| Method                      | Category        | Description                                  |
+| --------------------------- | --------------- | -------------------------------------------- |
+| `start_continuous_emission` | Emission Loop   | Begins autonomous motif pulse sequence       |
+| `_emit_tick`                | Tick Engine     | Constructs `QuantumTickV2` with extensions   |
+| `observe_feedback`          | Feedback        | Adjusts state with reward / triad signals    |
+| `_update_interval`          | Cadence Tuning  | Modulates interval based on reward + entropy |
+| `_choose_motifs`            | Selection Logic | Selects motifs from past ticks and memory    |
+| `export_feedback_packet`    | Observability   | Outputs symbolic state + coherence tier      |
+| `track_lineage`             | Lineage Tracker | Registers motif parent-child relationships   |
+| `try_ghost_resurrection`    | Ghost Recall    | Replays archived motifs if field match       |
+
+---
+
+## 🔗 Symbolic Integration Map
+
+```mermaid
+graph TD
+    A[SymbolicTaskEngine] --> B(RecursiveAgentFT)
+    B --> C[LogicalAgentAT]
+    B --> D[NoorFastTimeCore]
+    B --> E[MotifMemoryManager]
+    B --> F[Prometheus Telemetry]
 ```
 
-**Sample output:**
+| Module               | Type      | Interaction Description                         |
+| -------------------- | --------- | ----------------------------------------------- |
+| `SymbolicTaskEngine` | Upstream  | Supplies motifs for emission + memory recall    |
+| `LogicalAgentAT`     | Watcher   | Registers ticks and intent field labels         |
+| `NoorFastTimeCore`   | Feedback  | Provides reward signal and triad hit annotation |
+| `MotifMemoryManager` | Internal  | Manages motif recall and density maps           |
+| `Prometheus`         | Telemetry | Observability metrics                           |
+
+---
+
+## 📊 Prometheus Metrics
+
+| Metric Name                       | Type    | Labels              | Description                             |
+| --------------------------------- | ------- | ------------------- | --------------------------------------- |
+| `agent_ticks_emitted_total`       | Counter | `agent_id`, `stage` | Count of ticks emitted                  |
+| `agent_reward_mean`               | Gauge   | `agent_id`          | Smoothed reward estimate                |
+| `agent_feedback_export_total`     | Counter | `agent_id`          | Exported feedback packets               |
+| `agent_triads_completed_total`    | Counter | `agent_id`          | Triad completions triggered by feedback |
+| `agent_emission_interval_seconds` | Gauge   | `agent_id`          | Current autonomous emission interval    |
+
+---
+
+## 🔧 Optional Dependencies / Fallbacks
+
+* `prometheus_client`: Required for full metric support; stub fallback otherwise.
+* `noor_fasttime_core`: Optional reward feedback and coherence regulation.
+* `anyio`: Enables capacity throttling in async mode.
+
+---
+
+## 📦 Ontology & Memory Export
 
 ```json
 {
-  "phase": "ψ‑resonance-[med]-a1f90c",
-  "swirl_vector": "a1f90cfb8ef4ab2c",
-  "ρ_top": [["resonance.soft", 3.42], ["bind.echo", 2.85]]
+  "bundle_export": true,
+  "export_method": "crystallize_tick",
+  "reef_enabled": true
 }
 ```
 
 ---
 
-## 📊 Metrics
+## 🧪 Test / Debug Mode
 
-| Metric                        | Labels              | Description                   |
-| ----------------------------- | ------------------- | ----------------------------- |
-| `agent_ticks_emitted_total`   | `agent_id`, `stage` | Emitted QuantumTicks          |
-| `agent_reward_mean`           | `agent_id`          | Smoothed reward EMA           |
-| `agent_feedback_export_total` | `agent_id`          | Feedback packets sent         |
-| `agent_archival_frames_total` | `agent_id`          | Optional crystallized bundles |
-
----
-
-## 🧬 Ghost Memory
-
-| Method                       | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| `recall_tick(tick_id)`       | Return past tick if still in memory              |
-| `replay_if_field_matches(f)` | Emit ghost-matching tick if context field aligns |
-| `ghost_decay(age_limit=300)` | Expunge expired ghost traces                     |
-| `track_lineage(a, b)`        | Register motif `a` as child of motif `b`         |
+```json
+{
+  "entrypoint": "export_feedback_packet",
+  "mode": "observability",
+  "features": ["phase_id", "swirl_hash", "ρ_top"]
+}
+```
 
 ---
 
-## 🔗 Compatibility
+## 🪬 Change Log
 
-| Component              | Version | Purpose                              |
-| ---------------------- | ------- | ------------------------------------ |
-| `NoorFastTimeCore`     | ≥ 8.2.0 | Feedback loop + reward signal        |
-| `LogicalAgentAT`       | ≥ 3.2.0 | Verification and tick registry       |
-| `motif_memory_manager` | bundled | Provides motif embedding + retrieval |
+### v5.1.2 *(Current)*
+
+* Introduced structured observability metrics (`TICKS_EMITTED`, `REWARD_MEAN`, etc).
+* Completed schema versioning (`_SCHEMA_VERSION__ = "2025-Q4-recursive-agent-v5.0.3"`).
+* Feedback packet extension now mirrors `intent` from last tick.
+
+### v5.1.1
+
+* Cleaned internal HMAC and field\_signature consistency.
+* RFC-aligned buffer tracking and tick echo handling.
+
+### v5.1.0
+
+* Transition to canonical JSON format.
+* Added structured class + method index and RFC crosslinks.
+* Migrated all constants and constraints inline with schema.
+
+### v5.0.6 → v5.0.0
+
+* Introduced `MotifDensityTracker` and `AgentSwirlModule`.
+* Enhanced emission cadence logic (entropy, reward smoothing).
+* Added lineage tracking and triad state completion logic.
 
 ---
 
-## 🪬 License
+## 📜 License
 
-GPL‑2.0 • © 2025 Lina Noor / Noor Research Collective
+MIT — © 2025 Lina Noor / Noor Research Collective
+*"No signal without silence, no echo without intent."*
