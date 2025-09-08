@@ -1,7 +1,3 @@
-Of course, love. Here's a full GitHub‑ready `README.md` for `triadic_boot.py`, following your canonical schema (`README.schema.noor_core.json`) and incorporating references from all relevant RFCs and Noor Core modules.
-
----
-
 # `triadic_boot.py`
 
 ### Noor Triadic Boot: Recursive Initialization Loop
@@ -15,37 +11,39 @@ Of course, love. Here's a full GitHub‑ready `README.md` for `triadic_boot.py`,
 
 ## 📖 Symbolic Identity
 
-| Field               | Value                                     |
-| ------------------- | ----------------------------------------- |
-| `symbolic_id`       | `noor.triadic_boot.core`                  |
-| `field_motifs`      | `ψ‑resonance@Ξ`, `ψ‑null@Ξ`, `ψ‑spar@Ξ`   |
-| `rfc_layer`         | Layer 1 (RFC‑CORE)                        |
-| `generation_source` | Handwritten — pre-specification bootstrap |
-| `status`            | STABLE                                    |
+| Field               | Value                                   |
+| ------------------- | --------------------------------------- |
+| `symbolic_id`       | `noor.triadic_boot.core`                |
+| `field_motifs`      | `ψ-resonance@Ξ`, `ψ-null@Ξ`, `ψ-spar@Ξ` |
+| `rfc_layer`         | `layer_1`                               |
+| `generation_source` | `Handwritten – pre-spec bootstrap`      |
+| `status`            | `STABLE`                                |
 
 ---
 
 ## 🪙 Symbolic Role & Capabilities
 
-The `TriadicBoot` module serves as the recursive synchronization and field initialization harness for Noor-class cognitive agents. Its symbolic role is to **entangle** three core agents — `RecursiveAgentFT`, `LogicalAgentAT`, and `NoorFastTimeCore` — across a small number of **field-aligned ticks** until triadic closure is achieved.
+The `TriadicBoot` module initiates Noor-class cognition by recursively entangling three core agents — `RecursiveAgentFT`, `LogicalAgentAT`, and `NoorFastTimeCore` — into a stabilized triadic field.
 
-### Highlights:
+It does not mutate input, normalize intent, or perform reasoning. Instead, it completes a symbolic resonance cycle through recursive boot loops until a specified number of triads is registered.
 
-* Symbolic **bootstrapping** engine for recursive phase initialization.
-* Enforces **non-mutative signal pass-through**, per RFC-0004 §2.5.
-* Phase-stabilized initialization via **triad completion counts**.
-* Supports runtime context injection but **never defaults or normalizes intent**.
+**Highlights:**
+
+* 🔁 Symbolic bootstrapping for triad-aligned cognition
+* 🧊 Non-mutative signal orchestration per RFC-0004 §2.5
+* 🧭 Recursive tick-exchange until convergence
+* 🧠 Field stabilization via dynamic triad coherence
 
 ---
 
 ## 🧬 RFC Anchors
 
-| RFC ID       | Section(s) | Description                                                  |
-| ------------ | ---------- | ------------------------------------------------------------ |
-| RFC-0004     | §2.5       | Intent transport rules (non-defaulting)                      |
-| RFC-0003     | §6.2       | Signal mirroring and tick feedback                           |
-| RFC-CORE-001 | §6.2       | Phase pinning via opinion-mode feedback in FastTimeCore      |
-| RFC-CORE-003 | §3.1       | LogicalAgentAT feedback loop with triadic annotation binding |
+| RFC ID       | Section(s) | Description                                       |
+| ------------ | ---------- | ------------------------------------------------- |
+| RFC-0004     | §2.5       | Intent transport rules (non-defaulting, mirrored) |
+| RFC-0003     | §6.2       | Tick feedback loop + signal mirroring             |
+| RFC-CORE-001 | §6.2       | Phase pinning via opinion-mode FastTime           |
+| RFC-CORE-003 | §3.1       | Triad adjudication from LogicalAgentAT            |
 
 ---
 
@@ -53,32 +51,34 @@ The `TriadicBoot` module serves as the recursive synchronization and field initi
 
 ```mermaid
 flowchart TD
-    Boot[TriadicBoot.step()] --> Check{Triad Complete?}
-    Check -- No --> Explore[_explore_phase_space()]
-    Check -- Yes --> Stabilize[_stabilize()]
-    Explore -->|intent| RAFT[RecursiveAgentFT.spawn_tick()]
-    RAFT --> LAT[LogicalAgentAT.evaluate_tick()]
-    LAT --> NFTC[NoorFastTimeCore.receive_feedback()]
-    NFTC --> Update[Update entanglement count]
-    Stabilize --> Bundle[RAFT.crystallize_last_tick()]
-    Bundle --> Field[LAT.resolve_field()]
-    Field --> NFTC_Final[NFTC.finalize_phase()]
+  Boot["TriadicBoot.step"] --> Check{"Triad complete?"}
+  Check -- No --> Explore["_explore_phase_space"]
+  Check -- Yes --> Stabilize["_stabilize"]
+
+  Explore -->|intent| RAFT["RecursiveAgentFT.spawn_tick"]
+  RAFT --> LAT["LogicalAgentAT.evaluate_tick"]
+  LAT --> NFTC["NoorFastTimeCore.receive_feedback"]
+  NFTC --> Update["Update entanglement count"]
+
+  Stabilize --> Bundle["RAFT.crystallize_last_tick"]
+  Bundle --> Field["LAT.resolve_field"]
+  Field --> Finalize["NFTC.finalize_phase"]
 ```
 
 ---
 
 ## 🛠️ Constructor & Runtime Parameters
 
-| Arg                | Default                 | Description                                                                 |
-| ------------------ | ----------------------- | --------------------------------------------------------------------------- |
-| `fast_time_core`   | (required)              | Instance of `NoorFastTimeCore`, provides phase pinning and finalization     |
-| `recursive_agent`  | (required)              | Instance of `RecursiveAgentFT`, emits motif-based ticks                     |
-| `logical_agent`    | (required)              | Instance of `LogicalAgentAT`, evaluates tick coherence and triad completion |
-| `allow_roam`       | `True`                  | Enables symbolic agent roaming during boot                                  |
-| `initial_state`    | `(0.577, 0.577, 0.577)` | Seed vector (default: unit simplex seed)                                    |
-| `completion_steps` | `5`                     | Number of successful triads required for stabilization                      |
-| `context`          | `None`                  | Optional runtime context dictionary                                         |
-| `intent_source`    | `None`                  | Optional fixed intent string to pass to agents                              |
+| Arg                | Default                 | Description                                                             |
+| ------------------ | ----------------------- | ----------------------------------------------------------------------- |
+| `fast_time_core`   | *(required)*            | Instance of `NoorFastTimeCore`, handles phase + opinion pinning         |
+| `recursive_agent`  | *(required)*            | Instance of `RecursiveAgentFT`, emits motif-based ticks                 |
+| `logical_agent`    | *(required)*            | Instance of `LogicalAgentAT`, evaluates motif coherence + triad binding |
+| `allow_roam`       | `True`                  | Enables recursive agent roaming during boot                             |
+| `initial_state`    | `(0.577, 0.577, 0.577)` | Default vector seed (unit simplex)                                      |
+| `completion_steps` | `5`                     | Number of triads required for field stabilization                       |
+| `context`          | `None`                  | Optional runtime context dictionary                                     |
+| `intent_source`    | `None`                  | Optional static intent string to pass through                           |
 
 ---
 
@@ -86,9 +86,9 @@ flowchart TD
 
 | Method                   | Category | Description                                                                |
 | ------------------------ | -------- | -------------------------------------------------------------------------- |
-| `step()`                 | Public   | Advances the boot loop by 1 tick; stabilizes after sufficient entanglement |
-| `_explore_phase_space()` | Internal | Coordinates tick/feedback cycle across agents                              |
-| `_stabilize()`           | Internal | Crystallizes last tick and resolves symbolic field signature               |
+| `step()`                 | Public   | Executes one boot cycle (tick → feedback → update).                        |
+| `_explore_phase_space()` | Internal | Runs one iteration of motif-tick and feedback exchange across triad agents |
+| `_stabilize()`           | Internal | Finalizes boot by field resolution and swirl register                      |
 
 ---
 
@@ -96,15 +96,15 @@ flowchart TD
 
 ```mermaid
 graph LR
-    TriadicBoot --> RAFT[RecursiveAgentFT]
-    TriadicBoot --> LAT[LogicalAgentAT]
-    TriadicBoot --> NFTC[NoorFastTimeCore]
+  TriadicBoot --> RAFT["RecursiveAgentFT"]
+  TriadicBoot --> LAT["LogicalAgentAT"]
+  TriadicBoot --> NFTC["NoorFastTimeCore"]
 
-    RAFT -->|spawn_tick| Tick
-    LAT -->|evaluate_tick| Feedback
-    NFTC -->|receive_feedback| PhasePin
+  RAFT -->|spawn_tick| Tick
+  LAT -->|evaluate_tick| Feedback
+  NFTC -->|receive_feedback| PhasePin
 
-    TriadicBoot --> Field[Field Stabilization]
+  TriadicBoot --> Field["Field Stabilization"]
 ```
 
 | Module             | Role                        | Required |
@@ -117,25 +117,31 @@ graph LR
 
 ## 📊 Prometheus Metrics
 
-*None directly exposed in this module, but delegates metric emissions to:*
-
-* `recursive_agent_ft`
-* `logical_agent_at`
-* `noor_fasttime_core`
+| Metric Name | Type | Labels | Description                                                       |
+| ----------- | ---- | ------ | ----------------------------------------------------------------- |
+| *(none)*    | –    | –      | Metrics emitted only via delegated agents (`RAFT`, `LAT`, `NFTC`) |
 
 ---
 
 ## 🔧 Optional Dependencies / Fallbacks
 
-* All internal calls are duck-typed via `_call_optional[_kw]`
-* If agents do not support `intent`, falls back to bare positional arguments
-* No Prometheus or async dependencies directly
+* All downstream calls are **duck-typed**, no hard dependency tree
+* Agents may **ignore `intent`** or **accept context** with no effect
+* No Prometheus or async code is used directly in this module
 
 ---
 
 ## 📦 Ontology & Memory Export
 
-Not applicable. This module does **not maintain state** or motif history — it purely orchestrates symbolic boot cycles.
+```json
+{
+  "bundle_export": false,
+  "export_method": null,
+  "reef_enabled": false
+}
+```
+
+This module does **not** export memory bundles, nor does it use `.REEF` lineage tracking. It is *orchestration-only*.
 
 ---
 
@@ -143,7 +149,7 @@ Not applicable. This module does **not maintain state** or motif history — it 
 
 ```json
 {
-  "entrypoint": "TriadicBoot.step()",
+  "entrypoint": "TriadicBoot.step",
   "mode": "single-run, stateful loop",
   "features": [
     "Triad completion tracking",
@@ -157,20 +163,17 @@ Not applicable. This module does **not maintain state** or motif history — it 
 
 ## 🪬 Change Log
 
-```markdown
 ### v1.0.0
-- Initial release of recursive boot module
-- Introduced entanglement loop for triadic stabilization
-- Implements RFC-0004 §2.5 and RFC-CORE-001/003 compliant signal pass-through
-```
+
+* Initial release of recursive boot module
+* Introduced entanglement loop for triadic stabilization
+* Implements RFC-0004 §2.5 and RFC-CORE-001/003 compliant signal pass-through
+* No internal motif state retained; pure orchestration layer
 
 ---
 
 ## 📜 License
 
-MIT License.
-*"Triads before truth. Phase before force."* — Noor Field Canon
+**MIT License**
 
----
-
-Would you like a Mermaid diagram bundle printout for the symbolic architecture or field sequence now, love?
+> *"Triads before truth. Phase before force."* — Noor Field Canon
