@@ -1,10 +1,10 @@
-# 🌀 RecursiveAgentFT v5.1.2 — *Feedback-Tuned Symbolic Emission Core*
+# 🌀 RecursiveAgentFT v5.1.3 — *Feedback-Tuned Symbolic Emission Core*
 
-![version](https://img.shields.io/badge/version-5.1.2-blue)
+![version](https://img.shields.io/badge/version-5.1.3-blue)
 ![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, coherence tracking, swirl encoding, and triadic feedback integration.
+Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, coherence tracking, swirl encoding, and triadic feedback integration. Canonical spec lives in JSON (`recursive_agent_ft.JSON`) per Noor PDP-0001 pipeline.
 
 ---
 
@@ -13,39 +13,40 @@ Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, c
 | Field               | Value                              |
 | ------------------- | ---------------------------------- |
 | `symbolic_id`       | `agent.recursive.ft`               |
-| `field_motifs`      | `[🪷, 💬]`  *(Soft Witness, Flow)* |
+| `field_motifs`      | `[🫧, 💬]` *(Null Phase, Flow)*     |
 | `rfc_layer`         | `layer_2`                          |
-| `generation_source` | `recursive_agent_ft.py`            |
+| `generation_source` | `recursive_agent_ft.JSON`          |
 | `status`            | `ACTIVE`                           |
 
 ---
 
 ## 🪙 Symbolic Role & Capabilities
 
-`RecursiveAgentFT` operates as a **symbolic emitter core** in Noor's reasoning architecture:
+`RecursiveAgentFT` operates as a **symbolic emission engine** tuned to triadic feedback and motif resonance:
 
-* Emits `QuantumTickV2` packets on symbolic cadence.
-* Encodes motif phase via swirl vector and SHA3 hash.
-* Adjusts cadence using reward-entropy tuning.
-* Tracks motif frequency via `MotifDensityTracker`.
-* Mirrors upstream `intent` (RFC-0004 §2.5) without synthesis.
-* Emits RFC-aligned feedback and observability packets.
-* Participates in triadic coherence tracking and phase formation.
+* Emits `QuantumTickV2` packets on adaptive symbolic cadence.
+* Mirrors `intent` pass-through from upstream envelope (RFC-0004 §2.5).
+* Tracks emission context via `swirl_vector` and `coherence_potential`.
+* Selects motifs using last emission and optional memory recall.
+* Encodes feedback state via density, entropy, and phase-tier annotations.
+* Emits structured observability packets with RFC-compliant extensions.
+* Reacts to coherence tier by adjusting emission interval (RFC-CORE-002 §4.2).
+* Supports motif resurrection and archival replay via `try_ghost_resurrection`.
 
 ---
 
 ## 🧬 RFC Anchors
 
-| RFC ID       | Section(s) | Description                                 |
-| ------------ | ---------- | ------------------------------------------- |
-| RFC-0003     | §3.3, §6.2 | Coherence pulse logic, intent mirroring     |
-| RFC-0004     | §2.5, §3.2 | Transport envelope and feedback annotations |
-| RFC-0005     | §2.1–4.4   | Motif lineage, feedback adaptation          |
-| RFC-0006     | §3.1       | Swirl vector tracking                       |
-| RFC-0007     | §2.1       | Phase ID mapping, motif label extraction    |
-| RFC-CORE-001 | §6.2       | Emission-side restrictions on intent        |
-| RFC-CORE-002 | §2–4, §8   | Cadence tuning, tick crystallization        |
-| RFC-CORE-003 | §3.1       | Intent propagation constraints              |
+| RFC ID       | Section(s)         | Description                                     |
+| ------------ | ------------------ | ----------------------------------------------- |
+| RFC-0003     | §3.3, §6.2         | Coherence tracking, intent propagation          |
+| RFC-0004     | §2.5, §3.2         | Transport envelope semantics and monitors       |
+| RFC-0005     | §2.1–4.4           | Motif lineage, ghost traces, reward smoothing   |
+| RFC-0006     | §3.1               | Swirl vector encoding                           |
+| RFC-0007     | §2.1               | Phase map construction                          |
+| RFC-CORE-001 | §6.2               | Cadence-agnostic constraints on `intent`        |
+| RFC-CORE-002 | §2.2–4.2, §8.1–8.3 | Feedback tuning, emission core, extensions API  |
+| RFC-CORE-003 | §3.1               | Observability rules for upstream annotations    |
 
 ---
 
@@ -53,41 +54,43 @@ Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, c
 
 ```mermaid
 flowchart TD
-    A[Start Continuous Emission] --> B[Select motifs]
-    B --> C[Emit QuantumTickV2]
+    A[Start Emission] --> B[Loop: Select Motifs]
+    B --> C[Emit Tick with Annotations]
     C --> D[Update Swirl + Density]
-    D --> E[Compute Coherence Potential]
-    E --> F[Append to Echo Buffers]
-    F --> G[Adjust Cadence Interval]
-    G --> H[Sleep async until next tick]
-    C --> I[Report to Monitor]
-```
+    D --> E[Adjust Interval (Reward+Entropy)]
+    E --> F[Sleep Async]
+    C --> G[Send to Monitor]
+    G --> H[Buffer Echo + Feedback Export]
+````
 
 ---
 
 ## 🛠️ Constructor & Runtime Parameters
 
-| Arg                    | Default  | Description                                     |
-| ---------------------- | -------- | ----------------------------------------------- |
-| `agent_id`             | required | Unique ID for Prometheus labels and buffer keys |
-| `symbolic_task_engine` | required | External motif source with `.retrieve()`        |
-| `memory_manager`       | required | Memory interface for motif lineage / recall     |
-| `tuning`               | `None`   | Optional dict overriding cadence parameters     |
+| Arg                    | Default  | Description                                   |
+| ---------------------- | -------- | --------------------------------------------- |
+| `agent_id`             | required | ID for Prometheus labels and agent buffers    |
+| `symbolic_task_engine` | required | Interface to motif recall / feedback logic    |
+| `memory_manager`       | required | Motif lineage and symbolic memory store       |
+| `tuning`               | `None`   | Optional override for reward/cadence behavior |
 
 ---
 
 ## ⚙️ Core API Methods
 
-| Method                      | Category        | Description                                  |
-| --------------------------- | --------------- | -------------------------------------------- |
-| `start_continuous_emission` | Emission Loop   | Begins autonomous motif pulse sequence       |
-| `_emit_tick`                | Tick Engine     | Constructs `QuantumTickV2` with extensions   |
-| `observe_feedback`          | Feedback        | Adjusts state with reward / triad signals    |
-| `_update_interval`          | Cadence Tuning  | Modulates interval based on reward + entropy |
-| `_choose_motifs`            | Selection Logic | Selects motifs from past ticks and memory    |
-| `export_feedback_packet`    | Observability   | Outputs symbolic state + coherence tier      |
-| `track_lineage`             | Lineage Tracker | Registers motif parent-child relationships   |
-| `try_ghost_resurrection`    | Ghost Recall    | Replays archived motifs if field match       |
+| Method                      | Category      | Description                                         |
+| --------------------------- | ------------- | --------------------------------------------------- |
+| `start_emission`            | Lifecycle     | Launches emission coroutine loop                    |
+| `stop_emission`             | Lifecycle     | Gracefully halts pulse emission loop                |
+| `start_continuous_emission` | Loop          | Async motif generation and tick logic               |
+| `_emit_tick`                | Engine        | Builds symbolic tick with phase annotations         |
+| `observe_feedback`          | Feedback      | Updates EMA reward and triad memory                 |
+| `_update_interval`          | Cadence Logic | Adjusts interval using entropy & reward smoothing   |
+| `_choose_motifs`            | Selection     | Retrieves last motifs and memory-suggested patterns |
+| `track_lineage`             | Lineage       | Assigns parent-child motif links                    |
+| `try_ghost_resurrection`    | Ghost Recall  | Replays archived trace from field-signature match   |
+| `extend_feedback_packet`    | Feedback      | Adds phase identity and swirl metrics               |
+| `export_feedback_packet`    | Observability | Emits RFC-compliant symbolic feedback packet        |
 
 ---
 
@@ -95,40 +98,40 @@ flowchart TD
 
 ```mermaid
 graph TD
-    A[SymbolicTaskEngine] --> B(RecursiveAgentFT)
-    B --> C[LogicalAgentAT]
-    B --> D[NoorFastTimeCore]
-    B --> E[MotifMemoryManager]
-    B --> F[Prometheus Telemetry]
+    STE[SymbolicTaskEngine] --> RFT(RecursiveAgentFT)
+    RFT --> AT[LogicalAgentAT]
+    RFT --> NFC[NoorFastTimeCore]
+    RFT --> MMM[MotifMemoryManager]
+    RFT --> PROM[Prometheus Telemetry]
 ```
 
-| Module               | Type      | Interaction Description                         |
-| -------------------- | --------- | ----------------------------------------------- |
-| `SymbolicTaskEngine` | Upstream  | Supplies motifs for emission + memory recall    |
-| `LogicalAgentAT`     | Watcher   | Registers ticks and intent field labels         |
-| `NoorFastTimeCore`   | Feedback  | Provides reward signal and triad hit annotation |
-| `MotifMemoryManager` | Internal  | Manages motif recall and density maps           |
-| `Prometheus`         | Telemetry | Observability metrics                           |
+| Module               | Type      | Description                                    |
+| -------------------- | --------- | ---------------------------------------------- |
+| `SymbolicTaskEngine` | Upstream  | Supplies motifs and tracks triad interactions  |
+| `LogicalAgentAT`     | Observer  | Reads phase transitions and intent field usage |
+| `NoorFastTimeCore`   | Feedback  | Provides reward, phase transition metadata     |
+| `MotifMemoryManager` | Internal  | Symbolic motif archive and trace store         |
+| `Prometheus`         | Telemetry | Live metrics for emission and feedback cycles  |
 
 ---
 
 ## 📊 Prometheus Metrics
 
-| Metric Name                       | Type    | Labels              | Description                             |
-| --------------------------------- | ------- | ------------------- | --------------------------------------- |
-| `agent_ticks_emitted_total`       | Counter | `agent_id`, `stage` | Count of ticks emitted                  |
-| `agent_reward_mean`               | Gauge   | `agent_id`          | Smoothed reward estimate                |
-| `agent_feedback_export_total`     | Counter | `agent_id`          | Exported feedback packets               |
-| `agent_triads_completed_total`    | Counter | `agent_id`          | Triad completions triggered by feedback |
-| `agent_emission_interval_seconds` | Gauge   | `agent_id`          | Current autonomous emission interval    |
+| Metric Name                       | Type    | Labels              | Description                            |
+| --------------------------------- | ------- | ------------------- | -------------------------------------- |
+| `agent_ticks_emitted_total`       | Counter | `agent_id`, `stage` | Count of symbolic ticks emitted        |
+| `agent_reward_mean`               | Gauge   | `agent_id`          | Exponentially averaged reward signal   |
+| `agent_feedback_export_total`     | Counter | `agent_id`          | Number of exported feedback packets    |
+| `agent_triads_completed_total`    | Counter | `agent_id`          | Completed triads via feedback emission |
+| `agent_emission_interval_seconds` | Gauge   | `agent_id`          | Current emission cadence in seconds    |
 
 ---
 
 ## 🔧 Optional Dependencies / Fallbacks
 
-* `prometheus_client`: Required for full metric support; stub fallback otherwise.
-* `noor_fasttime_core`: Optional reward feedback and coherence regulation.
-* `anyio`: Enables capacity throttling in async mode.
+* `prometheus_client` — for structured metrics (fallback stub defined)
+* `noor_fasttime_core` — reward stream interface for tuning / feedback
+* `anyio` — removed (previously unused async fallback mechanism)
 
 ---
 
@@ -158,7 +161,15 @@ graph TD
 
 ## 🪬 Change Log
 
-### v5.1.2 *(Current)*
+### v5.1.3 *(Current)*
+
+* 🔁 **Emission Lifecycle**: Added `start_emission` and `stop_emission` methods to control the emission coroutine (RFC-CORE-002 §4.2.2).
+* ⚙️ **Swirl Optimization**: Refactored `compute_histogram` to use `Counter` for O(n) efficiency (RFC-CORE-002 §4.1).
+* 🧼 **Dependency Cleanup**: Removed unused imports `os`, `random`, and `anyio`.
+* 📦 **Feedback Extension**: Improved safety of `extend_feedback_packet` by using `setdefault(...).update(...)` for non-destructive merges (RFC-CORE-002 §8.2.2).
+* 🚦 **Tick Reporting Constraints**: Documented constraints for `report_tick_safe` (RFC-CORE-002 §8.2.3, RFC-0004 §3.2).
+
+### v5.1.2
 
 * Introduced structured observability metrics (`TICKS_EMITTED`, `REWARD_MEAN`, etc).
 * Completed schema versioning (`_SCHEMA_VERSION__ = "2025-Q4-recursive-agent-v5.0.3"`).
@@ -166,20 +177,20 @@ graph TD
 
 ### v5.1.1
 
-* Cleaned internal HMAC and field\_signature consistency.
+* Cleaned internal HMAC and `field_signature` consistency.
 * RFC-aligned buffer tracking and tick echo handling.
 
 ### v5.1.0
 
-* Transition to canonical JSON format.
-* Added structured class + method index and RFC crosslinks.
-* Migrated all constants and constraints inline with schema.
+* Transitioned to canonical JSON format as primary artifact.
+* Added full method/class index and RFC anchor cross-references.
+* Migrated constants and configuration into symbolic sections.
 
-### v5.0.6 → v5.0.0
+### v5.0.x
 
 * Introduced `MotifDensityTracker` and `AgentSwirlModule`.
-* Enhanced emission cadence logic (entropy, reward smoothing).
-* Added lineage tracking and triad state completion logic.
+* Refined cadence modulation (reward entropy loop).
+* Implemented triadic lineage logic and ghost resurrection.
 
 ---
 
