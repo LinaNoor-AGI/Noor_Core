@@ -20,7 +20,7 @@
 | `field_motifs`      | `ψ‑resonance@Ξ`, `ψ‑null@Ξ`, `ψ‑spar@Ξ` |
 | `rfc_layer`         | Layer 2                                 |
 | `generation_source` | Mixed (RFC + Precanonical)              |
-| `status`            | Hybrid Canonical / In-Transition        |
+| `status`            | Stable        |
 
 ---
 
