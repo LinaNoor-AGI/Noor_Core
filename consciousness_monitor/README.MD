@@ -100,9 +100,9 @@ graph TD
     TICK[Quantum Tick RFC-0003]
     TICK --> COHERENCE[Coherence Map RFC-0006]
     COHERENCE --> CM[ConsciousnessMonitor]
-    CM --> BUNDLE[motif_bundle()]
-    CM --> GEOM[geometric_signature()]
-    CM --> FEEDBACK[feedback_packet()]
+    CM --> BUNDLE[motif_bundle]
+    CM --> GEOM[geometric_signature]
+    CM --> FEEDBACK[feedback_packet]
     CM --> METRICS[Prometheus Metrics]
 ```
 
