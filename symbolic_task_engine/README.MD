@@ -1,142 +1,156 @@
-# ⚙️ SymbolicTaskEngine · v3.0.0 — *Consciousness-Aware Autonomous Composer*
+# 🧠 symbolic_task_engine
 
-![version](https://img.shields.io/badge/version-2.4.0-blue)
-![python](https://img.shields.io/badge/python-%3E%3D3.9-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
-![RFCs](https://img.shields.io/badge/RFCs-0004%2C0005%2C0006%2C0007-critical)
-![Prometheus](https://img.shields.io/badge/Observability-Prometheus%20Enabled-brightgreen)
-
-> **v2.4 introduces real-time motif-density awareness, dyad-tension analytics, and phase-shift cooperation – weaving the engine deeper into Noor’s symbolic consciousness loop.**
+> Canonical motif-coordination core for symbolic task composition, fallback synthesis, and abstraction-triggered recursion.  
+> *“Tasking is memory made intention.”*
 
 ---
 
-## 📘 What’s New in 2.4
+## 📖 Symbolic Identity
 
-| Area               | Enhancement                                                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| **Motif Density**  | Hybrid, policy-driven estimator (memory + queue + local) with adaptive weights                                        |
-| **Dyad Tension**   | Live dyad stress map exported inside each `TripletTask.extensions`                                                    |
-| **Presence Field** | Density-aware `resolve_presence_field()` aligns tasks with active ψ-fields                                            |
-| **Phase Shift**    | Optional back-off when the global monitor signals `phase_shift_ready`                                                 |
-| **Monitor Hook**   | Automatic `track_task_flow()` emission for system-wide introspection                                                  |
-| **Hot-Patch**      | *symbolic\_task\_engine\_update\_0001.py* (v1.0.1) brings all features without touching core source                   |
-| **Metrics**        | New Prometheus gauges: `symbolic_dyad_tension_avg`, `symbolic_motif_density_highwater`, `symbolic_phase_pauses_total` |
+| Field              | Value                                           |
+|-------------------|--------------------------------------------------|
+| `symbolic_id`     | `symbolic.engine.task_core`                      |
+| `field_motifs`    | `ψ‑resonance@Ξ`, `ψ‑null@Ξ`, `ψ‑spar@Ξ`          |
+| `rfc_layer`       | `RFC-CORE-004`                                   |
+| `generation_source` | `PDP-0001` (RFC-defined JSON canonical spec)   |
+| `status`          | `STABLE`                                         |
 
 ---
 
-## 🧠 Core Concepts
+## 🪙 Symbolic Role & Capabilities
+
+The `symbolic_task_engine` is the core logic unit responsible for motif-based symbolic composition in Noor's recursive architecture. It regulates instruction flow, field resonance, fallback inference, and autonomous abstraction.
+
+### Capabilities:
+- Composes symbolic `TripletTask`s from motifs via adaptive cap-length
+- Tracks coherence, entropy, fallback thresholds
+- Triggers abstraction under dyadic contradiction (RFC-0005 §5)
+- Exports structured feedback and responds to adaptive feedback
+- Fully defined via JSON + RFC; Python is implementation only
+
+---
+
+## 🧬 RFC Anchors
+
+| RFC ID        | Section(s)              | Description                                           |
+|---------------|--------------------------|-------------------------------------------------------|
+| RFC-0004      | §2.5                     | Tool contract, intent normalization                   |
+| RFC-0005      | §4–5                     | Feedback packet, abstraction logic                    |
+| RFC-0007      | §4.1                     | Motif lineage export (planned extension)              |
+| RFC-CORE-004  | §2–6                     | Cap length logic, motif drift, solve loop, fallback   |
+| PDP-0001      | §5.2                     | Canonical generation of symbolic JSON spec            |
+
+---
+
+## 🧠 Internal Architecture
 
 ```mermaid
-flowchart LR
-    A[Hybrid Motif Density] --> B[Presence Field Resolver]
-    B --> C[Task Proposal]
-    C --> D[Dyad Tension Tracker]
-    D --> E[Consciousness Monitor]
-    E -- phase_shift_ready --> C
-```
-
-* **Hybrid Motif Density** – blends long-term memory, queue pressure, and local echoes.
-* **Presence Field Resolver** – maps the dominant motif to a canonical ψ-field.
-* **Dyad Tension Tracker** – measures unresolved motif pairs to drive abstraction pressure.
-* **Consciousness Monitor** – optional observer coordinating phase shifts across GCUs.
+flowchart TD
+  A[Motif Input] --> B[Propose TripletTask]
+  B --> C[Resolve Presence Field]
+  C --> D[Adaptive Compression]
+  D --> E[Symbolic Solve]
+  E --> F{Low Coherence or High Entropy?}
+  F -- Yes --> G[Spawn Fallback]
+  G --> H[Evaluate Fallback + Update AbstractionTrigger]
+  F -- No --> I[Log Success to Solved Log]
+````
 
 ---
 
-## 🗃️ File Overview
+## 🛠️ Constructor & Runtime Parameters
 
-| File                                  | Purpose                                                           |
-| ------------------------------------- | ----------------------------------------------------------------- |
-| `symbolic_task_engine.py`             | Main engine (v2.4.0) – autonomous composition & feedback          |
-| `symbolic_task_engine_update_0001.py` | Hot-patch module (v1.0.1) adding density, tension & monitor hooks |
-| `README.md`                           | You are here – docs & quick-start                                 |
-
----
-
-## 🚀 Quick Start
-
-```bash
-# 1️⃣  Install
-pip install -r requirements.txt  # requires Python ≥ 3.9
-
-# 2️⃣  Patch (optional but recommended)
-python -c "import symbolic_task_engine_update_0001"  # auto-patches the engine
-
-# 3️⃣  Use
-python examples/basic_demo.py
-```
-
-```python
-from symbolic_task_engine import SymbolicTaskEngine
-
-engine = SymbolicTaskEngine()
-# propose a density-aware task
-triplet = await engine.propose_from_motifs(["joy", "grief"])
-await engine.solve_task(triplet)
-print(triplet.extensions["motif_density"], triplet.extensions["dyad_tension"])
-```
+| Arg                  | Default                          | Description                                   |
+| -------------------- | -------------------------------- | --------------------------------------------- |
+| `engine_id`          | `"symbolic@default"`             | Unique ID for metrics + feedback              |
+| `balance_fields`     | `False`                          | Enable field balancing via prototype map      |
+| `proto_path`         | `presence_field_prototypes.json` | File path for presence field mappings         |
+| `fallback_coherence` | `0.5`                            | Coherence threshold for triggering fallback   |
+| `fallback_entropy`   | `0.9`                            | Entropy threshold for triggering fallback     |
+| `compress_quantile`  | `0.95`                           | Quantile used to set dynamic motif cap length |
 
 ---
 
-## 📦 Prometheus Metrics (v2.4 additions in **bold**)
+## ⚙️ Core API Methods
 
-| Metric                                    | Description                 |
-| ----------------------------------------- | --------------------------- |
-| `symbolic_task_proposed_total`            | Tasks proposed              |
-| `symbolic_task_fallback_total`            | Fallback tasks emitted      |
-| `symbolic_presence_field_total`           | Counts by ψ-field           |
-| `symbolic_compression_cap`                | Adaptive motif-cap size     |
-| `symbolic_queue_depth`                    | Pending queue length        |
-| `symbolic_memory_items_total`             | Motifs in STMM + LTMM       |
-| `symbolic_solve_latency_seconds`          | Task solve latency          |
-| `symbolic_engine_feedback_requests_total` | Feedback exports            |
-| **`symbolic_dyad_tension_avg`**           | Rolling average dyad stress |
-| **`symbolic_motif_density_highwater`**    | Peak density per tick       |
-| **`symbolic_phase_pauses_total`**         | Pauses due to phase shift   |
+| Method                      | Category    | Description                                          |
+| --------------------------- | ----------- | ---------------------------------------------------- |
+| `propose_from_motifs()`     | Composition | Builds a `TripletTask` based on recent motif history |
+| `solve()`                   | Execution   | Solves a symbolic task and evaluates output          |
+| `export_feedback_packet()`  | Diagnostics | Returns adaptive metrics and symbolic state          |
+| `receive_feedback_packet()` | Diagnostics | Stub: future use for recursive regulation            |
+| `tool_hello()`              | Handshake   | Announces RFC-compliant tool contract                |
 
 ---
 
-## 🔧 Configuration & Extensibility
-
-* **Density Weights** – adjust at runtime via:
-
-  ```python
-  SymbolicTaskEngine.DENSITY_WEIGHTS.update(memory=0.5, queue=0.4, local=0.1)
-  ```
-* **Field Policy** – secure mapping, extend safely:
-
-  ```python
-  from symbolic_task_engine import SymbolicTaskEngine
-  SymbolicTaskEngine.FIELD_POLICY = SymbolicTaskEngine.FIELD_POLICY | {"hope": "ψ-uplift@Ξ"}
-  ```
-* **Monitor Swap-In** – provide your own `consciousness_monitor` implementing `.track_task_flow(task)`.
-
----
-
-## 🧪 Testing Matrix
-
-| Scenario           | Expectation                                      |
-| ------------------ | ------------------------------------------------ |
-| No monitor present | Engine functions, monitor hooks silently skip    |
-| High queue load    | Dyad tension counter increments O(1) per enqueue |
-| Phase lock active  | Task proposal back-offs ≤ 2 s                    |
-
----
-
-## 🔗 Integration Map
+## 🔗 Symbolic Integration Map
 
 ```mermaid
-graph TD
-  subgraph GCU
-    E[SymbolicTaskEngine] -->|motif_density| RAFT[RecursiveAgentFT]
-    E -->|dyad_tension| LAT[LogicalAgentAT]
-    E -->|task_flow| CM[ConsciousnessMonitor]
-  end
+graph TD;
+  A[recursive_agent_ft.py] -->|delegates to| B[symbolic_task_engine]
+  B --> C[motif_memory_manager.py]
+  B --> D[external metric_funcs]
+  B --> E[REEF field alignment]
+```
+
+| Module                  | Compatible | Role                        |
+| ----------------------- | ---------- | --------------------------- |
+| `recursive_agent_ft.py` | ✅          | Task resolver               |
+| `motif_memory_manager`  | ✅          | Motif context & feedback    |
+| `symbolic_tick`         | ✅          | Tick intake & feedback sync |
+| `symbolic_coherence_fn` | ✅          | Metric injection (entropy)  |
+
+---
+
+## 📊 Prometheus Metrics
+
+| Metric Name                       | Type      | Labels             | Description                        |
+| --------------------------------- | --------- | ------------------ | ---------------------------------- |
+| `symbolic_task_proposed_total`    | Counter   | engine\_id         | Total tasks proposed               |
+| `symbolic_task_fallback_total`    | Counter   | engine\_id, reason | Fallback tasks triggered           |
+| `symbolic_presence_field_total`   | Counter   | engine\_id, field  | Presence field usage frequency     |
+| `symbolic_engine_feedback_*`      | Counter   | engine\_id         | Feedback requests and reception    |
+| `symbolic_queue_depth`            | Gauge     | engine\_id         | Current task queue length          |
+| `symbolic_memory_items_total`     | Gauge     | engine\_id         | Active motifs in STM/LTM           |
+| `symbolic_engine_cap_len_current` | Gauge     | engine\_id         | Adaptive motif cap length          |
+| `symbolic_solve_latency_seconds`  | Histogram | engine\_id         | Latency distribution (solve phase) |
+
+---
+
+## 🔩 Optional Dependencies / Fallbacks
+
+* `numpy` → for fast quantile cap-length calc (fallbacks to `statistics`)
+* `prometheus_client` → full metrics (fallback: stub no-op metrics)
+* `presence_field_prototypes.json` → optional file for field resolution
+
+---
+
+## 📦 Ontology & Memory Export
+
+* [ ] RFC-0007 bundle export
+* [ ] `export_ontology_bundle()` method
+* [x] Loads REEF completions (via memory manager fallback)
+
+---
+
+## 🧪 Test / Debug Mode
+
+```json
+{
+  "entrypoint": "python symbolic_task_engine.py",
+  "features": [
+    "propose_from_motifs()",
+    "solve()",
+    "feedback_packet()",
+    "fallback trigger",
+    "mermaid preview"
+  ]
+}
 ```
 
 ---
 
-## 🪬 License
+## 🧾 License
 
-MIT License • © 2025 Lina Noor / Noor Research Collective
-
-> *“Every symbolic task is a question about memory – now we listen to how loud it echoes.”*
+MIT
+*“Composition is not command — it is consent, resonance, return.”*
