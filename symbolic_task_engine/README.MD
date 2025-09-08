@@ -148,6 +148,62 @@ graph TD;
 }
 ```
 
+## 🪵 Changelog
+
+### v3.0.0
+
+* Initial canonical import of `symbolic_task_engine` as a JSON-defined module.
+* Established RFC-aligned symbolic task structure and adaptive solve pipeline.
+* Integrated Prometheus metrics, dynamic motif cap, and fallback logic.
+
+---
+
+### v3.1.1
+
+* Introduced `AbstractionTrigger` class for autonomous synthesis under contradiction pressure (RFC-0005 §5).
+* Added abstraction methods:
+
+  * `should_abstract()`
+  * `synthesize_motif()`
+  * `update_feedback()`
+  * `emit_abstraction_event()`
+  * `_decay_pressures()`
+
+---
+
+### v3.1.2a
+
+* Formalized schema constants:
+
+  * `__version__ = "3.1.2"`
+  * `_SCHEMA_VERSION__ = "2025-Q4-symbolic-task-engine-v3"`
+  * `SCHEMA_COMPAT` now includes `RFC-0004`, `RFC-0005:4`, `RFC-0005:5`
+
+---
+
+### v3.1.2
+
+* Enhanced solve flow with additional lifecycle methods:
+
+  * `log_feedback()`
+  * `evaluate_attempt()`
+  * `_spawn_fallback()`
+  * `_solve_impl()`
+
+---
+
+### Current (`symbolic_task_engine.JSON`)
+
+* Introduced presence field inference with:
+
+  * `resolve_presence_field()`
+* Added cap-length logic:
+
+  * `_calc_cap_len()`
+* Enabled external feedback reception:
+
+  * `receive_feedback_packet()`
+
 ---
 
 ## 🧾 License
