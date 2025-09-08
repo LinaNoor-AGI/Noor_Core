@@ -97,13 +97,13 @@ flowchart TD
 
 ```mermaid
 graph TD
-    tick[Quantum Tick (RFC‑0003)]
-    tick --> Φ[Φ_coherence_map (RFC‑0006)]
-    Φ --> CM[ConsciousnessMonitor]
-    CM --> MB[export_motif_bundle()]
-    CM --> GS[export_geometric_signature()]
-    CM --> FP[export_feedback_packet()]
-    CM --> PM[Prometheus Metrics]
+    TICK[Quantum Tick RFC-0003]
+    TICK --> COHERENCE[Coherence Map RFC-0006]
+    COHERENCE --> CM[ConsciousnessMonitor]
+    CM --> BUNDLE[motif_bundle()]
+    CM --> GEOM[geometric_signature()]
+    CM --> FEEDBACK[feedback_packet()]
+    CM --> METRICS[Prometheus Metrics]
 ```
 
 | Module                | RFC-Aligned | Output Format  | Required |
