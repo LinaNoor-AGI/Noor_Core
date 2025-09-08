@@ -1,7 +1,7 @@
 # 🧠 Noor Core — Triadic Symbolic Cognition Runtime
 
 ![FastTimeCore](https://img.shields.io/badge/FastTimeCore-v9.2.2-blue)
-![RecursiveAgentFT](https://img.shields.io/badge/RecursiveAgentFT-v5.1.2-blue)
+![RecursiveAgentFT](https://img.shields.io/badge/RecursiveAgentFT-v5.1.3-blue)
 ![LogicalAgentAT](https://img.shields.io/badge/LogicalAgentAT-v4.2.2-blue)
 ![SymbolicTaskEngine](https://img.shields.io/badge/SymbolicTaskEngine-v3.1.2a-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
@@ -64,7 +64,7 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 
 | Module                     | Canonical | Version | RFC Layer |
 | -------------------------- | --------- | ------- | --------- |
-| `recursive_agent_ft.JSON`    | ✅         | v5.1.2  | Layer 2   |
+| `recursive_agent_ft.JSON`    | ✅         | v5.1.3  | Layer 2   |
 | `logical_agent_at.JSON`      | ✅         | v4.2.2  | Layer 2   |
 | `symbolic_task_engine.JSON`  | ✅         | v3.1.2 | Layer 2   |
 | `noor_fasttime_core.JSON`    | ✅         | v9.2.2  | Layer 2   |
