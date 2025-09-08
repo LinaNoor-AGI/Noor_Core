@@ -134,7 +134,7 @@
   "title": "Module-Level Constants",
   "module_level_constants": {
     "recursive_agent_ft.py": [
-      { "name": "__version__", "value": "\"5.1.2\"" },
+      { "name": "__version__", "value": "\"5.1.3\"" },
       { "name": "_SCHEMA_VERSION__", "value": "\"2025-Q4-recursive-agent-v5.0.3\"" },
       { "name": "SCHEMA_COMPAT", "value": "[\"RFC-0003:3.3\", \"RFC-0005:4\", \"RFC-CORE-002:3\"]" }
     ]
