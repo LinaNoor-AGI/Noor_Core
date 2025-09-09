@@ -27,7 +27,8 @@
 #   - This artifact can be regenerated from the source RFCs and specification.
 #   - Manual modifications should be avoided to maintain symbolic alignment.
 #
-# Fidelity Score: ~99.4% - FAIL
+# RFC-CORE Fidelity Score: ~99.4% - FAIL
+# Layer_2 Fidelity Score: ~99.4% - FAIL
 
 """Feedback-Tuned Symbolic Pulse Engine for Motif Resonance and Coherence Tracking."""
 

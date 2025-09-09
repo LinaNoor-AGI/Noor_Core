@@ -27,7 +27,8 @@ density tracking.
 Its behavior is strictly governed by the contracts defined in the Noor
 RFC and RFC-CORE series.
 
-Fidelity Score: ~99.3% - FAIL
+RFC-CORE Fidelity Score: ~99.3% - FAIL
+Layer_2 Fidelity Score: ~99.3% - FAIL
 """
 
 import time

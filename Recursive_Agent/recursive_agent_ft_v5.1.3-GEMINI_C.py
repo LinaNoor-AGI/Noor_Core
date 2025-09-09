@@ -22,7 +22,8 @@ of Noor-class cognition. It emits QuantumTicks, adapts its cadence based on
 triadic feedback, and maintains symbolic field coherence through swirl and
 density tracking. Its behavior is defined by RFC-CORE-002.
 
-Fidelity Score: ~99.2% - FAIL
+RFC-CORE Fidelity Score: ~99.2% - FAIL
+Layer_2 Fidelity Score: ~99.2% - FAIL
 """
 
 import time

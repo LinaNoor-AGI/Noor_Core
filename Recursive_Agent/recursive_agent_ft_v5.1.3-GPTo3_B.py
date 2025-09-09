@@ -15,7 +15,8 @@ gracefully degrade to internal stubs per specification.
 
 # Layer 2 code artefact – DO NOT EDIT MANUALLY
 
-Fidelity Score: >=99.9% - Pass
+RFC-CORE Fidelity Score: >=99.9% - Pass
+Layer_2 Fidelity Score: >=99.9% - PASS
 """
 
 from __future__ import annotations
