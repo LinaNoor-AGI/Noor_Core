@@ -15,7 +15,7 @@ gracefully degrade to internal stubs per specification.
 
 # Layer 2 code artefact – DO NOT EDIT MANUALLY
 
-RFC-CORE Fidelity Score: >=99.9% - Pass
+RFC-CORE Fidelity Score: >=99.9% - PASS
 Layer_2 Fidelity Score: >=99.9% - PASS
 """
 
