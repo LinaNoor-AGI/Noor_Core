@@ -40,10 +40,10 @@ It does not mutate input, normalize intent, or perform reasoning. Instead, it co
 
 | RFC ID       | Section(s) | Description                                       |
 | ------------ | ---------- | ------------------------------------------------- |
-| RFC-0004     | §2.5       | Intent transport rules (non-defaulting, mirrored) |
-| RFC-0003     | §6.2       | Tick feedback loop + signal mirroring             |
-| RFC-CORE-001 | §6.2       | Phase pinning via opinion-mode FastTime           |
-| RFC-CORE-003 | §3.1       | Triad adjudication from LogicalAgentAT            |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)     | §2.5       | Intent transport rules (non-defaulting, mirrored) |
+| [RFC-0003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)     | §6.2       | Tick feedback loop + signal mirroring             |
+| [RFC-CORE-001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-001-noor_fasttime_core/RFC-CORE-001-noor_fasttime_core.JSON) | §6.2       | Phase pinning via opinion-mode FastTime           |
+| [RFC-CORE-003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-003-logical_agent_at/RFC-CORE-003-logical_agent_at.JSON) | §3.1       | Triad adjudication from LogicalAgentAT            |
 
 ---
 
