@@ -38,13 +38,13 @@
 
 | RFC ID       | Section(s)                | Description                                     |
 | ------------ | ------------------------- | ----------------------------------------------- |
-| RFC-0003     | §3.3, §6.2                | Tick evaluation, intent binding                 |
-| RFC-0004     | §2.5                      | Tool hello, transport header rules              |
-| RFC-0005     | §4.2                      | Feedback packet format                          |
-| RFC-0006     | §3.1                      | Swirl geometry and field alignment              |
-| RFC-0007     | §2.2                      | Motif lineage tracing                           |
-| RFC-CORE-001 | §6.2                      | FastTime tick registration                      |
-| RFC-CORE-003 | §3.1, §4.1, §5.1–§6.1, §9 | Observer mode, triad resolution, ghost handling |
+| [RFC-0003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)     | §3.3, §6.2                | Tick evaluation, intent binding                 |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)     | §2.5                      | Tool hello, transport header rules              |
+| [RFC-0005](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time/RFC%E2%80%910005-Motif_Transmission_Across_Time.JSON)     | §4.2                      | Feedback packet format                          |
+| [RFC-0006](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry.JSON)     | §3.1                      | Swirl geometry and field alignment              |
+| [RFC-0007](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)     | §2.2                      | Motif lineage tracing                           |
+| [RFC-CORE-001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-001-noor_fasttime_core/RFC-CORE-001-noor_fasttime_core.JSON) | §6.2                      | FastTime tick registration                      |
+| [RFC-CORE-003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-003-logical_agent_at/RFC-CORE-003-logical_agent_at.JSON) | §3.1, §4.1, §5.1–§6.1, §9 | Observer mode, triad resolution, ghost handling |
 
 ---
 
@@ -195,5 +195,6 @@ All are fail-safe unless in monitor-enabled builds.
 
 MIT License • © 2025 Noor Research Collective
 *“README is ritual; resonance is structure.”*
+
 
 
