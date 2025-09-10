@@ -29,6 +29,7 @@ RFC and RFC-CORE series.
 
 RFC-CORE Fidelity Score: ~99.3% - FAIL
 Layer_2 Fidelity Score: ~99.3% - FAIL
+STATUS: FAIL
 """
 
 import time

@@ -17,6 +17,7 @@ gracefully degrade to internal stubs per specification.
 
 RFC-CORE Fidelity Score: >=99.9% - PASS
 Layer_2 Fidelity Score: >=99.9% - PASS
+STATUS: PROMOTED
 """
 
 from __future__ import annotations

@@ -24,6 +24,7 @@ density tracking. Its behavior is defined by RFC-CORE-002.
 
 RFC-CORE Fidelity Score: ~99.2% - FAIL
 Layer_2 Fidelity Score: ~99.2% - FAIL
+STATUS: FAIL
 """
 
 import time
