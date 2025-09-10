@@ -37,12 +37,12 @@ It listens for swirl density changes, detects entanglement events, and exposes d
 
 | RFC ID        | Section(s)           | Description                                         |
 |---------------|----------------------|-----------------------------------------------------|
-| `RFC‑0003`    | §6.2                 | Tick Format & Extension Fields                      |
-| `RFC‑0004`    | §2.5                 | Tool Contracts & Introspection                      |
-| `RFC‑0005`    | §4.2                 | Feedback Packet Specification                       |
-| `RFC‑0006`    | §3.1                 | Swirl Density & Phase Transition Boundaries         |
-| `RFC‑0007`    | §4.1, §6             | Motif Bundle and Field Geometry Format              |
-| `RFC‑CORE‑005`| §2.2, §5, §8         | Observability and Swirl Field Reasoning Core        |
+| [`RFC‑0003`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)    | §6.2                 | Tick Format & Extension Fields                      |
+| [`RFC‑0004`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)    | §2.5                 | Tool Contracts & Introspection                      |
+| [`RFC‑0005`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time/RFC%E2%80%910005-Motif_Transmission_Across_Time.JSON)    | §4.2                 | Feedback Packet Specification                       |
+| [`RFC‑0006`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry.JSON)    | §3.1                 | Swirl Density & Phase Transition Boundaries         |
+| [`RFC‑0007`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)    | §4.1, §6             | Motif Bundle and Field Geometry Format              |
+| [`RFC‑CORE‑005`](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-005-consciousness_monitor/RFC-CORE-005-consciousness_monitor.JSON)| §2.2, §5, §8         | Observability and Swirl Field Reasoning Core        |
 
 ---
 
@@ -50,14 +50,14 @@ It listens for swirl density changes, detects entanglement events, and exposes d
 
 ```mermaid
 flowchart TD
-    A[Quantum Tick] --> B[Coherence Map]
-    B --> C[observe_tick]
-    C --> D[_extract_fields]
-    D --> E{Swirl threshold met}
-    E --> F[_record_entanglement]
-    E --> H[_check_phase_shift]
-    F --> G[Prometheus Update]
-    H --> G
+A[Quantum Tick] --> B[Coherence Map]
+B --> C[observe_tick]
+C --> D[_extract_fields]
+D --> E{Swirl threshold met}
+E --> F[_record_entanglement]
+E --> H[_check_phase_shift]
+F --> G[Prometheus Update]
+H --> G
 ````
 
 ---
@@ -97,13 +97,13 @@ flowchart TD
 
 ```mermaid
 graph TD
-    TICK[Quantum Tick RFC-0003]
-    TICK --> COHERENCE[Coherence Map RFC-0006]
-    COHERENCE --> CM[ConsciousnessMonitor]
-    CM --> BUNDLE[motif_bundle]
-    CM --> GEOM[geometric_signature]
-    CM --> FEEDBACK[feedback_packet]
-    CM --> METRICS[Prometheus Metrics]
+TICK[Quantum Tick RFC-0003]
+TICK --> COHERENCE[Coherence Map RFC-0006]
+COHERENCE --> CM[ConsciousnessMonitor]
+CM --> BUNDLE[motif_bundle]
+CM --> GEOM[geometric_signature]
+CM --> FEEDBACK[feedback_packet]
+CM --> METRICS[Prometheus Metrics]
 ```
 
 | Module                | RFC-Aligned | Output Format  | Required |
@@ -141,9 +141,9 @@ graph TD
 
 ```json
 {
-  "bundle_export": true,
-  "export_method": "export_motif_bundle()",
-  "reef_enabled": true
+"bundle_export": true,
+"export_method": "export_motif_bundle()",
+"reef_enabled": true
 }
 ```
 
@@ -153,9 +153,9 @@ graph TD
 
 ```json
 {
-  "entrypoint": "observe_tick()",
-  "mode": "symbolic-passive",
-  "features": ["phase hysteresis", "entanglement logging", "metric stubs"]
+"entrypoint": "observe_tick()",
+"mode": "symbolic-passive",
+"features": ["phase hysteresis", "entanglement logging", "metric stubs"]
 }
 ```
 
