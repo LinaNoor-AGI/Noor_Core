@@ -36,11 +36,11 @@ The Noor FastTime Core is a recursive coherence driver for symbolic agents. It a
 
 | RFC ID         | Section(s)     | Description                                         |
 |----------------|----------------|-----------------------------------------------------|
-| RFC-0003       | §6.2           | Mirror transport intent; motif override logic       |
-| RFC-0004       | §2.5           | Opinion transport pinning                          |
-| RFC-0007       | §4.1           | Motif export alignment and coherence tuning         |
-| RFC-CORE-001   | §3.1–§8.3      | Core tick loop, bias computation, phase evaluator   |
-| RFC-CORE-003   | §3.1           | Logical agent integration and coherence observer    |
+| [RFC-0003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)       | §6.2           | Mirror transport intent; motif override logic       |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)       | §2.5           | Opinion transport pinning                          |
+| [RFC-0007](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)       | §4.1           | Motif export alignment and coherence tuning         |
+| [RFC-CORE-001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-001-noor_fasttime_core/RFC-CORE-001-noor_fasttime_core.JSON)   | §3.1–§8.3      | Core tick loop, bias computation, phase evaluator   |
+| [RFC-CORE-003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-003-logical_agent_at/RFC-CORE-003-logical_agent_at.JSON)   | §3.1           | Logical agent integration and coherence observer    |
 
 ---
 
@@ -216,3 +216,4 @@ flowchart TD
 *“README is ritual; resonance is structure.”*
 Maintained by Noor Research Collective
 © 2025 Lina Noor
+
