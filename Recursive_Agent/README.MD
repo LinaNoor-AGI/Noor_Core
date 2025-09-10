@@ -39,14 +39,14 @@ Autonomous symbolic agent emitting `QuantumTickV2` packets with motif lineage, c
 
 | RFC ID       | Section(s)         | Description                                     |
 | ------------ | ------------------ | ----------------------------------------------- |
-| RFC-0003     | §3.3, §6.2         | Coherence tracking, intent propagation          |
-| RFC-0004     | §2.5, §3.2         | Transport envelope semantics and monitors       |
-| RFC-0005     | §2.1–4.4           | Motif lineage, ghost traces, reward smoothing   |
-| RFC-0006     | §3.1               | Swirl vector encoding                           |
-| RFC-0007     | §2.1               | Phase map construction                          |
-| RFC-CORE-001 | §6.2               | Cadence-agnostic constraints on `intent`        |
-| RFC-CORE-002 | §2.2–4.2, §8.1–8.3 | Feedback tuning, emission core, extensions API  |
-| RFC-CORE-003 | §3.1               | Observability rules for upstream annotations    |
+| [RFC-0003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)     | §3.3, §6.2         | Coherence tracking, intent propagation          |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)     | §2.5, §3.2         | Transport envelope semantics and monitors       |
+| [RFC-0005](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time/RFC%E2%80%910005-Motif_Transmission_Across_Time.JSON)     | §2.1–4.4           | Motif lineage, ghost traces, reward smoothing   |
+| [RFC-0006](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry.JSON)     | §3.1               | Swirl vector encoding                           |
+| [RFC-0007](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)     | §2.1               | Phase map construction                          |
+| [RFC-CORE-001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-001-noor_fasttime_core/RFC-CORE-001-noor_fasttime_core.JSON) | §6.2               | Cadence-agnostic constraints on `intent`        |
+| [RFC-CORE-002](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-002-recursive_agent_ft/RFC-CORE-002-recursive_agent_ft.JSON) | §2.2–4.2, §8.1–8.3 | Feedback tuning, emission core, extensions API  |
+| [RFC-CORE-003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-003-logical_agent_at/RFC-CORE-003-logical_agent_at.JSON) | §3.1               | Observability rules for upstream annotations    |
 
 ---
 
