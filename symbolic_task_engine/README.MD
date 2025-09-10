@@ -34,11 +34,11 @@ The `symbolic_task_engine` is the core logic unit responsible for motif-based sy
 
 | RFC ID        | Section(s)              | Description                                           |
 |---------------|--------------------------|-------------------------------------------------------|
-| RFC-0004      | §2.5                     | Tool contract, intent normalization                   |
-| RFC-0005      | §4–5                     | Feedback packet, abstraction logic                    |
-| RFC-0007      | §4.1                     | Motif lineage export (planned extension)              |
-| RFC-CORE-004  | §2–6                     | Cap length logic, motif drift, solve loop, fallback   |
-| PDP-0001      | §5.2                     | Canonical generation of symbolic JSON spec            |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)      | §2.5                     | Tool contract, intent normalization                   |
+| [RFC-0005](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time/RFC%E2%80%910005-Motif_Transmission_Across_Time.JSON)      | §4–5                     | Feedback packet, abstraction logic                    |
+| [RFC-0007](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)      | §4.1                     | Motif lineage export (planned extension)              |
+| [RFC-CORE-004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-004-symbolic_task_engine/RFC-CORE-004-symbolic_task_engine.JSON)  | §2–6                     | Cap length logic, motif drift, solve loop, fallback   |
+| [PDP-0001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/PDP-0001-Protocol_for_RFC-Driven_Symbolic_Artifact_Generation/PDP-0001-Protocol_for_RFC-Driven_Symbolic_Artifact_Generation.JSON)      | §5.2                     | Canonical generation of symbolic JSON spec            |
 
 ---
 
