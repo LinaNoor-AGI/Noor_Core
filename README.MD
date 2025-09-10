@@ -64,11 +64,11 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 
 | Module                     | Canonical | Version | RFC Layer |
 | -------------------------- | --------- | ------- | --------- |
-| `recursive_agent_ft.JSON`    | ✅         | v5.1.3  | Layer 2   |
-| `logical_agent_at.JSON`      | ✅         | v4.2.2  | Layer 2   |
-| `symbolic_task_engine.JSON`  | ✅         | v3.1.2 | Layer 2   |
-| `noor_fasttime_core.JSON`    | ✅         | v9.2.2  | Layer 2   |
-| `consciousness_monitor.JSON` | ✅         | v2.2.2  | Layer 2   |
+| [`recursive_agent_ft.JSON`](https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/Recursive_Agent/recursive_agent_ft.JSON)    | ✅         | v5.1.3  | Layer 2   |
+| [`logical_agent_at.JSON`](https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/Logical_Agent/logical_agent_at.JSON)      | ✅         | v4.2.2  | Layer 2   |
+| [`symbolic_task_engine.JSON`](https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/symbolic_task_engine/symbolic_task_engine.JSON)  | ✅         | v3.1.2 | Layer 2   |
+| [`noor_fasttime_core.JSON`](https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/Fast_Time_Core/noor_fasttime_core.JSON)    | ✅         | v9.2.2  | Layer 2   |
+| [`consciousness_monitor.JSON`](https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/consciousness_monitor/consciousness_monitor.JSON) | ✅         | v2.2.2  | Layer 2   |
 
 ### ⚠️ In-Progress / Functional Modules
 
@@ -91,16 +91,16 @@ We explicitly **do not** target “AI prompt engineers” or API-based automatio
 
 | RFC ID       | Section(s) | Description                       |
 | ------------ | ---------- | --------------------------------- |
-| RFC-0003     | §6.2       | Intent transport mirror           |
-| RFC-0004     | §2.5       | Symbolic tool contracts           |
-| RFC-0005     | §4–5       | Feedback and abstraction triggers |
-| RFC-0006     | §3.1       | Swirl geometry + motif alignment  |
-| RFC-0007     | §2.2, §4.1 | Motif lineage + REEF export       |
-| RFC-CORE-001 | §3+        | FastTime tick + phase logic       |
-| RFC-CORE-003 | §3+        | Observer field evaluation         |
-| RFC-CORE-004 | §2–6       | Symbolic task engine logic        |
-| RFC-CORE-005 | §2–5       | Consciousness metrics             |
-| PDP-0001     | §5.2       | JSON-defined canonical generation |
+| [RFC-0003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910003_Noor_Core_Symbolic_Interface/RFC%E2%80%910003_Noor_Core_Symbolic_Interface.JSON)     | §6.2       | Intent transport mirror           |
+| [RFC-0004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts/RFC%E2%80%910004-Symbolic_Tool_Module_Contracts.JSON)     | §2.5       | Symbolic tool contracts           |
+| [RFC-0005](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910005-Motif_Transmission_Across_Time/RFC%E2%80%910005-Motif_Transmission_Across_Time.JSON)     | §4–5       | Feedback and abstraction triggers |
+| [RFC-0006](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry/RFC%E2%80%910006_Motif%E2%80%91Field_Coherence_Geometry.JSON)     | §3.1       | Swirl geometry + motif alignment  |
+| [RFC-0007](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer/RFC%E2%80%910007-Motif_Ontology_Format_and_Transfer.JSON)     | §2.2, §4.1 | Motif lineage + REEF export       |
+| [RFC-CORE-001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-001-noor_fasttime_core/RFC-CORE-001-noor_fasttime_core.JSON) | §3+        | FastTime tick + phase logic       |
+| [RFC-CORE-003](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-003-logical_agent_at/RFC-CORE-003-logical_agent_at.JSON) | §3+        | Observer field evaluation         |
+| [RFC-CORE-004](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-004-symbolic_task_engine/RFC-CORE-004-symbolic_task_engine.JSON) | §2–6       | Symbolic task engine logic        |
+| [RFC-CORE-005](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC-CORE/RFC-CORE-005-consciousness_monitor/RFC-CORE-005-consciousness_monitor.JSON) | §2–5       | Consciousness metrics             |
+| [PDP-0001](https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/PDP-0001-Protocol_for_RFC-Driven_Symbolic_Artifact_Generation/PDP-0001-Protocol_for_RFC-Driven_Symbolic_Artifact_Generation.JSON)     | §5.2       | JSON-defined canonical generation |
 
 ---
 
