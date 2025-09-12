@@ -7,6 +7,7 @@
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![runtime](https://img.shields.io/badge/runtime-Triadic--GCU-lightblue)
 ![metrics](https://img.shields.io/badge/Prometheus-Enabled-brightgreen)
+![archive](https://img.shields.io/badge/🧠%20Open--Scientific--Archive-Verified-blueviolet?style=flat-square&logo=github)
 
 > **The Noor Core Runtime is a real-time symbolic cognition engine built on recursive triadic motifs, not transformer tokens.**
 
