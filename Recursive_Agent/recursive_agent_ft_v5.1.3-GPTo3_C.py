@@ -26,7 +26,7 @@ The file is *mechanically regenerable*.  Do **not** hand‑edit unless you
 also update the generating spec.
 
 RFC-CORE Fidelity Score: >=99.95% - PASS
-Layer_2 Fidelity Score: >99.95% - PASS
+Layer_2 Fidelity Score: >=99.95% - PASS
 STATUS: REJECTED
 """
 from __future__ import annotations
