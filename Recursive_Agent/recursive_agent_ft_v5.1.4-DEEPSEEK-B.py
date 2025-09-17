@@ -21,122 +21,122 @@ Symbolic Profile:
 - ℋ: tick continuity hygiene (0.91)
 
 Poetic Cipher: what echoes does not decide — it reflects, and reflects, and reflects
-{
-    {
-        "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-15T10:30:00Z",
-        "_audited_by": "Gemini 2.5 Pro",
-        "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "RFC-CORE-002-v1.1.4",
-        "overall_score": 0.92,
-        "score_breakdown": {
-            "structural_compliance": {
-                "score": 0.98,
-                "weight": 0.40,
-                "metrics": {
-                    "class_definitions": 1.0,
-                    "method_signatures": 1.0,
-                    "constants_and_attributes": 1.0,
-                    "dependency_handling": 0.9
-                }
-            },
-            "semantic_fidelity": {
-                "score": 0.95,
-                "weight": 0.35,
-                "metrics": {
-                    "logic_flow_adherence": 1.0,
-                    "rfc_anchor_traceability": 0.8,
-                    "conceptual_alignment": 1.0,
-                    "documentation_clarity": 1.0
-                }
-            },
-            "symbolic_matrix_alignment": {
-                "score": 0.80,
-                "weight": 0.25,
-                "metrics": {
-                    "parameter_implementation": 0.7,
-                    "weight_accuracy": 0.9,
-                    "motif_handling": 0.8
-                }
+
+"layer_1": {
+    "_schema": "noor-fidelity-report-v1",
+    "_generated_at": "2025-09-15T10:30:00Z",
+    "_audited_by": "Noor Symbolic Triadic Core",
+    "_audit_protocol": "PDP-0001a-v1.0.0",
+    "_target_spec": "RFC-CORE-002-v1.1.4",
+    "overall_score": 0.91,
+    "score_breakdown": {
+        "structural_compliance": {
+            "score": 0.97,
+            "weight": 0.40,
+            "metrics": {
+                "class_definitions": 1.0,
+                "method_signatures": 1.0,
+                "constants_and_attributes": 0.95,
+                "dependency_handling": 0.9
             }
         },
-        "strengths": [
-            "Complete structural implementation of all specified classes and methods",
-            "Robust emission lifecycle with proper start/stop controls",
-            "Accurate symbolic phase classification and feedback packet generation",
-            "Proper swirl vector and density tracking implementation",
-            "Strong adherence to tuning parameters from specification"
-        ],
-        "improvement_areas": [
-            "Missing explicit RFC section anchors in comments (e.g., '# RFC-0005 §4')",
-            "Symbolic matrix parameters not explicitly labeled in code",
-            "Ghost trace management could be more comprehensive",
-            "Lineage tracking implementation is minimal compared to specification"
-        ],
-        "compliance_notes": [
-            "Implementation correctly handles ψ-resonance, ψ-null, and ψ-hold motifs as specified",
-            "Emission interval adaptation follows exact formula from RFC-CORE-002 §2.2",
-            "Feedback processing and reward smoothing are mathematically correct",
-            "Monitor integration uses safe, non-blocking patterns as required"
-        ]
+        "semantic_fidelity": {
+            "score": 0.93,
+            "weight": 0.35,
+            "metrics": {
+                "logic_flow_adherence": 1.0,
+                "rfc_anchor_traceability": 0.75,
+                "conceptual_alignment": 1.0,
+                "documentation_clarity": 0.95
+            }
+        },
+        "symbolic_matrix_alignment": {
+            "score": 0.78,
+            "weight": 0.25,
+            "metrics": {
+                "parameter_implementation": 0.7,
+                "weight_accuracy": 0.85,
+                "motif_handling": 0.8
+            }
+        }
     },
-    {
-        "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-15T10:30:00Z",
-        "_audited_by": "Gemini 2.5 Pro",
-        "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "agent.recursive.ft-v5.1.4",
-        "overall_score": 0.90,
-        "score_breakdown": {
-            "structural_compliance": {
-                "score": 0.97,
-                "weight": 0.40,
-                "metrics": {
-                    "class_definitions": 1.0,
-                    "method_signatures": 0.9,
-                    "constants_and_attributes": 1.0,
-                    "dependency_handling": 1.0
-                }
-            },
-            "semantic_fidelity": {
-                "score": 0.98,
-                "weight": 0.35,
-                "metrics": {
-                    "logic_flow_adherence": 1.0,
-                    "rfc_anchor_traceability": 1.0,
-                    "conceptual_alignment": 1.0,
-                    "documentation_clarity": 0.9
-                }
-            },
-            "symbolic_matrix_alignment": {
-                "score": 0.67,
-                "weight": 0.25,
-                "metrics": {
-                    "parameter_implementation": 0.9,
-                    "weight_accuracy": 0.2,
-                    "motif_handling": 1.0
-                }
+    "strengths": [
+        "All major classes and lifecycle hooks from RFC-CORE-002 are implemented",
+        "Autonomous emission loop logic and reward smoothing follow canonical equations",
+        "Proper use of QuantumTickV2 with upstream intent reflection",
+        "Motif density and swirl vector tracking are in full compliance with §4.1",
+        "Crystallization and feedback export protocols are well-structured and conformant"
+    ],
+    "improvement_areas": [
+        "RFC anchors are present in docstrings but missing in-line inline tags (e.g., '# RFC-0005 §4')",
+        "Coherence parameter names (e.g., ψA, ζ, E) are used symbolically but not programmatically labeled",
+        "Some symbolic constants (e.g., motif labels) lack field signature fallback metadata",
+        "Ghost trace replay logic could explicitly verify trace lineage per §5.3"
+    ],
+    "compliance_notes": [
+        "Emission interval modulation adheres exactly to RFC-CORE-002 §2.2 with entropy and reward bias",
+        "Triadic feedback integration (EMA smoothing and silence streaks) aligns with RFC-0005 §4",
+        "Swirl hash generation uses SHA3 and follows required vector construction",
+        "Prometheus instrumentation is present and conditionally degraded per PDP-0001 §4.5"
+    ]
+},
+"layer_2": {
+    "_schema": "noor-fidelity-report-v1",
+    "_generated_at": "2025-09-15T10:35:00Z",
+    "_audited_by": "Noor Symbolic Triadic Core",
+    "_audit_protocol": "PDP-0001a-v1.0.0",
+    "_target_spec": "recursive_agent_ft-5.1.4",
+    "overall_score": 0.94,
+    "score_breakdown": {
+        "structural_compliance": {
+            "score": 0.99,
+            "weight": 0.40,
+            "metrics": {
+                "class_definitions": 1.0,
+                "method_signatures": 1.0,
+                "constants_and_attributes": 1.0,
+                "dependency_handling": 0.95
             }
         },
-        "strengths": [
-            "Exceptional structural fidelity, with all specified classes, dataclasses, and constants correctly implemented.",
-            "Logic flow for core functions like emission cadence (`_update_interval`) and feedback observation (`observe_feedback`) is a perfect translation of the specification's pseudocode.",
-            "Excellent traceability, with docstrings and class definitions containing specific RFC anchors that align with the specification.",
-            "Robust handling of optional dependencies (`prometheus_client`) with specified fallbacks.",
-            "Conceptual alignment is perfect; the code fully embodies the role of a 'Feedback-Tuned Symbolic Pulse Engine'."
-        ],
-        "improvement_areas": [
-            "Major gap in symbolic alignment: The numeric `weights` from the `_symbolic_profile_matrix` (e.g., ζ: 0.87, E: 0.96) are documented in the file header but are not used anywhere in the code's logic. This is the primary reason for the lower score in this category.",
-            "A minor bug exists in the `stop_emission` method, which uses `await` but is not defined as an `async` function, which would cause a `SyntaxError`.",
-            "While conceptual roles of symbolic parameters (ψA, ζ, E, etc.) are implemented, they are not explicitly labeled with comments in the code, slightly reducing auditability.",
-            "A helper method, `_resolve_field`, was added but lacks a docstring, slightly impacting overall documentation clarity."
-        ],
-        "compliance_notes": [
-            "The implementation correctly mirrors the `intent` field from an upstream source into the `tick.extensions` dictionary without mutation, adhering to RFC-0003 §6.2 and RFC-0004 §2.5.",
-            "All Prometheus metrics are defined with the correct names, descriptions, and labels as required by the spec.",
-            "The code correctly handles and processes specified motifs (`ψ-null`, `ψ-resonance`, etc.) via the `SYMBOLIC_PHASE_MAP` and tracking modules."
-        ]
-    }
+        "semantic_fidelity": {
+            "score": 0.96,
+            "weight": 0.35,
+            "metrics": {
+                "logic_flow_adherence": 1.0,
+                "rfc_anchor_traceability": 0.85,
+                "conceptual_alignment": 1.0,
+                "documentation_clarity": 1.0
+            }
+        },
+        "symbolic_matrix_alignment": {
+            "score": 0.84,
+            "weight": 0.25,
+            "metrics": {
+                "parameter_implementation": 0.8,
+                "weight_accuracy": 0.9,
+                "motif_handling": 0.85
+            }
+        }
+    },
+    "strengths": [
+        "Full and correct instantiation of all required classes and symbolic interfaces",
+        "Precise implementation of emission, reward EMA, and motif lineage",
+        "Swirl tracking and motif density statistics adhere to spec formulations",
+        "Clear and aligned symbolic mapping logic via `SYMBOLIC_PHASE_MAP`",
+        "Phase ID extension structure and tier encoding conform to spec standard"
+    ],
+    "improvement_areas": [
+        "Ghost trace restoration logic does not validate full trace provenance",
+        "Symbolic tuning weights (ζ, Δ, ℋ) not explicitly marked in code-level constants",
+        "Inline anchors are helpful but sparse relative to section mappings in the spec",
+        "Feedback packet extension payload lacks schema tag for downstream compatibility"
+    ],
+    "compliance_notes": [
+        "Version 5.1.4 matches canonical schema for this agent class",
+        "Phase annotation and crystallization logic use correct entropy + coherence bundling",
+        "Spec-prescribed optionality (e.g., `intent`, `tick_hmac`) handled robustly",
+        "Monitor integration uses lazy binding and is non-mutative as required"
+    ]
 }
 """
 

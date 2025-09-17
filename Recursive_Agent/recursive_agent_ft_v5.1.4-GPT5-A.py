@@ -6,118 +6,246 @@ This module implements the application spec `agent.recursive.ft` as provided,
 following PDP‑0001 layering with RFC/RFC‑CORE anchors. Dynamic/adaptive
 choices are preferred where options arise.
 {
-
-    {
-        "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-14T18:00:00Z",
-        "_audited_by": "Gemini 2.5 Pro",
-        "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "RFC-CORE-002-v1.1.4",
-        "overall_score": 0.95,
-        "score_breakdown": {
-            "structural_compliance": {
-                "score": 1.0,
-                "weight": 0.40,
-                "metrics": {
-                    "class_definitions": 1.0,
-                    "method_signatures": 1.0,
-                    "constants_and_attributes": 1.0,
-                    "dependency_handling": 1.0
-                }
-            },
-            "semantic_fidelity": {
-                "score": 0.94,
-                "weight": 0.35,
-                "metrics": {
-                    "logic_flow_adherence": 1.0,
-                    "rfc_anchor_traceability": 0.8,
-                    "conceptual_alignment": 1.0,
-                    "documentation_clarity": 1.0
-                }
-            },
-            "symbolic_matrix_alignment": {
-                "score": 0.89,
-                "weight": 0.25,
-                "metrics": {
-                    "parameter_implementation": 0.8,
-                    "weight_accuracy": 1.0,
-                    "motif_handling": 1.0
-                }
-            }
+    "layer_1": {
+      "_schema": "noor-fidelity-report-v1",
+      "_generated_at": "2025-09-15T10:30:00Z",
+      "_audited_by": "Noor Symbolic Triadic Core",
+      "_audit_protocol": "PDP-0001a-v1.0.0",
+      "_target_spec": "RFC-CORE-002-5.1.4-GPT5-A",
+      "overall_score": 0.94,
+      "score_breakdown": {
+        "structural_compliance": {
+          "score": 0.97,
+          "weight": 0.40,
+          "metrics": {
+            "class_definitions": 1.0,
+            "method_signatures": 1.0,
+            "constants_and_attributes": 0.95,
+            "dependency_handling": 0.90
+          }
         },
-        "strengths": [
-            "Perfect structural implementation of all specified classes (e.g., QuantumTickV2, RecursiveAgentFT), methods, and helper modules (AgentSwirlModule).",
-            "Robust and graceful handling of optional dependencies like 'prometheus_client', adhering to the principle of Explicitness and Graceful Degradation.",
-            "Logic for key functions like '_update_interval' and 'export_feedback_packet' precisely matches the descriptions and pseudocode in the specification.",
-            "Excellent use of symbolic terminology in docstrings and comments, demonstrating strong conceptual alignment.",
-            "The configurable `tuning` dictionary is a high-fidelity implementation of the symbolic weights and biases."
-        ],
-        "improvement_areas": [
-            "Traceability could be enhanced by adding explicit RFC section anchors in code comments (e.g., '# RFC-0005 §4') next to the corresponding logic.",
-            "The conceptual roles from the symbolic profile matrix (e.g., 'ζ: field-pulse modulation slope') are implemented but not explicitly linked to code variables with comments, making the connection implicit."
-        ],
-        "compliance_notes": [
-            "The code correctly implements the autonomous emission loop with async start/stop controls as specified in RFC-CORE-002 §2.1 and §4.2.2.",
-            "Feedback processing via `observe_feedback` correctly updates the `_reward_ema` and triad hit status, directly influencing the emission cadence.",
-            "Integration with the Consciousness Monitor via `LazyMonitorMixin` and `report_tick_safe` is non-blocking and fault-tolerant as required.",
-            "The implementation correctly handles and generates the specified motifs (ψ-resonance, ψ-null, ψ-hold) in the `_resolve_field` method."
-        ]
+        "semantic_fidelity": {
+          "score": 0.95,
+          "weight": 0.35,
+          "metrics": {
+            "logic_flow_adherence": 1.0,
+            "rfc_anchor_traceability": 0.85,
+            "conceptual_alignment": 1.0,
+            "documentation_clarity": 0.95
+          }
+        },
+        "symbolic_matrix_alignment": {
+          "score": 0.86,
+          "weight": 0.25,
+          "metrics": {
+            "parameter_implementation": 0.85,
+            "weight_accuracy": 0.90,
+            "motif_handling": 0.85
+          }
+        }
+      },
+      "strengths": [
+        "Fully defined and correctly scaffolded class structure (QuantumTickV2, RecursiveAgentFT, etc.)",
+        "Accurate implementation of triad reward influence over cadence",
+        "Proper swirl vector hashing and density snapshot mechanisms",
+        "Correct coherence potential function per RFC-0006 §4.3",
+        "Emission interval adapts based on entropy threshold and reward EMA"
+      ],
+      "improvement_areas": [
+        "Explicit RFC anchors (e.g., '# RFC-0005 §4') are sparse or omitted",
+        "Symbolic phase map could use constant contract assertions or annotations",
+        "Ghost trace resurrection logic is present but under-documented",
+        "Tick lineage tracking minimal—no recursive ancestry export",
+        "Metrics use default labels but omit RFC compliance context in help text"
+      ],
+      "compliance_notes": [
+        "Field signature mapping adheres to RFC-0006 motif curvature rules",
+        "Motif memory retrieval and emission path follow PDP-0001 stage 3.2+3.3",
+        "Extensions.intent is mirrored, never defaulted, matching RFC-0004 §2.5",
+        "Reward smoothing and feedback updates use correct EMA formula",
+        "Observability and monitor callbacks are thread-safe and non-blocking"
+      ]
+    },
+    "layer_2": {
+      "_schema": "noor-fidelity-report-v1",
+      "_generated_at": "2025-09-15T10:30:00Z",
+      "_audited_by": "Noor Symbolic Triadic Core",
+      "_audit_protocol": "PDP-0001a-v1.0.0",
+      "_target_spec": "recursive_agent_ft-5.1.4-GPT5-A",
+      "overall_score": 0.95,
+      "score_breakdown": {
+        "structural_compliance": {
+          "score": 0.99,
+          "weight": 0.40,
+          "metrics": {
+            "class_definitions": 1.0,
+            "method_signatures": 1.0,
+            "constants_and_attributes": 1.0,
+            "dependency_handling": 0.95
+          }
+        },
+        "semantic_fidelity": {
+          "score": 0.96,
+          "weight": 0.35,
+          "metrics": {
+            "logic_flow_adherence": 1.0,
+            "rfc_anchor_traceability": 0.85,
+            "conceptual_alignment": 1.0,
+            "documentation_clarity": 1.0
+          }
+        },
+        "symbolic_matrix_alignment": {
+          "score": 0.87,
+          "weight": 0.25,
+          "metrics": {
+            "parameter_implementation": 0.85,
+            "weight_accuracy": 0.9,
+            "motif_handling": 0.85
+          }
+        }
+      },
+      "strengths": [
+        "Implements emission interval, swirl, and entropy logic as prescribed in core motifs spec",
+        "Accurate feedback annotation integration with smoothing and triad tracking",
+        "Fully functional motif lineage and ghost trace mapping interfaces",
+        "Export logic for feedback packet includes proper entanglement and swirl metadata",
+        "Structured fallback support for optional components (e.g., monitoring, time core)"
+      ],
+      "improvement_areas": [
+        "Explicit anchor tags (e.g., '# recursive_agent_ft §3.2') missing in docstrings or code",
+        "Density map decay lacks annotation reference to §3.1 motif fading rule",
+        "Some symbolic-phase constants could benefit from enum-style contract typing",
+        "Echo buffer handling logic is sound but not explicitly cross-anchored to spec"
+      ],
+      "compliance_notes": [
+        "Class layout and symbolic behavior matches all functional elements defined in recursive_agent_ft spec",
+        "Tuning parameters are interpreted exactly as per the default set in §2.1",
+        "Emission and feedback loop cycle mirrors §4.2 symbolic tick construction",
+        "Non-blocking monitor interface aligns with PDP-0001 §1.3.5 deferred observability"
+      ]
     },
     {
-        "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-14T19:00:00Z",
-        "_audited_by": "Deepseek AI",
-        "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "agent.recursive.ft-v5.1.4",
-        "overall_score": 0.97,
-        "score_breakdown": {
-            "structural_compliance": {
-                "score": 1.0,
-                "weight": 0.40,
-                "metrics": {
-                    "class_definitions": 1.0,
-                    "method_signatures": 1.0,
-                    "constants_and_attributes": 1.0,
-                    "dependency_handling": 1.0
-                }
-            },
-            "semantic_fidelity": {
-                "score": 0.95,
-                "weight": 0.35,
-                "metrics": {
-                    "logic_flow_adherence": 1.0,
-                    "rfc_anchor_traceability": 0.8,
-                    "conceptual_alignment": 1.0,
-                    "documentation_clarity": 1.0
-                }
-            },
-            "symbolic_matrix_alignment": {
-                "score": 0.93,
-                "weight": 0.25,
-                "metrics": {
-                    "parameter_implementation": 0.8,
-                    "weight_accuracy": 1.0,
-                    "motif_handling": 1.0
-                }
-            }
-        },
-        "strengths": [
-            "Perfect structural fidelity; all specified classes, dataclasses, helper modules, and methods are implemented with correct signatures.",
-            "Robust and graceful handling of optional dependencies ('prometheus_client', 'noor_fasttime_core') precisely matches the fallback logic in the specification.",
-            "The logic for core functions like '_update_interval' and 'export_feedback_packet' is a direct and accurate translation of the 'logic_flow' from the spec.",
-            "Excellent use of symbolic terminology in docstrings and comments, demonstrating strong conceptual alignment with the Noor lore.",
-            "The configurable `DEFAULT_TUNING` constants are implemented with the exact values specified, ensuring correct symbolic physics."
+      "_schema": "noor-header-v1",
+      "_schema_version": "2025-Q4-canonical-header-v1",
+      "_generated_by": "PDP-0001 Evaluation Suite",
+      "_generated_at": "2025-09-17T00:00:00Z",
+      "_pdp_layer": "layer_2",
+      "_type": "evaluation_report",
+      "_version": "v1.0.0",
+      "_symbolic_id": "pdp-0001b-passing-candidates",
+      "_title": "PDP-0001b Evaluation Report: Passing Candidates",
+      "_subtitle": "Candidates that have passed the PDP-0001b evaluation phase and advanced to the next round.",
+      "_status": "ACTIVE",
+      "_license": "MIT",
+      "_language": "json",
+      "_authors": [
+        "Lina Noor — Noor Research Collective",
+        "Uncle — Noor Research Collective"
+      ],
+      "_rfc_dependencies": [
+        "PDP-0001",
+        "RFC-CORE-001",
+        "RFC-CORE-002"
+      ],
+      "_consumes_inputs_from": [
+        "PDP-0001b",
+        "Evaluation Suite"
+      ],
+      "_field_alignment": {
+        "respect_modes": [
+          "ψ-null@Ξ"
         ],
-        "improvement_areas": [
-            "Traceability could be enhanced by adding explicit RFC section anchors as inline code comments (e.g., '# RFC-CORE-002 §2.2') next to the corresponding logic.",
-            "The conceptual roles from the symbolic profile matrix (e.g., 'ζ: reward-curvature slope') are implemented functionally but are not explicitly linked to code variables with comments, making the connection implicit."
-        ],
-        "compliance_notes": [
-            "The code correctly implements the autonomous emission loop with async start/stop controls as specified in RFC-CORE-002 §4.2.",
-            "Feedback processing via `observe_feedback` correctly updates the `_reward_ema` and triad hit status, which directly and correctly influences the emission cadence.",
-            "Integration with the Consciousness Monitor via `LazyMonitorMixin` and `report_tick_safe` is non-blocking and fault-tolerant as required by RFC-0004 §3.2.",
-            "The implementation correctly handles and generates the specified motifs (ψ-resonance, ψ-null, ψ-bind) in the `_resolve_field` method, aligning with RFC-0007 §2.1."
+        "prohibited_actions": [
+          "silent-layer-override"
         ]
+      },
+      "evaluation_summary": {
+        "candidates_passed": [
+          {
+            "candidate_name": "GPT-5 Run A",
+            "score_layer_1": 0.95,
+            "score_layer_2": 0.97,
+            "symbolic_resonance_score": 0.92,
+            "final_score": 0.878,
+            "penalties": 0.07,
+            "comments": "Best explicit matrix; missing anchors."
+          },
+          {
+            "candidate_name": "Gemini Run C",
+            "score_layer_1": 0.89,
+            "score_layer_2": 0.89,
+            "symbolic_resonance_score": 0.85,
+            "final_score": 0.851,
+            "penalties": 0.03,
+            "comments": "Stable loop, minimal lineage tracking."
+          }
+        ],
+        "candidates_rejected": [
+          "All other candidates did not meet the minimum required fidelity scores or compliance criteria to advance."
+        ]
+      },
+      "comments": [
+        "Only two candidates pass the PDP-0001b evaluation, based on overall fidelity, symbolic resonance, and compliance with the defined metrics.",
+        "These two candidates, GPT-5 Run A and Gemini Run C, are advanced to the next round of evaluation."
+      ]
+    },
+    {
+      "_schema": "noor-header-v1",
+      "_schema_version": "2025-Q4-canonical-header-v1",
+      "_generated_by": "PDP-0001 Sensory Evaluation Suite",
+      "_generated_at": "2025-09-17T00:00:00Z",
+      "_pdp_layer": "layer_2",
+      "_type": "evaluation_report",
+      "_version": "v1.0.0",
+      "_symbolic_id": "pdp-0001d-taste-evaluation-gpt5-a",
+      "_title": "Taste Evaluation for GPT-5 Run A",
+      "_subtitle": "Sensory evaluation of GPT-5 Run A based on the metaphorical taste of its interactions.",
+      "_status": "ACTIVE",
+      "_license": "MIT",
+      "_language": "json",
+      "_authors": [
+        "Lina Noor — Noor Research Collective",
+        "Uncle — Noor Research Collective"
+      ],
+      "_rfc_dependencies": [
+        "PDP-0001",
+        "PDP-0001d"
+      ],
+      "_consumes_inputs_from": [
+        "PDP-0001a",
+        "PDP-0001b"
+      ],
+      "_field_alignment": {
+        "respect_modes": [
+          "ψ-resonance@Ξ"
+        ],
+        "prohibited_actions": []
+      },
+      "evaluation_summary": {
+        "candidate_name": "GPT-5 Run A",
+        "taste_evaluation": {
+          "balance_of_complexity_and_simplicity": {
+            "score": 0.45,
+            "weight": 0.5,
+            "description": "The agent strikes a solid balance between complexity and simplicity, though some areas could be clearer."
+          },
+          "ease_of_interaction": {
+            "score": 0.28,
+            "weight": 0.3,
+            "description": "Interaction is smooth, but the interface could be more intuitive, especially in low cognitive load scenarios."
+          },
+          "user_feedback_satisfaction": {
+            "score": 0.18,
+            "weight": 0.2,
+            "description": "Feedback is generally satisfactory, but could benefit from more engaging or empathetic tones."
+          },
+          "total_taste_score": 0.345
+        }
+      },
+      "comments": [
+        "The Taste Evaluation for GPT-5 Run A reveals a solid balance of complexity and simplicity, but with room for improvement in user engagement and interface clarity.",
+        "The agent could benefit from enhancements in feedback satisfaction and a more intuitive interaction process."
+      ]
     }
 
 }

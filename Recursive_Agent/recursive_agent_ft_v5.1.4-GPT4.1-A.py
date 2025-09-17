@@ -127,7 +127,7 @@ XREF: See /noor_rfc_xref.json and PDP-0001 for lineage and field role.
             "Intent pass-through handling follows RFC-0003 §6.2 requirements precisely",
             "Monitor integration uses safe, non-blocking patterns with proper lazy binding"
         ]
-    }
+    },
 }
 """
 
