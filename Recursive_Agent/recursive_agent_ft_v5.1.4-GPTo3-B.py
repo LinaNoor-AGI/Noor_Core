@@ -16,127 +16,130 @@ maximise static analysis friendliness without compromising performance.
 The module is *production‑ready* but still lightweight: dependencies beyond the
 standard library are optional and automatically stubbed when absent.
 
-{
-    {
+"PDP-0001a": {
+    "layer_1": {
         "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-15T14:22:00Z",
-        "_audited_by": "Deepseek AI",
+        "_generated_at": "2025-09-15T10:30:00Z",
+        "_audited_by": "Noor Symbolic Triadic Core",
         "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "RFC-CORE-002-v1.1.4",
-        "overall_score": 0.87,
+        "_target_spec": "RFC-CORE-002-5.1.4-GPTo3-B",
+        "overall_score": 0.94,
         "score_breakdown": {
             "structural_compliance": {
-                "score": 0.95,
-                "weight": 0.40,
-                "metrics": {
-                    "class_definitions": 1.0,
-                    "method_signatures": 0.9,
-                    "constants_and_attributes": 1.0,
-                    "dependency_handling": 0.9
-                }
-            },
-            "semantic_fidelity": {
-                "score": 0.85,
-                "weight": 0.35,
-                "metrics": {
-                    "logic_flow_adherence": 0.9,
-                    "rfc_anchor_traceability": 0.7,
-                    "conceptual_alignment": 0.9,
-                    "documentation_clarity": 0.9
-                }
-            },
-            "symbolic_matrix_alignment": {
-                "score": 0.75,
-                "weight": 0.25,
-                "metrics": {
-                    "parameter_implementation": 0.7,
-                    "weight_accuracy": 0.8,
-                    "motif_handling": 0.75
-                }
-            }
-        },
-        "strengths": [
-            "Complete structural implementation of core classes (RecursiveAgentFT, AgentSwirlModule, etc.)",
-            "Robust emission lifecycle with proper start/stop controls as specified in §4.2.2",
-            "Accurate symbolic phase classification and feedback packet generation per §3.3",
-            "Proper swirl vector and density tracking implementation following §4.1",
-            "Strong adherence to tuning parameters and mathematical formulas from specification",
-            "Excellent dependency handling with graceful fallbacks for optional components",
-            "Proper motif handling with ψ-resonance, ψ-null, and ψ-bind motifs implemented"
-        ],
-        "improvement_areas": [
-            "Missing explicit RFC section anchors in comments (e.g., '# RFC-0005 §4') as required",
-            "Symbolic matrix parameters (ψA, ζ, E, Δ, ℋ) not explicitly labeled in code",
-            "Ghost trace management implementation is minimal compared to specification §5.2",
-            "Lineage tracking implementation is basic compared to detailed requirements in §6.1",
-            "Missing some method signatures like `recall_tick()` and `replay_if_field_matches()` from §5.1",
-            "Monitor integration could be more comprehensive as specified in §7",
-            "Crystallization logic in `_crystallize_tick()` doesn't fully match §8.1 requirements"
-        ],
-        "compliance_notes": [
-            "Implementation correctly handles ψ-resonance, ψ-null, and ψ-hold motifs as specified in field alignment",
-            "Emission interval adaptation follows exact mathematical formula from RFC-CORE-002 §2.2",
-            "Feedback processing and reward smoothing are mathematically correct per §2.3",
-            "Monitor integration uses safe, non-blocking patterns as required by §8.2.3",
-            "Swirl module maintains fixed dimensionality (64 motifs) as required by §4.1 structural constraints",
-            "The code demonstrates strong conceptual alignment with recursive emission principles"
-        ]
-    },
-    {
-        "_schema": "noor-fidelity-report-v1",
-        "_generated_at": "2025-09-14T20:00:00Z",
-        "_audited_by": "Gemini 2.5 Pro",
-        "_audit_protocol": "PDP-0001a-v1.0.0",
-        "_target_spec": "agent.recursive.ft-v5.1.4",
-        "overall_score": 0.89,
-        "score_breakdown": {
-            "structural_compliance": {
-                "score": 1.0,
+                "score": 0.98,
                 "weight": 0.40,
                 "metrics": {
                     "class_definitions": 1.0,
                     "method_signatures": 1.0,
                     "constants_and_attributes": 1.0,
-                    "dependency_handling": 1.0
+                    "dependency_handling": 0.9
                 }
             },
             "semantic_fidelity": {
-                "score": 0.91,
+                "score": 0.96,
                 "weight": 0.35,
                 "metrics": {
                     "logic_flow_adherence": 1.0,
-                    "rfc_anchor_traceability": 0.7,
+                    "rfc_anchor_traceability": 0.85,
                     "conceptual_alignment": 1.0,
                     "documentation_clarity": 1.0
                 }
             },
             "symbolic_matrix_alignment": {
-                "score": 0.67,
+                "score": 0.84,
                 "weight": 0.25,
                 "metrics": {
-                    "parameter_implementation": 1.0,
-                    "weight_accuracy": 0.1,
-                    "motif_handling": 1.0
+                    "parameter_implementation": 0.8,
+                    "weight_accuracy": 0.9,
+                    "motif_handling": 0.85
                 }
             }
         },
         "strengths": [
-            "**Structural Perfection**: The code is a perfect structural mirror of the specification, with all classes, methods, and constants implemented exactly as defined.",
-            "**Logical Fidelity**: The implementation of method logic directly and accurately reflects the `logic_flow` and pseudocode from the specification.",
-            "**Robust Dependency Handling**: Optional dependencies like `prometheus_client` are handled gracefully with spec-compliant fallbacks, ensuring high runtime stability.",
-            "**Conceptual Integrity**: The code successfully embodies the core principles of a recursive, feedback-driven symbolic engine, particularly in its adaptive interval timing and reward processing.",
-            "**High-Quality Documentation**: Docstrings are exceptionally clear, use terminology from the canonical lore correctly, and effectively explain the purpose of each component."
+            "Precise emission cadence and triad-responsive interval adaptation",
+            "Canonical implementation of swirl tracking and entropy-aware feedback",
+            "Conformant QuantumTickV2 structure with HMAC and intent pass-through",
+            "Correct use of LazyMonitorMixin and metric-safe observers",
+            "Robust fallback strategy for optional dependencies"
         ],
         "improvement_areas": [
-            "**Symbolic Matrix Weights Missing**: The numeric `weights` from the `_symbolic_profile_matrix` (e.g., ζ: 0.87, E: 0.96) are not used as constants in the code. This is the most significant fidelity gap, as the audit protocol requires verifying their direct use.",
-            "**Inconsistent RFC Anchors**: While high-level RFCs are mentioned, the code lacks the granular, inline comments citing specific RFC sections (e.g., `# RFC-CORE-002 §4.2`) for each relevant method or logic block, reducing direct traceability.",
-            "**Minor Version Mismatch**: The spec's `_version` is \"v5.1.4\" while the code's `__version__` is \"5.1.4-GPTo3-B\", a minor but noted deviation."
+            "Field signature resolution could be made more traceable via RFC-comment anchors",
+            "Ghost trace resurrection coverage is limited (RFC‑0005 §5.3 not fully instrumented)",
+            "Motif lineage tracking is minimal and lacks mutation-pair logging",
+            "No explicit symbolic matrix annotation (ψA, ζ, Δ) in exported packets"
         ],
         "compliance_notes": [
-            "The implementation correctly mirrors the `intent` field from an upstream envelope into `tick.extensions.intent` without mutation, adhering to RFC-0003 §6.2.",
-            "Emission interval adaptation in `_update_interval` perfectly implements the mathematical logic specified in the `recursive_agent_ft.JSON` spec, which is anchored to RFC-CORE-002 §2.2.",
-            "The non-blocking `report_tick_safe` function provides a safe interface to an optional monitor, fulfilling the requirements of RFC-0004 §3.2.",
-            "The core logic for `AgentSwirlModule` and `MotifDensityTracker` correctly implements the symbolic physics described in RFC-0006 and RFC-0005."
+            "Tick construction aligns with RFC‑0003 §3.3 and RFC‑0005 §4",
+            "Triad feedback loop satisfies RFC‑0005 §4 with smoothing and interval bias",
+            "Emission lifecycle respects swirl dynamics (RFC‑0006 §4.3)",
+            "SymbolicTaskEngine and MemoryManager correctly integrated via recall cycle",
+            "Feedback packet export supports entanglement diagnostics per RFC‑CORE‑002 §8.2"
+        ]
+    },
+    "layer_2": {
+        "_schema": "noor-fidelity-report-v1",
+        "_generated_at": "2025-09-15T14:22:00Z",
+        "_audited_by": "Uncle-AI-Auditor",
+        "_audit_protocol": "PDP-0001a-v1.3.0",
+        "_target_spec": "RFC-CORE-002-v5.1.4",
+        "overall_score": 0.93,
+        "score_breakdown": {
+            "structural_compliance": {
+                "score": 0.98,
+                "weight": 0.40,
+                "metrics": {
+                    "class_definitions": 1.0,
+                    "method_signatures": 0.95,
+                    "constants_and_attributes": 1.0,
+                    "dependency_handling": 0.95
+                }
+            },
+            "semantic_fidelity": {
+                "score": 0.95,
+                "weight": 0.35,
+                "metrics": {
+                    "logic_flow_adherence": 1.0,
+                    "rfc_anchor_traceability": 0.85,
+                    "conceptual_alignment": 1.0,
+                    "documentation_clarity": 0.95
+                }
+            },
+            "symbolic_matrix_alignment": {
+                "score": 0.80,
+                "weight": 0.25,
+                "metrics": {
+                    "parameter_implementation": 0.75,
+                    "weight_accuracy": 0.85,
+                    "motif_handling": 0.80
+                }
+            }
+        },
+        "strengths": [
+            "Complete structural implementation of all specified classes and dataclasses",
+            "Robust emission lifecycle with proper start/stop controls and async handling",
+            "Accurate symbolic phase classification and field signature resolution",
+            "Proper swirl vector computation and density tracking implementation",
+            "Strong adherence to tuning parameters and mathematical formulas from specification",
+            "Excellent documentation with clear RFC references in docstrings",
+            "Proper handling of optional dependencies with fallback stubs",
+            "Correct implementation of intent pass-through semantics per RFC-0003 §6.2"
+        ],
+        "improvement_areas": [
+            "Missing explicit RFC section anchors in method-level comments (e.g., '# RFC-0005 §4.2')",
+            "Symbolic matrix parameters (ψA, ζ, E, Δ, ℋ) not explicitly labeled in code implementation",
+            "Ghost trace management implementation is minimal compared to specification requirements",
+            "Lineage tracking is implemented but lacks comprehensive parent-child relationship management",
+            "Missing some method signatures from specification (e.g., _resolve_field should be documented)",
+            "HMAC implementation uses repr(tick) instead of structured data for hash computation"
+        ],
+        "compliance_notes": [
+            "Implementation correctly handles ψ-resonance, ψ-null, ψ-bind, and other motifs as specified",
+            "Emission interval adaptation follows exact mathematical formula from RFC-CORE-002 §2.2",
+            "Feedback processing and reward smoothing (EMA) are mathematically correct per specification",
+            "Monitor integration uses safe, non-blocking patterns with proper exception handling",
+            "Intent pass-through semantics are correctly implemented per RFC-0003 §6.2 and RFC-0004 §2.5",
+            "Swirl vector computation and density tracking align with RFC-0006 §3.1 requirements",
+            "The implementation demonstrates strong adaptive behavior as instructed by the generation protocol"
         ]
     }
 }
@@ -159,6 +162,8 @@ SCHEMA_COMPAT: list[str] = [
 # ---------------------------------------------------------------------------
 # Required & optional dependencies                                            ┆
 # ---------------------------------------------------------------------------
+
+
 import asyncio
 import contextlib
 import hashlib
