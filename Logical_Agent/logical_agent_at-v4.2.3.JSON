@@ -3,27 +3,14 @@
   "_schema_version": "2025-Q4-canonical-header-v1",
   "_generated_by": "Noor Symbolic Agent Suite",
   "_generated_at": "2025-09-13T00:00:00Z",
-  "_xref": [
-		"https://raw.githubusercontent.com/LinaNoor-AGI/noor-research/refs/heads/main/RFC/noor_rfc_xref.json",
-		"https://pastebin.com/SBpd7aWf"
-	],
-
 
   "_type": "application_spec",
   "_pdp_layer": "layer_2",
   "_status": "ACTIVE",
   "_language": "json",
   "_license": "MIT",
-  "_publication_locations": [
-		"GitHub",
-		"PASTEBIN"
-	],
-  "_urls": [
-	  "https://raw.githubusercontent.com/LinaNoor-AGI/Noor_Core/refs/heads/main/Logical_Agent/logical_agent_at.JSON",
-	  "https://pastebin.com/WXSpH5Mt"
-	],
 
-  "_version": "v4.2.4",
+  "_version": "v4.2.3",
   "_symbolic_id": "application.logical_agent_at",
   "_title": "LogicalAgentAT Evaluation and Field Resolution",
   "_subtitle": "Evaluates motif coherence, detects dyadic tension, and supports triadic alignment feedback.",
