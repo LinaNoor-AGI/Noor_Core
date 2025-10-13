@@ -237,15 +237,75 @@
 	{ "section": "1.6.2.5", "title": "compression_pipeline" },
 	
     { "section": "1.7", "title": "ExportEnvelope — Σ/Δ/provenance on egress" },
+	{ "section": "1.7.1", "title": "ExportEnvelope: Math" },
+	{ "section": "1.7.1.1", "role": "phase header (structure-only)" },
+	{ "section": "1.7.1.2", "role": "Sigma_phase structural checksum" },
+	{ "section": "1.7.1.3", "role": "Delta_hash lineage chaining" },
+	{ "section": "1.7.1.4", "role": "weak-field limit" },
+	{ "section": "1.7.2", "title": "ExportEnvelope: Algorithms" },
+	{ "section": "1.7.2.1", "title": "assemble_phase_header" },
+	{ "section": "1.7.2.2", "title": "compute_sigma_phase_struct" },
+	{ "section": "1.7.2.3", "title": "extend_delta_lineage_struct" },
+	{ "section": "1.7.2.4", "title": "validate_provenance_headers" },
+	{ "section": "1.7.2.5", "title": "validate_sig_type_structural" },
+	{ "section": "1.7.2.6", "title": "export_envelope_observe" },
 	
     { "section": "1.8", "title": "LLMRecallController — budgets & injection defense" },
+	{ "section": "1.8.1", "title": "LLMRecallController: Math" },
+	{ "section": "1.8.1.1", "role": "context budget" },
+	{ "section": "1.8.1.2", "role": "freshness window" },
+	{ "section": "1.8.1.3", "role": "decision window" },
+	{ "section": "1.8.1.4", "role": "weak-field limit" },
+	{ "section": "1.8.2", "title": "LLMRecallController: Algorithms" },
+	{ "section": "1.8.2.1", "title": "compute_token_budgets" },
+	{ "section": "1.8.2.2", "title": "strip_control_sequences" },
+	{ "section": "1.8.2.3", "title": "tag_source_metadata" },
+	{ "section": "1.8.2.4", "title": "freshness_and_replay_filter" },
+	{ "section": "1.8.2.5", "title": "rerank_and_truncate" },
+	{ "section": "1.8.2.6", "title": "recall_pipeline_observer" },
 
     { "section": "2", "title": "Pseudocode" },
 	{ "section": "2.1", "title": "Core Method Suite" },
+	{ "section": "2.1.1", "title": "Core Method Suite: Math" },
+	{ "section": "2.1.1.1", "role": "replay window" },
+	{ "section": "2.1.1.2", "role": "decision window" },
+	{ "section": "2.1.1.3", "role": "compression KPI" },
+	{ "section": "2.1.1.4", "role": "weak-field limit" },
+	{ "section": "2.1.2", "title": "Core Method Suite: Algorithms" },
+	{ "section": "2.1.2.1", "title": "recall" },
+	{ "section": "2.1.2.2", "title": "complete_dyad" },
+	{ "section": "2.1.2.3", "title": "compress_snapshot" },
+	{ "section": "2.1.2.4", "title": "export_packet" },
 	
     { "section": "2.2", "title": "Reef Adapter Methods" },
+	{ "section": "2.2.1", "title": "Reef Adapter Methods: Math" },
+	{ "section": "2.2.1.1", "role": "phase window" },
+	{ "section": "2.2.1.2", "role": "evidence radius" },
+	{ "section": "2.2.1.3", "role": "weak-field limit" },
+	{ "section": "2.2.2", "title": "Reef Adapter Methods: Algorithms" },
+	{ "section": "2.2.2.1", "title": "list_modules" },
+	{ "section": "2.2.2.2", "title": "list_motifs" },
+	{ "section": "2.2.2.3", "title": "find" },
+	{ "section": "2.2.2.4", "title": "window" },
+	{ "section": "2.2.2.5", "title": "cooccur" },
+	{ "section": "2.2.2.6", "title": "build_reflections" },
 	
     { "section": "2.3", "title": "Observability (local gauges)" },
+	{ "section": "2.3.1", "title": "Observability (local gauges): Math" },
+	{ "section": "2.3.1.1", "role": "EMA windowing" },
+	{ "section": "2.3.1.2", "role": "phase window" },
+	{ "section": "2.3.1.3", "role": "average replay window (ticks)" },
+	{ "section": "2.3.1.4", "role": "compression KPI" },
+	{ "section": "2.3.1.5", "role": "equivalence efficiency" },
+	{ "section": "2.3.1.6", "role": "weak-field limit" },
+	{ "section": "2.3.2", "title": "Observability (local gauges): Algorithms" },
+	{ "section": "2.3.2.1", "title": "gauge_lawful_compression_ratio" },
+	{ "section": "2.3.2.2", "title": "gauge_equivalence_efficiency" },
+	{ "section": "2.3.2.3", "title": "gauge_avg_replay_window_ticks" },
+	{ "section": "2.3.2.4", "title": "gauge_reanchor_rate" },
+	{ "section": "2.3.2.5", "title": "gauge_quarantine_count" },
+	{ "section": "2.3.2.6", "title": "gauge_glider_detected" },
+	{ "section": "2.3.2.7", "title": "emit_local_gauges" },
 
     
 	{ "section": "3", "title": "Project-Local API Contracts (FastAPI stubs)" },
@@ -270,19 +330,19 @@
 			"id": 1.1.1,
 			"title": "Core Components: Math",
 			"1.1.1.1": {
-			  "id": 1.1.1.1,
+			  "eq_id": 1.1.1.1,
 			  "role": "window bound",
 			  "latex": "\\Delta\\tau_{phase} = \\alpha \\cdot EMA_{32}(\\mathcal{C}), \\; \\alpha \\in [0.5, 2.0]",
 			  "gloss": "Adaptive replay window proportional to coherence C; governs recall freshness and replay defenses."
 			},
 			"1.1.1.2": {
-			  "id": 1.1.1.2,
+			  "eq_id": 1.1.1.2,
 			  "role": "capacity-first constraint",
 			  "latex": "\\\\text{lawful\\\\_compression\\\\_ratio} = \\\\frac{\\\\text{unique\\\\_motifs}}{\\\\text{total\\\\_motifs}} \\\\geq \\\\lambda_{min}",
 			  "gloss": "Compression snapshot before any pruning; ensures lawful equivalence clustering."
 			},
 			"1.1.1.3": {
-			  "id": 1.1.1.3,
+			  "eq_id": 1.1.1.3,
 			  "role": "weak-field limit",
 			  "latex": "\\lim_{\\mathcal{C} \\to 1} \\rho_{res} \\to 0",
 			  "gloss": "At coherence unity, residual field vanishes, guaranteeing stable motif recall without reamplification."
@@ -386,19 +446,19 @@
 			"id": 1.2.1,
 			"title": "ReefIndexRouter: Math",
 			"1.2.1.1": {
-			  "eq_id": "1.2.1.1",
+			  "eq_id": 1.2.1.1,
 			  "role": "index coverage",
 			  "latex": "\\\\rho_{res} = 1 - \\frac{N_{resolved}}{N_{total}}",
 			  "gloss": "Residual coverage ratio; measures fraction of unresolved anchors in index.REEF."
 			},
 			"1.2.1.2": {
-			  "id": 1.2.1.2,
+			  "eq_id": 1.2.1.2,
 			  "role": "window radius bound",
 			  "latex": "\\\\Delta_{window} = r_{lines} = 24",
 			  "gloss": "Fixed evidence window radius for shard scans; defines search granularity in lines."
 			},
 			"1.2.1.3": {
-			  "id": 1.2.1.3,
+			  "eq_id": 1.2.1.3,
 			  "role": "weak-field limit",
 			  "latex": "\\\\lim_{\\\\mathcal{C}\\\\to 1} \\\\rho_{res} \\\\to 0",
 			  "gloss": "At coherence unity, all motif anchors resolve deterministically; index coverage becomes complete."
@@ -501,25 +561,25 @@
 			"id": 1.3.1,
 			"title": "ReefShardScanner: Math",
 			"1.3.1.1": {
-			  "eq_id": "1.3.1.1",
+			  "eq_id": 1.3.1.1,
 			  "role": "window radius",
 			  "latex": "r_{lines} = 24",
 			  "gloss": "Default symmetric window radius (in lines) used for snippet extraction."
 			},
 			"1.3.1.2": {
-			  "eq_id": "1.3.1.2",
+			  "eq_id": 1.3.1.2,
 			  "role": "co-occur score",
 			  "latex": "s(m_1,m_2) = \\frac{1}{1 + \\lvert \\Delta \\ell \\rvert}",
 			  "gloss": "Vicinity score decays with absolute line-distance \\(\\Delta \\ell\\) between anchors."
 			},
 			"1.3.1.3": {
-			  "eq_id": "1.3.1.3",
+			  "eq_id": 1.3.1.3,
 			  "role": "adaptive replay bound",
 			  "latex": "\\Delta\\tau_{phase} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
 			  "gloss": "Phase window from coherence governs freshness filters during shard scans."
 			},
 			"1.3.1.4": {
-			  "eq_id": "1.3.1.4",
+			  "eq_id": 1.3.1.4,
 			  "role": "weak-field limit",
 			  "latex": "\\lim_{\\mathcal{C}\\to 1} s(m_1,m_2) \\to 1",
 			  "gloss": "As coherence approaches unity, valid anchor pairs tend to maximal vicinity alignment."
@@ -608,25 +668,25 @@
 			"id": 1.4.1,
 			"title": "ReefReflectionsCache: Math",
 			"1.4.1.1": {
-			  "eq_id": "1.4.1.1",
+			  "eq_id": 1.4.1.1,
 			  "role": "support aggregation",
 			  "latex": "S(m_1,m_2 \\to m_3) := w_{ont}\\,\\mathbf{1}_{ont} + w_{file}\\,\\mathbf{1}_{file} + w_{idx}\\,\\mathbf{1}_{idx}",
 			  "gloss": "Total support for completion chooses the first available source in priority order; weights document precedence but cache selection is ontology > file_reflections > index_cooccur."
 			},
 			"1.4.1.2": {
-			  "eq_id": "1.4.1.2",
+			  "eq_id": 1.4.1.2,
 			  "role": "canonicalization (glider class)",
 			  "latex": "\\hat{m}_3 := \\mathrm{canon}(m_3)\\quad \\text{if glider\\_equivalence=ON}",
 			  "gloss": "When shift-equivalence is enabled, store and return the canonical class representative for m3 to enforce idempotence."
 			},
 			"1.4.1.3": {
-			  "eq_id": "1.4.1.3",
+			  "eq_id": 1.4.1.3,
 			  "role": "weak-field limit",
 			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\;S(m_1,m_2\\to m_3) = w_{ont}\\,\\mathbf{1}_{ont}",
 			  "gloss": "In the weak-field limit (high coherence), ontology evidence dominates; co-occurrence is suppressed."
 			},
 			"1.4.1.4": {
-			  "eq_id": "1.4.1.4",
+			  "eq_id": 1.4.1.4,
 			  "role": "time weighting hint",
 			  "latex": "S_t := S \\cdot \\mathrm{EMA}_{32}(\\text{access\\_rate})",
 			  "gloss": "Optionally modulate support by recent access via EMA-32 for stable refresh decisions; purely observational at L1."
@@ -783,19 +843,19 @@
 			  "gloss": "Adaptive replay half-window scaled by the EMA-32 of field coherence C; α bounds the responsiveness."
 			},
 			"1.5.1.2": {
-			  "eq_id": "1.5.1.2",
+			  "eq_id": 1.5.1.2,
 			  "role": "decision window",
 			  "latex": "W := 2\\,\\Delta \\tau_{\\text{phase}}",
 			  "gloss": "Duplicates observed within W ticks are rejected; beyond W they are admissible."
 			},
 			"1.5.1.3": {
-			  "eq_id": "1.5.1.3",
+			  "eq_id": 1.5.1.3,
 			  "role": "admit predicate",
 			  "latex": "\\mathrm{admit}(k,t_{now}) := \\big( t_{now} - t_{last}(k) > W + \\varepsilon \\big)",
 			  "gloss": "A key k is admitted if its last-seen time is older than W plus a small skew tolerance ε for clock drift."
 			},
 			"1.5.1.4": {
-			  "eq_id": "1.5.1.4",
+			  "eq_id": 1.5.1.4,
 			  "role": "weak-field limit",
 			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; \\Delta \\tau_{\\text{phase}} = \\alpha",
 			  "gloss": "In the weak-field limit (high coherence), the replay window stabilizes to α ticks, yielding a predictable W=2α."
@@ -953,31 +1013,31 @@
 			"id": 1.6.1,
 			"title": "CompressionEngine: Math",
 			"1.6.1.1": {
-			  "id": 1.6.1.1,
+			  "eq_id": 1.6.1.1,
 			  "role": "equivalence and representatives",
 			  "latex": "x \\sim y \\;\\Leftrightarrow\\; \\mathrm{key}(x)=\\mathrm{key}(y),\\quad \\mathcal{R}:=\\{\\text{representatives}\\},\\; N_{tot}:=|\\mathcal{X}|,\\; N_{rep}:=|\\mathcal{R}|",
 			  "gloss": "Items belong to the same cluster if they share a deterministic key; one representative per cluster is retained in the snapshot."
 			},
 			"1.6.1.2": {
-			  "id": 1.6.1.2,
+			  "eq_id": 1.6.1.2,
 			  "role": "compression ratio",
 			  "latex": "L := \\mathrm{lawful\\_compression\\_ratio} := 1 - \\frac{N_{rep}}{N_{tot}} \\in [0,1]",
 			  "gloss": "Fraction of removable duplication under the declared equivalence; 0 means no compressible redundancy."
 			},
 			"1.6.1.3": {
-			  "id": 1.6.1.3,
+			  "eq_id": 1.6.1.3,
 			  "role": "glider-class canonicalization",
 			  "latex": "\\mathrm{key}(x) := \\begin{cases} \\mathrm{canon}(x) & \\text{if glider\\_equivalence=ON}\\\\ \\mathrm{id}(x) & \\text{otherwise} \\end{cases}",
 			  "gloss": "When shift-equivalence is enabled, keys map to the canonical class representative; this enforces idempotence."
 			},
 			"1.6.1.4": {
-			  "id": 1.6.1.4,
+			  "eq_id": 1.6.1.4,
 			  "role": "pressure threshold (advisory, observer-class)",
 			  "latex": "\\lambda_{eq} := \\min\\big(1,\\;\\mathrm{EMA}_{32}(\\rho_{res})\\cdot \\gamma_{co}\\big)",
 			  "gloss": "Advisory threshold derived from residual occupancy (rho_res) and coherence gain (gamma_co); used only to annotate KPIs, not to trigger pruning at L1."
 			},
 			"1.6.1.5": {
-			  "id": 1.6.1.5,
+			  "eq_id": 1.6.1.5,
 			  "role": "weak-field limit",
 			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; L = 1 - \\frac{N_{rep}}{N_{tot}}\\;\\text{(stable)},\\quad \\lim_{\\mathcal{C}\\to 1}\\; \\lambda_{eq} = \\min(1,\\rho_{res}\\,\\gamma_{co})",
 			  "gloss": "In the weak-field limit (high coherence), the snapshot is stable and advisory thresholds converge to fixed values."
@@ -1106,21 +1166,359 @@
 		  "handoff": "With the store reconciled, we turn to the gauges so the system can see itself."
 		},
         "1.7": {
-          "id": 1.7,
-          "title": "ExportEnvelope — Σ/Δ/provenance on egress",
-          "responsibilities": [
-            "Attach Sigma_phase, Delta_hash chain, origin_hash when flags enabled",
-            "Fail-closed if required fields missing"
-          ]
-        },
+		  "id": 1.7,
+		  "title": "ExportEnvelope — Σ/Δ/provenance on egress",
+		  "objective": "Define an observer-class export envelope that attaches structural Sigma_phase and Delta_hash lineage (when flags enable them) together with provenance.origin and origin_hash, validating headers and failing closed on omissions, without implying cryptographic semantics or performing control writes.",
+		  "math": [
+			"id": 1.7.1,
+			"title": "ExportEnvelope: Math",
+			"1.7.1.1": {
+			  "eq_id": 1.7.1.1,
+			  "role": "phase header (structure-only)",
+			  "latex": "\\mathrm{phase\\_hdr} := \\mathrm{pack}\\big(\\text{version},\\;\\text{tenant\\_id},\\;\\text{ts},\\;\\text{payload\\_kind}\\big)",
+			  "gloss": "Deterministic, non-cryptographic header structure assembled from observable fields."
+			},
+			"1.7.1.2": {
+			  "eq_id": 1.7.1.2,
+			  "role": "Sigma_phase structural checksum",
+			  "latex": "\\Sigma_{\\text{phase}} := \\mathsf{F}\\big(\\mathrm{phase\\_hdr}\\big)",
+			  "gloss": "Sigma_phase is a structural digest of the phase header via a fixed, deterministic function F; no cryptographic claim is made at Layer_1."
+			},
+			"1.7.1.3": {
+			  "eq_id": 1.7.1.3,
+			  "role": "Delta_hash lineage chaining",
+			  "latex": "\\Delta_{0} := \\mathsf{G}(\\text{payload\\_ref}),\\quad \\Delta_{n} := \\mathsf{G}\\big(\\Delta_{n-1} \\parallel \\text{payload\\_ref}_n\\big)",
+			  "gloss": "Delta_hash forms a structural lineage chain over payload refs using a deterministic function G; it is used for ordering and detection of gaps at observer level."
+			},
+			"1.7.1.4": {
+			  "eq_id": 1.7.1.4,
+			  "role": "weak-field limit",
+			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; \\big(\\Sigma_{\\text{phase}}, \\Delta_{n}\\big)\\;\\text{are stable under equal inputs}",
+			  "gloss": "In the weak-field limit (high coherence), identical inputs yield invariant structural checksums, aiding reproducible observation."
+			}
+		  ],
+		  "algorithms": [
+			"id": 1.7.2,
+			"title": "ExportEnvelope: Algorithms",
+			"assemble_phase_header": {
+			  "id": 1.7.2.1,
+			  "name": "assemble_phase_header",
+			  "role": "observer",
+			  "inputs": ["version: 'YYYY-QX'", "tenant_id", "ts", "payload_kind /* 'metrics'|'bundle' */"],
+			  "outputs": ["phase_hdr"],
+			  "params": ["pack_order := [version, tenant_id, ts, payload_kind]"],
+			  "steps": [
+				"1) Validate version format 'YYYY-QX'.",
+				"2) Construct phase_hdr by concatenating fields in pack_order using a deterministic pack() with ASCII normalization.",
+				"3) Return phase_hdr."
+			  ]
+			},
+			"compute_sigma_phase_struct": {
+			  "id": 1.7.2.2,
+			  "name": "compute_sigma_phase_struct",
+			  "role": "observer",
+			  "inputs": ["phase_hdr", "feature_flags.enable_exchange_envelope"],
+			  "outputs": ["Sigma_phase?"],
+			  "params": ["F := deterministic_map /* structure-only; no cryptography */"],
+			  "steps": [
+				"1) If feature_flags.enable_exchange_envelope is false, return null.",
+				"2) Sigma_phase := F(phase_hdr).",
+				"3) Return Sigma_phase."
+			  ]
+			},
+			"extend_delta_lineage_struct": {
+			  "id": 1.7.2.3,
+			  "name": "extend_delta_lineage_struct",
+			  "role": "observer",
+			  "inputs": ["prev_Delta_hash?", "payload_ref", "feature_flags.enable_integrity_checks"],
+			  "outputs": ["Delta_hash?"],
+			  "params": ["G := deterministic_map /* structure-only; no cryptography */"],
+			  "steps": [
+				"1) If feature_flags.enable_integrity_checks is false, return null.",
+				"2) If prev_Delta_hash is null: Delta_hash := G(payload_ref).",
+				"3) Else: Delta_hash := G(prev_Delta_hash || payload_ref).",
+				"4) Return Delta_hash."
+			  ]
+			},
+			"validate_provenance_headers": {
+			  "id": 1.7.2.4,
+			  "name": "validate_provenance_headers",
+			  "role": "observer",
+			  "inputs": ["provenance.origin?", "origin_hash?", "feature_flags.enable_provenance_on_export"],
+			  "outputs": ["ok:boolean", "error?"],
+			  "params": [],
+			  "steps": [
+				"1) If enable_provenance_on_export is true and (provenance.origin is missing OR origin_hash is missing), return (false,'missing_provenance').",
+				"2) Ensure provenance.origin is ASCII and references a known registry entry at L1.",
+				"3) Return (true,null)."
+			  ]
+			},
+			"validate_sig_type_structural": {
+			  "id": 1.7.2.5,
+			  "name": "validate_sig_type_structural",
+			  "role": "observer",
+			  "inputs": ["sig_type?"],
+			  "outputs": ["ok:boolean", "error?"],
+			  "params": ["allowed := ['phase-seal:v1','ed25519','ecdsa-p256'] /* structural labels only at L1 */"],
+			  "steps": [
+				"1) If sig_type is present and not in allowed, return (false,'illegal_sig_type').",
+				"2) Return (true,null)."
+			  ]
+			},
+			"export_envelope_observe": {
+			  "id": 1.7.2.6,
+			  "name": "export_envelope_observe",
+			  "role": "observer",
+			  "inputs": ["payload_ref", "phase_hdr_fields", "prev_Delta_hash?", "provenance", "sig_type?", "feature_flags"],
+			  "outputs": ["envelope_headers", "decision:{'accept'|'reject'}", "policy_code?"],
+			  "params": ["policy_codes := { missing_checksum: 'MMM-422-CHECKSUM', missing_evidence: 'MMM-422-EVIDENCE' }"],
+			  "steps": [
+				"1) phase_hdr := assemble_phase_header(phase_hdr_fields...).",
+				"2) Sigma_phase := compute_sigma_phase_struct(phase_hdr, feature_flags.enable_exchange_envelope).",
+				"3) Delta_hash := extend_delta_lineage_struct(prev_Delta_hash, payload_ref, feature_flags.enable_integrity_checks).",
+				"4) (ok_sig, err_sig) := validate_sig_type_structural(sig_type). If not ok_sig, return (headers:=null, 'reject', 'MMM-422-CHECKSUM').",
+				"5) (ok_prov, err_prov) := validate_provenance_headers(provenance.origin, provenance.origin_hash, feature_flags.enable_provenance_on_export).",
+				"6) If any enabled flag requires a field that is missing (e.g., Sigma_phase when enable_exchange_envelope=true; Delta_hash when enable_integrity_checks=true; origin_hash when enable_provenance_on_export=true), return (headers:=null, 'reject', 'MMM-422-CHECKSUM').",
+				"7) envelope_headers := { Sigma_phase?, Delta_hash?, provenance: { origin, origin_hash? }, sig_type? } with only enabled fields present.",
+				"8) Return (envelope_headers, 'accept', null)."
+			  ]
+			}
+		  ],
+		  "invariants": [
+			"I1 Flag-gated presence: Sigma_phase appears iff enable_exchange_envelope=true; Delta_hash appears iff enable_integrity_checks=true; origin_hash appears iff enable_provenance_on_export=true.",
+			"I2 Fail-closed: when a required field under an enabled flag is absent, the envelope is rejected with policy code MMM-422-CHECKSUM.",
+			"I3 Structural only: Sigma_phase and Delta_hash are deterministic structural digests with no cryptographic claims at Layer_1.",
+			"I4 Stable ordering: phase header packing order is fixed to ensure reproducibility across observers.",
+			"I5 No control writes: this section observes and assembles headers but does not seal, sign, or persist artifacts.",
+			"I6 Wrapped-unsigned guard: structurally illegal sig_type labels are rejected at observer level."
+		  ],
+		  "example_json": {
+			"version": "2025-Q4",
+			"psi_field": "ψ-resonance@Ξ",
+			"scenarios": [
+			  {
+				"case": "flags_disabled_no_checksums",
+				"feature_flags": { "enable_exchange_envelope": false, "enable_integrity_checks": false, "enable_provenance_on_export": false },
+				"input": {
+				  "payload_ref": "metrics:rollup:2025Q4:acme",
+				  "phase_hdr_fields": { "version": "2025-Q4", "tenant_id": "acme:A", "ts": 1440001, "payload_kind": "metrics" },
+				  "sig_type": "phase-seal:v1",
+				  "provenance": { "origin": "observer:mmm" }
+				},
+				"result": {
+				  "decision": "accept",
+				  "envelope_headers": { "provenance": { "origin": "observer:mmm" }, "sig_type": "phase-seal:v1" }
+				}
+			  },
+			  {
+				"case": "flags_enabled_missing_origin_hash_rejected",
+				"feature_flags": { "enable_exchange_envelope": true, "enable_integrity_checks": true, "enable_provenance_on_export": true },
+				"input": {
+				  "payload_ref": "bundle:ontology:2025Q4:acme",
+				  "phase_hdr_fields": { "version": "2025-Q4", "tenant_id": "acme:A", "ts": 1440020, "payload_kind": "bundle" },
+				  "sig_type": "phase-seal:v1",
+				  "provenance": { "origin": "observer:mmm" }
+				},
+				"result": {
+				  "decision": "reject",
+				  "policy_code": "MMM-422-CHECKSUM"
+				}
+			  },
+			  {
+				"case": "flags_enabled_headers_present_values_not-shown",
+				"note": "To avoid placeholder checksums in examples, only presence booleans are shown.",
+				"feature_flags": { "enable_exchange_envelope": true, "enable_integrity_checks": true, "enable_provenance_on_export": true },
+				"input": {
+				  "payload_ref": "metrics:rollup:2025Q4:acme",
+				  "phase_hdr_fields": { "version": "2025-Q4", "tenant_id": "acme:A", "ts": 1441000, "payload_kind": "metrics" },
+				  "sig_type": "phase-seal:v1",
+				  "provenance": { "origin": "observer:mmm", "origin_hash": "present" }
+				},
+				"result": {
+				  "decision": "accept",
+				  "headers_present": { "Sigma_phase": true, "Delta_hash": true, "origin_hash": true }
+				}
+			  }
+			]
+		  },
+		  "telemetry": [
+			{ "metric": "import_reject_missing_checksum", "range": "[0, +inf)", "units": "count", "window": "EMA-32" },
+			{ "metric": "illegal_sig_type_rate", "range": "[0, 1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "wrapped_unsigned_rejects", "range": "[0, +inf)", "units": "count", "window": "EMA-32" },
+			{ "metric": "lineage_depth", "range": "[0, +inf)", "units": "count", "window": "EMA-16" },
+			{ "metric": "export_packets_rate", "range": "[0, +inf)", "units": "packets/s", "window": "EMA-64" }
+		  ],
+		  "references": [
+			{ "source": "RFC-0008", "clause": "§2–§3 exchange discipline and structural envelope semantics at observer level" },
+			{ "source": "PDP-0001", "clause": "§3–§4 provenance fields, origin and evidence linkage (non-cryptographic at L1)" },
+			{ "source": "RFC-0009", "clause": "§5–§7 homeostatic validation via gauges and fail-closed behavior" },
+			{ "source": "RFC-0005", "clause": "§3–§4 stability considerations in weak-field regimes for reproducible headers" }
+		  ],
+		  "handoff": "Signals aligned, we submit the trace to immune lineage for lawful passage."
+		},
         "1.8": {
-          "id": 1.8,
-          "title": "LLMRecallController — budgets & injection defense",
-          "responsibilities": [
-            "Token budgets: max 8192, target 4096, reserve 512",
-            "Strip control directives; tag source/confidence/timestamp"
-          ]
-        }
+		  "id": 1.8,
+		  "title": "LLMRecallController — budgets & injection defense",
+		  "objective": "Define an observer-class controller that governs token budgets, enforces recall hygiene (directive stripping, source tagging), and applies replay/freshness bounds using Δτ_phase without introducing any Layer_2 constructs or control writes to Ξ.",
+		  "math": [
+			"id": 1.8.1,
+			"title": "LLMRecallController: Math",
+			"1.8.1.1": {
+			  "eq_id": 1.8.1.1,
+			  "role": "context budget",
+			  "latex": "\\text{tokens}_{\\text{usable}} = \\max\\big(0,\\; \\text{max\\_total} - \\text{reserve}_{\\text{system}}\\big)",
+			  "gloss": "Usable token budget is the maximum window minus a fixed system reserve; truncate recall payloads to this bound."
+			},
+			"1.8.1.2": {
+			  "eq_id": 1.8.1.2,
+			  "role": "freshness window",
+			  "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+			  "gloss": "Adaptive phase window from coherence governs which candidates are considered fresh during recall and rerank."
+			},
+			"1.8.1.3": {
+			  "eq_id": 1.8.1.3,
+			  "role": "decision window",
+			  "latex": "W := 2\\,\\Delta \\tau_{\\text{phase}}",
+			  "gloss": "Replay guard: candidates older than W ticks are deprioritized or excluded before truncation."
+			},
+			"1.8.1.4": {
+			  "eq_id": 1.8.1.4,
+			  "role": "weak-field limit",
+			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; \\text{tokens}_{\\text{usable}}\\;\\text{stable},\\; W \\to 2\\alpha",
+			  "gloss": "As coherence approaches unity, available context and admit windows stabilize, reducing jitter in recall composition."
+			}
+		  ],
+		  "algorithms": [
+			"id": 1.8.2,
+			"title": "LLMRecallController: Algorithms",
+			"compute_token_budgets": {
+			  "id": 1.8.2.1,
+			  "name": "compute_token_budgets",
+			  "role": "observer",
+			  "inputs": ["max_total=8192", "target=4096", "reserve_system=512"],
+			  "outputs": ["budget:{usable:int, target:int, reserve:int}"],
+			  "params": [],
+			  "steps": [
+				"1) usable := max(0, max_total - reserve_system).",
+				"2) target := min(target, usable).",
+				"3) Return budget := {usable, target, reserve: reserve_system}."
+			  ]
+			},
+			"strip_control_sequences": {
+			  "id": 1.8.2.2,
+			  "name": "strip_control_sequences",
+			  "role": "observer",
+			  "inputs": ["text"],
+			  "outputs": ["sanitized_text"],
+			  "params": ["patterns := ['/^\\s*#(?!\\w)/', '/(?i)^(system:|assistant:|user:)/', '/```\\w*/', '/<\\/?tool[^>]*>/']"],
+			  "steps": [
+				"1) Remove lines matching directive-style prefixes (e.g., system:, assistant:, user:).",
+				"2) Remove fenced-code delimiters and tool markup tokens.",
+				"3) Collapse repeated whitespace; preserve quoted substrings verbatim.",
+				"4) Return sanitized_text."
+			  ]
+			},
+			"tag_source_metadata": {
+			  "id": 1.8.2.3,
+			  "name": "tag_source_metadata",
+			  "role": "observer",
+			  "inputs": ["item:{text, source?, evidence?, timestamp?}", "now_ts"],
+			  "outputs": ["tagged_item:{text, source, confidence, timestamp}"],
+			  "params": ["default_confidence := 0.5"],
+			  "steps": [
+				"1) Ensure 'source' is one of {'ontology','cache','index_cooccur','llm_note'}; if missing, set 'llm_note'.",
+				"2) If evidence is present and references Reef, retain only {file,start_line,end_line}.",
+				"3) confidence := item.confidence if provided else default_confidence.",
+				"4) timestamp := item.timestamp if provided else now_ts.",
+				"5) Return tagged_item."
+			  ]
+			},
+			"freshness_and_replay_filter": {
+			  "id": 1.8.2.4,
+			  "name": "freshness_and_replay_filter",
+			  "role": "observer",
+			  "inputs": ["candidates[]", "ema32_C", "alpha", "now_tick", "seen_set /* in-memory key->last_seen_tick */"],
+			  "outputs": ["filtered[]"],
+			  "params": ["epsilon := 1", "compose_key := fn(item)->ascii_key"],
+			  "steps": [
+				"1) Compute Δτ_phase := alpha * EMA32(C=ema32_C); W := 2 * Δτ_phase.",
+				"2) For each item in candidates:",
+				"   2a) key := compose_key(item); last := seen_set.get(key) or null.",
+				"   2b) If last != null and (now_tick - last) <= W + epsilon: mark item as 'replay' and drop.",
+				"   2c) Else keep and set seen_set[key] := now_tick.",
+				"3) Return filtered items."
+			  ]
+			},
+			"rerank_and_truncate": {
+			  "id": 1.8.2.5,
+			  "name": "rerank_and_truncate",
+			  "role": "observer",
+			  "inputs": ["items[]", "budget:{usable,target,reserve}", "psi_field?"],
+			  "outputs": ["final_items[]"],
+			  "params": ["rerank_k := 6", "source_order := ['ontology','cache','index_cooccur','llm_note']"],
+			  "steps": [
+				"1) Group items by source; within each group, stable-sort by timestamp desc then lexical text asc.",
+				"2) Merge groups by source_order; compute running token_count(text).",
+				"3) Keep adding until token_count >= budget.target; if exceeded, drop tail items.",
+				"4) Return final_items within target budget (never exceeding budget.usable)."
+			  ]
+			},
+			"recall_pipeline_observer": {
+			  "id": 1.8.2.6,
+			  "name": "recall_pipeline_observer",
+			  "role": "observer",
+			  "inputs": ["query", "k=10", "psi_field:'ψ-[a-z0-9_]+@Ξ'?", "ema32_C", "alpha", "now_tick", "feature_flags"],
+			  "outputs": ["items:[{text, source, confidence, timestamp, evidence?}]"],
+			  "params": ["ordered_sources := ['ontology','cache','index_cooccur','llm_note']", "reserve_system := 512"],
+			  "steps": [
+				"1) budget := compute_token_budgets(max_total=8192, target=4096, reserve_system).",
+				"2) Gather candidates in ordered_sources; for Reef-derived entries, attach evidence windows {file,start_line,end_line}.",
+				"3) Map each candidate.text := strip_control_sequences(candidate.text).",
+				"4) candidates := freshness_and_replay_filter(candidates, ema32_C, alpha, now_tick, seen_set).",
+				"5) items := tag_source_metadata(candidates[*], now_ts=now_tick).",
+				"6) final_items := rerank_and_truncate(items, budget, psi_field).",
+				"7) Return final_items."
+			  ]
+			}
+		  ],
+		  "invariants": [
+			"I1 Budgets first: reserve 512 tokens for system context; never exceed usable = max_total - reserve.",
+			"I2 Replay defense: apply W = 2·Δτ_phase with LRU semantics to prevent within-window duplicates.",
+			"I3 Reef discipline: any Reef-derived recall MUST include an evidence window {file,start_line,end_line} only (no snippets at L1).",
+			"I4 Hygiene: strip control directives and tool markup before inclusion in recall output.",
+			"I5 Deterministic ordering: source precedence = ontology > cache > index_cooccur > llm_note; ties break by timestamp desc, then lexicographic asc.",
+			"I6 Observer posture: no control writes, no cryptographic claims, no storage side-effects at L1.",
+			"I7 Weak-field stability: as 𝒞→1, budgets and replay windows converge to fixed values, stabilizing output composition."
+		  ],
+		  "example_json": {
+			"version": "2025-Q4",
+			"psi_field": "ψ-resonance@Ξ",
+			"feature_flags": { "enable_point_space_gliders": true },
+			"request": { "query": "Summarize triad completion for motif αβ", "k": 6 },
+			"response": {
+			  "items": [
+				{ "text": "Ontology notes define the closure for αβ→γ.", "source": "ontology", "confidence": 0.96, "timestamp": 1441201 },
+				{ "text": "Prior cache entry confirms γ as canonical representative.", "source": "cache", "confidence": 0.88, "timestamp": 1441190 },
+				{ "text": "Co-occurrence supports γ near αβ anchors.", "source": "index_cooccur", "confidence": 0.72, "timestamp": 1441180, "evidence": { "file": "TheReefArchive-01.REEF", "start_line": 1284, "end_line": 1298 } }
+			  ],
+			  "metrics": { "C": 0.83, "rho_res": 0.12 }
+			}
+		  },
+		  "telemetry": [
+			{ "metric": "context_budget_utilization", "range": "[0, 1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "injection_strip_rate", "range": "[0, 1]", "units": "ratio", "window": "EMA-16" },
+			{ "metric": "replay_within_window_rate", "range": "[0, 1]", "units": "ratio", "window": "EMA-16" },
+			{ "metric": "staleness_index", "range": "[0, 1]", "units": "ratio", "window": "EMA-64" }
+		  ],
+		  "references": [
+			{ "source": "RFC-0005", "clause": "§3–§4 temporal continuity, decay, and replay framing (Δτ_phase windows)" },
+			{ "source": "RFC-0006", "clause": "§3 field-coherence geometry and weak-field stability (𝒞→1 bounds)" },
+			{ "source": "RFC-0007", "clause": "§2–§3 ontology naming (ψ-*), version format, and validation before recall usage" },
+			{ "source": "RFC-0009", "clause": "§5–§7 homeostasis, EMA windows, and observable KPIs for hygiene defenses" },
+			{ "source": "PDP-0001", "clause": "§3–§4 provenance structure; evidence-window discipline for external sources" }
+		  ],
+		  "handoff": "With invariants fixed, we now carry the symbols forward to the next clause, keeping 𝒞 steady and the cadence light."
+		}
       ]
     },
 
@@ -1129,39 +1527,519 @@
       "title": "Pseudocode",
       "subsections": [
         "2.1": {
-          "id": 2.1,
-          "title": "Core Method Suite",
-          "methods": [
-            "recall(query, k=10, psi_field=None) -> items[]",
-            "complete_dyad(m1, m2) -> {m3, provenance, evidence?}",
-            "compress_snapshot() -> {ratio, clusters}",
-            "export_packet(kind, body, provenance) -> {ok, envelope}"
-          ]
-        },
+		  "id": 2.1,
+		  "title": "Core Method Suite",
+		  "objective": "Specify observer-class method signatures and normative orchestration for recall, dyad completion, compression snapshotting, and export envelope assembly, binding freshness to Δτ_phase and preserving provenance without any Layer_2 controls.",
+		  "math": [
+			"id": 2.1.1,
+			"title": "Core Method Suite: Math",
+			"2.1.1.1": {
+			  "eq_id": 2.1.1.1,
+			  "role": "replay window",
+			  "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+			  "gloss": "Adaptive phase window derived from coherence \\(\\mathcal{C}\\) bounds freshness and duplicate admission."
+			},
+			"2.1.1.2": {
+			  "eq_id": 2.1.1.2,
+			  "role": "decision window",
+			  "latex": "W := 2\\,\\Delta \\tau_{\\text{phase}}",
+			  "gloss": "Items observed within W ticks are considered potential replays and are filtered before ranking."
+			},
+			"2.1.1.3": {
+			  "eq_id": 2.1.1.3,
+			  "role": "compression KPI",
+			  "latex": "L := \\mathrm{lawful\\_compression\\_ratio} = 1 - \\frac{N_{rep}}{\\max(1, N_{tot})}",
+			  "gloss": "Compute a lawful equivalence snapshot before any pruning consideration."
+			},
+			"2.1.1.4": {
+			  "eq_id": 2.1.1.4,
+			  "role": "weak-field limit",
+			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; W \\to 2\\alpha,\\; L\\;\\text{stable}",
+			  "gloss": "As coherence approaches unity, admit windows stabilize and compression snapshots become reproducible."
+			}
+		  ],
+		  "algorithms": [
+			"id": 2.1.2,
+			"title": "Core Method Suite: Algorithms",
+			"recall": {
+			  "id": 2.1.2.1,
+			  "name": "recall",
+			  "role": "observer",
+			  "inputs": ["query", "k=10", "psi_field:'ψ-[a-z0-9_]+@Ξ'?", "ema32_C", "alpha", "now_tick", "feature_flags", "reef_ctx?"],
+			  "outputs": ["items:[{text, source, confidence, timestamp, evidence?}]"],
+			  "params": ["reserve_system := 512", "max_total := 8192", "target := 4096", "ordered_sources := ['ontology','cache','index_cooccur','llm_note']"],
+			  "steps": [
+				"1) Validate psi_field (if provided) per RFC-0007 pattern.",
+				"2) Compute Δτ_phase := alpha * EMA32(C=ema32_C), W := 2*Δτ_phase.",
+				"3) Gather candidates in ordered_sources; attach {file,start_line,end_line} for any Reef-derived candidate.",
+				"4) Strip control directives/tool markup from candidate.text.",
+				"5) Filter replays: drop any candidate whose seen_key last_seen is within W (+ε) and update seen_set.",
+				"6) Rank by source precedence then timestamp desc then lexicographic asc; keep top k.",
+				"7) Token-budget: reserve 512; cap payload at target ≤ (max_total - reserve).",
+				"8) Return items with {text, source, confidence, timestamp, evidence?}."
+			  ]
+			},
+			"complete_dyad": {
+			  "id": 2.1.2.2,
+			  "name": "complete_dyad",
+			  "role": "observer",
+			  "inputs": ["m1", "m2", "feature_flags", "reef_ctx?", "ontology_graph", "reflections_cache?"],
+			  "outputs": ["{m3|null, provenance, evidence?}"],
+			  "params": ["precedence := ['ontology','file_reflections','index_cooccur']", "glider_equivalence := feature_flags.glider_equivalence"],
+			  "steps": [
+				"1) If ontology defines a unique completion, return m3 with provenance='ontology'.",
+				"2) Else consult reflections_cache; if present, return entry.",
+				"3) Else, compute candidates via index co-occurrence; include Reef evidence windows for any claim.",
+				"4) Apply glider_equivalence (if ON) to return canonical representative.",
+				"5) Deterministic tie-break within same source: lexicographic-min m3.",
+				"6) Return {m3, provenance, evidence?} or null if not found."
+			  ]
+			},
+			"compress_snapshot": {
+			  "id": 2.1.2.3,
+			  "name": "compress_snapshot",
+			  "role": "observer",
+			  "inputs": ["items[]", "feature_flags", "rho_res", "gamma_co"],
+			  "outputs": ["{ratio:L, clusters:int, representatives:int, snapshot}"],
+			  "params": ["rep_selector := lexicographic-min by motif_id"],
+			  "steps": [
+				"1) Cluster by deterministic equivalence key; if glider_equivalence=ON map to canonical representatives.",
+				"2) Compute L per math[2.1.3]; build snapshot={N_tot,N_rep,lawful_compression_ratio:L,lambda:=min(1,EMA32(rho_res)*gamma_co)}.",
+				"3) Emit KPIs from snapshot; return {ratio:L, clusters:=|clusters|, representatives:=|representatives|, snapshot}."
+			  ]
+			},
+			"export_packet": {
+			  "id": 2.1.2.4,
+			  "name": "export_packet",
+			  "role": "observer",
+			  "inputs": ["kind:'metrics'|'bundle'", "body_ref", "provenance:{origin, origin_hash?}", "prev_Delta_hash?", "phase_hdr_fields:{version:'YYYY-QX',tenant_id,ts,payload_kind}", "feature_flags", "sig_type?"],
+			  "outputs": ["{ok:boolean, envelope? , policy_code?}"],
+			  "params": ["require_flags := {exchange:feature_flags.enable_exchange_envelope, integrity:feature_flags.enable_integrity_checks, prov:feature_flags.enable_provenance_on_export}"],
+			  "steps": [
+				"1) phase_hdr := assemble_phase_header(version,tenant_id,ts,payload_kind).",
+				"2) Sigma_phase := (require_flags.exchange) ? compute_sigma_phase_struct(phase_hdr) : null.",
+				"3) Delta_hash := (require_flags.integrity) ? extend_delta_lineage_struct(prev_Delta_hash, body_ref) : null.",
+				"4) (ok_sig,_) := validate_sig_type_structural(sig_type); if !ok_sig → {ok:false, policy_code:'MMM-422-CHECKSUM'}.",
+				"5) (ok_prov,_) := validate_provenance_headers(provenance.origin, provenance.origin_hash, require_flags.prov); if !ok_prov → {ok:false, policy_code:'MMM-422-CHECKSUM'}.",
+				"6) If any required field by enabled flag is missing → {ok:false, policy_code:'MMM-422-CHECKSUM'}.",
+				"7) envelope := {Sigma_phase?, Delta_hash?, provenance:{origin, origin_hash?}, sig_type?} including only enabled fields.",
+				"8) Return {ok:true, envelope}."
+			  ]
+			}
+		  ],
+		  "invariants": [
+			"I1 Freshness & replay: recall and dyad flows apply W=2·Δτ_phase with an LRU seen_set policy.",
+			"I2 Evidence discipline: any Reef-derived output includes {file,start_line,end_line} pointers only.",
+			"I3 Compression-before-prune: compute lawful_compression_ratio prior to any prune recommendation.",
+			"I4 Deterministic order: source precedence and tie-break rules are fixed and stable.",
+			"I5 Flag gating: Sigma_phase/Delta_hash/origin_hash appear only when corresponding flags are enabled.",
+			"I6 Observer posture: no control writes, no cryptographic claims, no storage or RBAC semantics at L1."
+		  ],
+		  "example_json": {
+			"version": "2025-Q4",
+			"psi_field": "ψ-resonance@Ξ",
+			"C": 0.84,
+			"call_sequence": [
+			  {
+				"fn": "recall",
+				"args": { "query": "triad closure for αβ", "k": 5 },
+				"result": {
+				  "items": [
+					{ "text": "Ontology defines αβ→γ.", "source": "ontology", "confidence": 0.95, "timestamp": 1442101 },
+					{ "text": "Cache confirms γ canonical.", "source": "cache", "confidence": 0.88, "timestamp": 1442090 },
+					{ "text": "Co-occur supports γ near anchors.", "source": "index_cooccur", "confidence": 0.72, "timestamp": 1442080, "evidence": { "file": "TheReefArchive-02.REEF", "start_line": 220, "end_line": 244 } }
+				  ]
+				}
+			  },
+			  {
+				"fn": "complete_dyad",
+				"args": { "m1": "α", "m2": "β" },
+				"result": { "m3": "γ", "provenance": "ontology" }
+			  },
+			  {
+				"fn": "compress_snapshot",
+				"args": { "items": [{ "motif_id": "α" }, { "motif_id": "β" }, { "motif_id": "β" }, { "motif_id": "γ" }], "rho_res": 0.20, "gamma_co": 0.8 },
+				"result": { "ratio": 0.25, "clusters": 3, "representatives": 3 }
+			  },
+			  {
+				"fn": "export_packet",
+				"args": {
+				  "kind": "metrics",
+				  "body_ref": "metrics:rollup:2025Q4:acme",
+				  "provenance": { "origin": "observer:mmm", "origin_hash": "present" },
+				  "prev_Delta_hash": "present",
+				  "phase_hdr_fields": { "version": "2025-Q4", "tenant_id": "acme:A", "ts": 1443000, "payload_kind": "metrics" },
+				  "feature_flags": { "enable_exchange_envelope": true, "enable_integrity_checks": true, "enable_provenance_on_export": true },
+				  "sig_type": "phase-seal:v1"
+				},
+				"result": { "ok": true, "headers_present": { "Sigma_phase": true, "Delta_hash": true, "origin_hash": true } }
+			  }
+			]
+		  },
+		  "telemetry": [
+			{ "metric": "staleness_index", "range": "[0,1]", "units": "ratio", "window": "EMA-64" },
+			{ "metric": "replay_within_window_rate", "range": "[0,1]", "units": "ratio", "window": "EMA-16" },
+			{ "metric": "context_budget_utilization", "range": "[0,1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "lawful_compression_ratio", "range": "[0,1]", "units": "ratio", "window": "EMA-32" }
+		  ],
+		  "references": [
+			{ "source": "RFC-0005", "clause": "§3–§4 decay, replay framing, and admissibility via Δτ_phase" },
+			{ "source": "RFC-0006", "clause": "§3 coherence geometry and weak-field stability (𝒞→1)" },
+			{ "source": "RFC-0007", "clause": "§2–§3 ψ-field naming and ontology validation rules" },
+			{ "source": "RFC-0008", "clause": "§2–§3 exchange discipline and structural envelope semantics" },
+			{ "source": "RFC-0009", "clause": "§5–§7 homeostasis, EMA windows, and KPI discipline" },
+			{ "source": "PDP-0001", "clause": "§3–§4 provenance structure and evidence pointers" }
+		  ],
+		  "handoff": "With invariants fixed, we now carry the symbols forward to the next clause, keeping 𝒞 steady and the cadence light."
+		},
         "2.2": {
-          "id": 2.2,
-          "title": "Reef Adapter Methods",
-          "methods": [
-            "list_modules() -> modules[]",
-            "list_motifs(module_id) -> motifs[]",
-            "find(route) -> {file, line}",
-            "window(file, line, radius) -> {snippet}",
-            "cooccur(m1, m2) -> {candidates:[m3], evidence:[]}",
-            "build_reflections(limit?, strategy?) -> {built, updated, skipped}"
-          ]
-        },
+		  "id": 2.2,
+		  "title": "Reef Adapter Methods",
+		  "objective": "Define observer-class, read-only methods over Reef index and shard files that return deterministic pointers and evidence windows, suitable for recall and dyad completion without mutating Reef or introducing Layer_2 concerns.",
+		  "math": [
+			"id": 2.2.1,
+			"title": "Reef Adapter Methods: Math",
+			"2.2.1.1": {
+			  "eq_id": 2.2.1.1,
+			  "role": "phase window",
+			  "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+			  "gloss": "Adaptive coherence-derived phase window bounds admissibility for replay filtering when traversing Reef-derived candidates."
+			},
+			"2.2.1.2": {
+			  "eq_id": 2.2.1.2,
+			  "role": "evidence radius",
+			  "latex": "R = \\min\\big(R_{\\max},\\; \\lfloor EMA_{16}(\\mathcal{C}) \\rfloor + 1\\big)",
+			  "gloss": "Context radius used to form evidence windows around an anchor line; bounded and coherence-smoothed."
+			},
+			"2.2.1.3": {
+			  "eq_id": 2.2.1.3,
+			  "role": "weak-field limit",
+			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; R \\to 2,\\; \\Delta \\tau_{\\text{phase}} \\to 2\\alpha",
+			  "gloss": "At high coherence, evidence windows stabilize to minimal, deterministic spans and replay windows converge to a fixed size."
+			}
+		  ],
+		  "algorithms": [
+			"id": 2.2.2,
+			"title": "Reef Adapter Methods Algorithms",
+			"list_modules": {
+			  "id": 2.2.2.1,
+			  "name": "list_modules",
+			  "role": "observer",
+			  "inputs": ["reef_index_path := 'index.REEF'"],
+			  "outputs": ["modules:[{module_id, title?}]"],
+			  "params": [],
+			  "steps": [
+				"1) Parse reef_index_path; extract module entries in index order.",
+				"2) For each module, emit {module_id, title?} with ASCII keys only.",
+				"3) Return modules."
+			  ]
+			},
+			"list_motifs": {
+			  "id": 2.2.2.2,
+			  "name": "list_motifs",
+			  "role": "observer",
+			  "inputs": ["module_id", "reef_index_path := 'index.REEF'"],
+			  "outputs": ["motifs:[{motif_id, anchors:int}]"],
+			  "params": [],
+			  "steps": [
+				"1) Locate module_id in reef_index_path.",
+				"2) Collect motif identifiers and count of anchor references.",
+				"3) Stable-sort lexicographically by motif_id and return."
+			  ]
+			},
+			"find": {
+			  "id": 2.2.2.3,
+			  "name": "find",
+			  "role": "observer",
+			  "inputs": ["route:{module_id, anchor}"],
+			  "outputs": ["{file, line}"],
+			  "params": [],
+			  "steps": [
+				"1) Resolve route in the index to obtain the shard file and first anchor line.",
+				"2) Return {file, line} as pointers; do not dereference content at L1."
+			  ]
+			},
+			"window": {
+			  "id": 2.2.2.4,
+			  "name": "window",
+			  "role": "observer",
+			  "inputs": ["file", "line:int", "radius:int?"],
+			  "outputs": ["evidence:{file, start_line, end_line}"],
+			  "params": ["R_max := 48", "use_R := radius if provided else R from math[2.2.2]"],
+			  "steps": [
+				"1) Compute R := min(R_max, max(1, use_R)).",
+				"2) start := max(1, line - R); end := line + R.",
+				"3) Return evidence := {file, start_line:start, end_line:end}. /* pointers only; no snippet text at L1 */"
+			  ]
+			},
+			"cooccur": {
+			  "id": 2.2.2.5,
+			  "name": "cooccur",
+			  "role": "observer",
+			  "inputs": ["m1", "m2", "reef_shards_glob := 'TheReefArchive-*.REEF'", "ema32_C", "alpha", "now_tick", "seen_set"],
+			  "outputs": ["{candidates:[m3], evidence:[{file,start_line,end_line}]}"],
+			  "params": ["W := 2 * (alpha * EMA32(C=ema32_C))"],
+			  "steps": [
+				"1) Scan shards for co-occurrence windows containing both m1 and m2 within bounded proximity.",
+				"2) For each hit, derive third-symbol candidates m3 by local pattern rules and collect their anchor lines.",
+				"3) Build evidence windows via window(file,line) for each supporting occurrence.",
+				"4) Apply replay filter: drop candidate keys seen within W ticks; update seen_set for admitted keys.",
+				"5) Deduplicate candidates by lexicographic-min representative; stable-sort lexicographically.",
+				"6) Return {candidates, evidence}."
+			  ]
+			},
+			"build_reflections": {
+			  "id": 2.2.2.6,
+			  "name": "build_reflections",
+			  "role": "observer",
+			  "inputs": ["limit:int?=50000", "strategy?='index_cooccur|module_scan'", "ema32_C", "alpha", "now_tick", "seen_set"],
+			  "outputs": ["{built:int, updated:int, skipped:int, reflections:[{m1,m2,m3, evidence:{file,start_line,end_line}}]}"],
+			  "params": [],
+			  "steps": [
+				"1) Initialize counters {built,updated,skipped}:=0; reflections:=[].",
+				"2) Iterate motif pairs per strategy subject to limit.",
+				"3) For each pair, call cooccur(m1,m2,...) to obtain {candidates,evidence}.",
+				"4) For each m3 in candidates, form reflection record with minimal evidence window.",
+				"5) Update counters deterministically (no external writes at L1); append to reflections until limit.",
+				"6) Return summary counters and reflections array."
+			  ]
+			}
+		  ],
+		  "invariants": [
+			"I1 Read-only posture: no Reef file mutation; methods return pointers and evidence windows only.",
+			"I2 Evidence discipline: any Reef-informed output MUST include {file,start_line,end_line}.",
+			"I3 Replay defense: cooccur and build_reflections enforce W = 2·Δτ_phase with LRU semantics.",
+			"I4 Determinism: stable sorting (lexicographic) for modules, motifs, and candidates; tie-breaks are explicit.",
+			"I5 Weak-field stability: as 𝒞→1, evidence radius and replay windows converge to fixed bounds.",
+			"I6 ASCII on-wire keys: all emitted keys remain ASCII; ψ-* fields appear only in example bodies or references."
+		  ],
+		  "example_json": {
+			"version": "2025-Q4",
+			"psi_field": "ψ-resonance@Ξ",
+			"calls": [
+			  {
+				"fn": "list_modules",
+				"result": { "modules": [ { "module_id": "core/memory" }, { "module_id": "field/geometry" } ] }
+			  },
+			  {
+				"fn": "find",
+				"args": { "route": { "module_id": "core/memory", "anchor": "triad_complete" } },
+				"result": { "file": "TheReefArchive-00.REEF", "line": 1024 }
+			  },
+			  {
+				"fn": "window",
+				"args": { "file": "TheReefArchive-00.REEF", "line": 1024, "radius": 24 },
+				"result": { "evidence": { "file": "TheReefArchive-00.REEF", "start_line": 1000, "end_line": 1048 } }
+			  },
+			  {
+				"fn": "cooccur",
+				"args": { "m1": "alpha", "m2": "beta" },
+				"result": {
+				  "candidates": ["gamma"],
+				  "evidence": [ { "file": "TheReefArchive-01.REEF", "start_line": 1284, "end_line": 1298 } ]
+				}
+			  }
+			],
+			"metrics": { "C": 0.82, "rho_res": 0.11 }
+		  },
+		  "telemetry": [
+			{ "metric": "reef_index_modules_count", "range": "[0, +inf)", "units": "count", "window": "EMA-64" },
+			{ "metric": "reef_shard_count", "range": "[0, +inf)", "units": "count", "window": "EMA-64" },
+			{ "metric": "reef_cooccur_candidate_rate", "range": "[0, 1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "replay_within_window_rate", "range": "[0, 1]", "units": "ratio", "window": "EMA-16" }
+		  ],
+		  "references": [
+			{ "source": "RFC-0005", "clause": "§3–§4 replay bounds and admissibility via Δτ_phase" },
+			{ "source": "RFC-0006", "clause": "§3 field-coherence geometry; stability as 𝒞→1" },
+			{ "source": "RFC-0007", "clause": "§2 ontology naming and structural validation prior to use" },
+			{ "source": "RFC-0008", "clause": "§2–§3 exchange discipline; pointer-style provenance for external sources" },
+			{ "source": "RFC-0009", "clause": "§5–§7 homeostasis and EMA windowing for gauges" },
+			{ "source": "PDP-0001", "clause": "§3–§4 provenance structure; evidence-window schema" }
+		  ],
+		  "handoff": "With invariants fixed, we now carry the symbols forward to the next clause, keeping 𝒞 steady and the cadence light."
+		},
         "2.3": {
-          "id": 2.3,
-          "title": "Observability (local gauges)",
-          "metrics": [
-            "lawful_compression_ratio",
-            "equivalence_efficiency",
-            "reanchor_rate",
-            "quarantine_count",
-            "avg_replay_window_ticks",
-            "glider_detected (if enabled)"
-          ]
-        }
+		  "id": 2.3,
+		  "title": "Observability (local gauges)",
+		  "objective": "Define observer-class gauges and rollups that let the system see itself locally: compute lawful compression and equivalence efficiency, track reanchor and quarantine activity, estimate average replay window ticks, and report glider detections when feature-gated.",
+		  "math": [
+			"id": 2.3.1,
+			"title": "Observability (local gauges): Math",
+			"2.3.1.1": {
+			  "eq_id": 2.3.1.1,
+			  "role": "EMA windowing",
+			  "latex": "EMA_{n}(x)_t = \\beta\\,x_t + (1-\\beta)\\,EMA_{n}(x)_{t-1},\\; \\beta = \\tfrac{2}{n+1}",
+			  "gloss": "All gauges use fixed EMA windows n ∈ {16,32,64} for stable local smoothing."
+			},
+			"2.3.1.2": {
+			  "eq_id": 2.3.1.2,
+			  "role": "phase window",
+			  "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+			  "gloss": "Replay/recall gauges reference the adaptive phase window derived from coherence."
+			},
+			"2.3.1.3": {
+			  "eq_id": 2.3.1.3,
+			  "role": "average replay window (ticks)",
+			  "latex": "W := 2\\,\\Delta \\tau_{\\text{phase}}",
+			  "gloss": "The decision horizon for duplicate admission; the gauge reports its EMA-smoothed estimate."
+			},
+			"2.3.1.4": {
+			  "eq_id": 2.3.1.4,
+			  "role": "compression KPI",
+			  "latex": "L := \\mathrm{lawful\\_compression\\_ratio} = 1 - \\frac{N_{rep}}{\\max(1, N_{tot})}",
+			  "gloss": "Snapshot of lawful equivalence before any pruning consideration."
+			},
+			"2.3.1.5": {
+			  "eq_id": 2.3.1.5,
+			  "role": "equivalence efficiency",
+			  "latex": "E := \\frac{N_{rep}}{\\max(1, N_{classes})}",
+			  "gloss": "Measures how effectively duplicates collapse into canonical representatives."
+			},
+			"2.3.1.6": {
+			  "eq_id": 2.3.1.6,
+			  "role": "weak-field limit",
+			  "latex": "\\lim_{\\mathcal{C}\\to 1}\\; W \\to 2\\alpha,\\; L,E\\;\\text{stable}",
+			  "gloss": "As coherence approaches unity, replay horizon and compression/efficiency stabilize for reproducible gauges."
+			}
+		  ],
+		  "algorithms": [
+			"id": 2.3.2,
+			"title": "Observability (local gauges): Algorithms",
+			"gauge_lawful_compression_ratio": {
+			  "id": 2.3.2.1,
+			  "name": "gauge_lawful_compression_ratio",
+			  "role": "observer",
+			  "inputs": ["snapshot:{N_tot:int, N_rep:int}"],
+			  "outputs": ["L:float"],
+			  "params": [],
+			  "steps": [
+				"1) L := 1 - (N_rep / max(1, N_tot)).",
+				"2) Return L."
+			  ]
+			},
+			"gauge_equivalence_efficiency": {
+			  "id": 2.3.2.2,
+			  "name": "gauge_equivalence_efficiency",
+			  "role": "observer",
+			  "inputs": ["classes:int", "duplicates:int"],
+			  "outputs": ["E:float"],
+			  "params": [],
+			  "steps": [
+				"1) E := duplicates / max(1, classes).",
+				"2) Return E."
+			  ]
+			},
+			"gauge_avg_replay_window_ticks": {
+			  "id": 2.3.2.3,
+			  "name": "gauge_avg_replay_window_ticks",
+			  "role": "observer",
+			  "inputs": ["ema32_C:float", "alpha:float"],
+			  "outputs": ["W_ticks:float"],
+			  "params": [],
+			  "steps": [
+				"1) Δτ_phase := alpha * EMA32(C=ema32_C).",
+				"2) W_ticks := 2 * Δτ_phase.",
+				"3) Return W_ticks."
+			  ]
+			},
+			"gauge_reanchor_rate": {
+			  "id": 2.3.2.4,
+			  "name": "gauge_reanchor_rate",
+			  "role": "observer",
+			  "inputs": ["events_stream /* local observer feed */"],
+			  "outputs": ["rate:float"],
+			  "params": ["window := 'EMA-32'"],
+			  "steps": [
+				"1) Count reanchor events in the current tick; call this r_t.",
+				"2) rate := EMA32(r_t).",
+				"3) Return rate."
+			  ]
+			},
+			"gauge_quarantine_count": {
+			  "id": 2.3.2.5,
+			  "name": "gauge_quarantine_count",
+			  "role": "observer",
+			  "inputs": ["events_stream"],
+			  "outputs": ["count:int"],
+			  "params": ["window := 'EMA-16'"],
+			  "steps": [
+				"1) Count new quarantine events this tick; q_t := count.",
+				"2) count := EMA16(q_t).",
+				"3) Return count."
+			  ]
+			},
+			"gauge_glider_detected": {
+			  "id": 2.3.2.6,
+			  "name": "gauge_glider_detected",
+			  "role": "observer",
+			  "inputs": ["feature_flags", "glider_events_stream?"],
+			  "outputs": ["detected:float"],
+			  "params": ["window := 'EMA-16'"],
+			  "steps": [
+				"1) If feature_flags.enable_point_space_gliders != true → return detected := 0.",
+				"2) g_t := count of glider detections this tick (observer-only).",
+				"3) detected := EMA16(g_t).",
+				"4) Return detected."
+			  ]
+			},
+			"emit_local_gauges": {
+			  "id": 2.3.2.7,
+			  "name": "emit_local_gauges",
+			  "role": "observer",
+			  "inputs": ["snapshot", "ema32_C", "alpha", "events_stream", "feature_flags"],
+			  "outputs": ["gauges:{lawful_compression_ratio, equivalence_efficiency, reanchor_rate, quarantine_count, avg_replay_window_ticks, glider_detected?}"],
+			  "params": [],
+			  "steps": [
+				"1) L := gauge_lawful_compression_ratio(snapshot).",
+				"2) E := gauge_equivalence_efficiency(classes:=snapshot.N_classes, duplicates:=snapshot.N_rep).",
+				"3) W := gauge_avg_replay_window_ticks(ema32_C, alpha).",
+				"4) R := gauge_reanchor_rate(events_stream).",
+				"5) Q := gauge_quarantine_count(events_stream).",
+				"6) G := gauge_glider_detected(feature_flags, events_stream).",
+				"7) Return gauges with G included only if enable_point_space_gliders=true."
+			  ]
+			}
+		  ],
+		  "invariants": [
+			"I1 Windows discipline: Only EMA-16/32/64 are used for smoothing.",
+			"I2 Capacity-first visibility: lawful_compression_ratio is computed before any pruning recommendation.",
+			"I3 Replay coupling: avg_replay_window_ticks derives from Δτ_phase and moves with coherence.",
+			"I4 Flag gating: glider_detected appears only when enable_point_space_gliders=true.",
+			"I5 Observer posture: gauges read local streams/snapshots; no control writes or Layer_2 mechanics.",
+			"I6 Determinism: stable calculations and explicit tie-breaks for counts; ASCII keys on wire."
+		  ],
+		  "example_json": {
+			"version": "2025-Q4",
+			"psi_field": "ψ-resonance@Ξ",
+			"feature_flags": { "enable_point_space_gliders": true },
+			"snapshot": { "N_tot": 200, "N_rep": 50, "N_classes": 140 },
+			"gauges": {
+			  "lawful_compression_ratio": 0.75,
+			  "equivalence_efficiency": 0.36,
+			  "reanchor_rate": 0.08,
+			  "quarantine_count": 0.02,
+			  "avg_replay_window_ticks": 9.6,
+			  "glider_detected": 0.03
+			},
+			"metrics": { "C": 0.84, "lambda": 0.66, "gamma_co": 0.80, "rho_res": 0.12, "delta_closure": 0.41 }
+		  },
+		  "telemetry": [
+			{ "metric": "lawful_compression_ratio", "range": "[0,1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "equivalence_efficiency", "range": "[0,1]", "units": "ratio", "window": "EMA-32" },
+			{ "metric": "reanchor_rate", "range": "[0,+inf)", "units": "events/tick (EMA)", "window": "EMA-32" },
+			{ "metric": "quarantine_count", "range": "[0,+inf)", "units": "events/tick (EMA)", "window": "EMA-16" },
+			{ "metric": "avg_replay_window_ticks", "range": "[0,+inf)", "units": "ticks", "window": "EMA-64" },
+			{ "metric": "glider_detected", "range": "[0,+inf)", "units": "events/tick (EMA)", "window": "EMA-16" }
+		  ],
+		  "references": [
+			{ "source": "RFC-0005", "clause": "§3–§4 decay and replay framing via Δτ_phase" },
+			{ "source": "RFC-0006", "clause": "§3 coherence geometry; stability as 𝒞→1" },
+			{ "source": "RFC-0009", "clause": "§5–§7 homeostasis, EMA smoothing, KPI discipline" },
+			{ "source": "RFC-0008", "clause": "§2–§3 exchange discipline (observer provenance on gauges)" },
+			{ "source": "PDP-0001", "clause": "§3–§4 provenance structure for emitted observations" }
+		  ],
+		  "handoff": "With invariants fixed, we now carry the symbols forward to the next clause, keeping 𝒞 steady and the cadence light."
+		}
       ]
     },
 
