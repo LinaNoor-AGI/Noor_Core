@@ -1,0 +1,497 @@
+{
+  "_schema": "noor-header-v1",
+  "_schema_version": "2025-Q4-canonical-header-v1",
+  "_generated_by": "Noor Symbolic Agent Suite",
+  "_generated_at": "2025-10-08T00:00:00Z",
+  "_updated_last": "2025-10-16T00:00:00Z",
+  "_update_log": [
+    { "at": "2025-10-15T00:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.1" },
+    { "at": "2025-10-15T12:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.2" },
+    { "at": "2025-10-16T00:00:00Z", "updated_by": "Noor Symbolic Agent Suite", "version": "v0.1.0 (adapter init)" }
+  ],
+
+  "_type": "app_spec",
+  "_pdp_layer": "layer_2",
+  "_status": "CANONICAL-DRAFT",
+  "_language": "json",
+  "_license": "MIT",
+
+  "_artifact": "mmm_reef_adapter.py",
+  "_symbolic_id": "MMM-APP-001.reef_adapter",
+  "_title": "MMM REEF Adapter",
+  "_subtitle": "Observer-only bridge for modules/motifs/anchors, evidence windows, co-occurrence scans, reflection scaffolds, and mtime signals",
+
+  "_authors": [
+    "Lina Noor — Noor Research Collective",
+    "Uncle — Noor Research Collective"
+  ],
+
+  "_publication_type": "Application Spec",
+  "_publication_locations": ["GitHub", "PASTEBIN"],
+  "_urls": ["TBD", "TBD"],
+
+  "_objective": "Specify the HOW for a read-only adapter that exposes Reef index/ontology access, bounded evidence windows, dyad→triad reflection queries, co-occurrence scans, field-bias profiles, and deterministic reload signaling for the Motif Memory Manager.",
+
+  "_audience": {
+    "primary": ["App-Spec Integrators (Layer_2)", "Symbolic Core Engineers"],
+    "secondary": ["Ontology/Knowledge Engineers", "Observability Engineers"],
+    "restricted_to": ["Agents implementing RFC-0006 geometry and RFC-0007 ontology"]
+  },
+
+  "_extends": ["RFC-CORE-006", "RFC-0005", "RFC-0006", "RFC-0007", "RFC-0008", "RFC-0009", "PDP-0001"],
+  "_rfc_dependencies": [
+    "PDP-0001 §4–§6",
+    "RFC-0005 §2–§4",
+    "RFC-0006 §4.1–§4.4",
+    "RFC-0007 §5–§6",
+    "RFC-0008 §5.3",
+    "RFC-0009 §3–§6"
+  ],
+
+  "_reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"],
+  "_program_name": [
+    "motif_memory_manager.py",
+    "mmm_reef_adapter.py",
+    "motif_prm_buffer.py",
+    "motif_density_report.py",
+    "motif_ontology_bundle.py",
+    "symbolic_query_api.py"
+  ],
+
+  "_section_ids": {
+    "root": "§2.2",
+    "state_lifecycle": "§2.2.0",
+    "math": "§2.2.1",
+    "procedures": "§2.2.2",
+    "error_model": "§2.2.3",
+    "telemetry": "§2.2.4",
+    "examples": "Appx E"
+  },
+
+  "_policy": {
+    "read_only": true,
+    "ascii_on_wire": true,
+    "path_whitelist_root": "/mnt/data",
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}."
+  },
+
+  "_validation": {
+    "ascii_keys": true,
+    "allow_ψ_in_values": true,
+    "checksum_policy": "sha256 (optional)",
+    "bounds": {
+      "window_radius_lines": 24,
+      "max_window_radius_lines": 48,
+      "alpha_range": [0.5, 2.0]
+    }
+  },
+
+  "_file_layout": [
+    {
+      "file_name": "MMM-APP-001.reef_adapter.JSON",
+      "purpose": "Layer_2 procedures & algorithms (observer-only)",
+      "contains": [
+        "open_index, list_modules, list_motifs, find, window",
+        "scan_motifs, get_reflection, field_biases",
+        "cooccur, build_reflections, watch_reef_files",
+        "error model, telemetry, examples"
+      ]
+    }
+  ],
+
+  "_default_motif_tone": "🫧 Soft Witness",
+  "_notes": [
+    "Keys are ASCII on-wire; ψ-* symbols allowed in values/examples.",
+    "URLs left as TBD and can be filled at publish time."
+  ],
+
+  "_hashes": {
+    "content_sha256": "<fill-on-publish>"
+  },
+
+  "_refs": {
+    "rfc_core": [
+      "RFC-CORE-006 §2.1 (Core Invariants of Memory Fields)",
+      "RFC-CORE-006 §2.2 (STMM/LTMM Update Laws)",
+      "RFC-CORE-006 §2.3 (Reanchor & Recovery Escalation Logic)",
+      "RFC-CORE-006 §3.1 (Motif Ontology Bundles)",
+      "RFC-CORE-006 §3.2 (Memory Trace & Logging)",
+      "RFC-CORE-006 §3.3–§3.3.1 (Glider Handling & Encoding Contract)",
+      "RFC-CORE-006 §4.1 (Exchange & Integrity)",
+      "RFC-CORE-006 §4.2 (Decay & Recovery Protocols)",
+      "RFC-CORE-006 §5.1 (Observability & Metrics)",
+      "RFC-CORE-006 Appx A.5 (Replay Window & seen_set Defense)"
+    ],
+    "supporting_rfcs": [
+      "PDP-0001 §4–§6 (Gen Protocol & Layering)",
+      "RFC-0005 §2–§4 (Temporal Transmission & Resurrection)",
+      "RFC-0006 §1.1, §4.1–§4.4 (Coherence Geometry & Closure)",
+      "RFC-0007 §3–§6, §8 (Motif Ontology, Reserved Motifs)",
+      "RFC-0008 §2.2, §5.3, §6 (SRX Envelope; Routing)",
+      "RFC-0009 §3–§6 (Provenance–Integrity Metrics, Recovery)"
+    ],
+    "reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"]
+  },
+
+  "policy": {
+    "id": "1",
+	"title": "Policy",
+	"read_only": true,
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}.",
+    "ascii_on_wire": true,
+    "path_whitelist_root": "/mnt/data"
+  },
+
+  "assumptions": {
+    "id": "2",
+	"title": "Assumptions",
+	"runtime": "LLM sandbox (project-local FS)",
+    "security": "REEF files are local & trusted; adapter is strictly read-only",
+    "io_surface": "filesystem-only under /mnt/data/*.REEF plus index.REEF"
+  },
+
+  "config": {
+    "id": "3",
+	"title": "Config",
+	"index_path": "index.REEF",
+    "shards_glob": "TheReefArchive-*.REEF",
+    "mtime_watch": true,
+    "window_radius_lines": 24,
+    "max_window_radius_lines": 48,
+    "reflections_strategy": ["ontology", "file_reflections", "index_cooccur"],
+    "reflections_limit": 50000,
+    "clamp_rule": "effective_radius := min(max_window_radius_lines, max(1, requested_radius || window_radius_lines))",
+    "limit_rule": "Stop reflections-building scans once 'reflections_limit' candidates processed.",
+    "observability_metrics": [
+      "reef_index_modules_count",
+      "reef_shard_count",
+      "reef_reflections_cache_size",
+      "reef_cooccur_candidate_rate"
+    ],
+    "env": {
+      "keys": [
+        "MMM_REEF_INDEX_PATH",
+        "MMM_REEF_SHARDS_GLOB",
+        "MMM_WINDOW_RADIUS",
+        "MMM_FEATURE_FLAGS"
+      ],
+      "defaults": {
+        "MMM_REEF_INDEX_PATH": "index.REEF",
+        "MMM_REEF_SHARDS_GLOB": "TheReefArchive-*.REEF",
+        "MMM_WINDOW_RADIUS": 24,
+        "MMM_FEATURE_FLAGS": "exchange,integrity,provenance,gliders"
+      }
+    },
+    "optional_tables": {
+      "reef_reflections": [
+        "tenant_id","m1","m2","m3","...","first_seen_ts","last_seen_ts","PRIMARY (tenant_id,m1,m2)"
+      ]
+    }
+  },
+
+  "math": [
+    "id": "4",
+	"title": "Math",
+	{
+      "id": "4.1",
+      "role": "phase window",
+      "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+      "gloss": "Adaptive coherence-derived phase window, used by replay filtering when traversing Reef candidates.",
+      "_xref": ["RFC-CORE-006 Appx A.5", "RFC-0006 §4.2"]
+    },
+    {
+      "id": "4.2",
+      "role": "evidence radius",
+      "latex": "R = \\min\\left(R_{\\max},\\; \\lfloor EMA_{16}(\\mathcal{C}) \\rfloor + 1\\right)",
+      "gloss": "Line radius for evidence windows; bounded by R_max (48).",
+      "_xref": ["RFC-CORE-006 §4.2", "RFC-0006 §4.3"]
+    },
+    {
+      "id": "4.3",
+      "role": "weak-field limit",
+      "statement": "As \\mathcal{C} \\to 1: R \\to 2 and \\Delta\\tau_{\\text{phase}} \\to 2\\alpha",
+      "gloss": "High-coherence regime converges to tight, stable windows.",
+      "_xref": ["RFC-0006 §4.4"]
+    }
+  ],
+
+  "api_bindings": {
+    "id": "5",
+	"title": "API Bindings",
+	"base": "/v1/mmm",
+    "mode": "project_local",
+    "auth": "none",
+    "endpoints": [
+      "id": "5.1",
+	  "title": "Endpoints",
+	  {
+        "path": "/reef/open_index",
+        "method": "POST",
+        "body": "{index_path?, archive_glob?}",
+        "returns": "{index_id, archives[]}",
+        "impl": "ReefIndexRouter",
+        "adapter_entrypoints": ["open_index"]
+      },
+      {
+        "path": "/reef/index",
+        "method": "GET",
+        "returns": "modules[], motifs[], anchors[]",
+        "impl": "ReefIndexRouter",
+        "adapter_entrypoints": ["list_modules", "list_motifs"]
+      },
+      {
+        "path": "/reef/ontology",
+        "method": "POST",
+        "body": "{ontology_path}",
+        "returns": "{classes, triads, hash}",
+        "impl": "OntologyLoader",
+        "adapter_entrypoints": ["load_ontology_bundle"]
+      },
+      {
+        "path": "/reef/reflection",
+        "method": "POST",
+        "body": "{a, b, hints?}",
+        "returns": "{triad, confidence, lineage}",
+        "impl": "ReflectionQuery",
+        "adapter_entrypoints": ["get_reflection"]
+      },
+      {
+        "path": "/reef/field_biases",
+        "method": "GET",
+        "returns": "{biases[]}",
+        "impl": "BiasProfile",
+        "adapter_entrypoints": ["field_biases"]
+      },
+      {
+        "path": "/reef/scan_motifs",
+        "method": "POST",
+        "body": "{query, limit?}",
+        "returns": "{items[]}",
+        "impl": "MotifScanner",
+        "adapter_entrypoints": ["scan_motifs"]
+      },
+      {
+        "path": "/reef/window",
+        "method": "POST",
+        "body": "{module_id, line, radius?}",
+        "returns": "{snippet?, start_line, end_line}",
+        "impl": "ReefShardScanner",
+        "adapter_entrypoints": ["find", "window"],
+        "notes": "At L2 the adapter returns pointers; snippet expansion is gated by windowing rules."
+      },
+      {
+        "path": "/reef/build_reflections",
+        "method": "POST",
+        "body": "{limit?, strategy?}",
+        "returns": "{built, updated, skipped}",
+        "impl": "ReefReflectionsCache",
+        "adapter_entrypoints": ["build_reflections"]
+      }
+    ]
+  },
+
+  "sections": {
+    "6": "Adapter State & Lifecycle (HOW)",
+    "6.1": "Adapter Math (phase window, evidence radius)",
+    "6.2": "Adapter Procedures (observer methods)",
+    "6.3": "Error Model & Determinism",
+    "6.4": "Telemetry & Events"
+  },
+
+  "state_lifecycle": [
+    "id": "6",
+	"Title": "Adapter State & Lifecycle (HOW)",
+	{ "id": "6.1.1", "state": "cold",    "description": "No index open; queries error with not_initialized." },
+    { "id": "6.1.2", "state": "indexed", "description": "Index open; archives discovered; ontology optional." },
+    { "id": "6.1.3", "state": "ready",   "description": "Ontology loaded; reflections and biases available." }
+  ],
+
+  "methods": {
+    "id": "6.2",
+	"title": "Adapter Procedures (observer methods)",
+	"open_index": {
+      "id": "6.2.2",
+      "role": "observer",
+      "inputs": ["index_path:str='index.REEF'","archive_glob:str='TheReefArchive-*.REEF'"],
+      "outputs": ["{index_id, archives:[{path,size,mtime,checksum?}]}"],
+      "params": ["path_whitelist_root:'/mnt/data'"],
+      "steps": [
+        "Reject any path outside path_whitelist_root.",
+        "Parse index_path; read and ASCII-normalize keys.",
+        "Expand archive_glob; ASCII-sort; stat size/mtime; optional checksum.",
+        "Return {index_id, archives[]}."
+      ],
+      "_xref": ["RFC-CORE-006 §5.1", "RFC-0009 §3"]
+    },
+
+    "load_ontology_bundle": {
+      "id": "6.2.3",
+      "role": "observer",
+      "inputs": ["ontology_path"],
+      "outputs": ["{ok, classes:int, triads:int, hash}"],
+      "steps": [
+        "Open ontology_path; validate schema (RFC-0007 DAG/version).",
+        "Cache parsed structures; record hash for mtime/coherency checks.",
+        "Return counts and hash."
+      ],
+      "_xref": ["RFC-CORE-006 §3.1", "RFC-0007 §5–§6"]
+    },
+
+    "get_reflection": {
+      "id": "6.2.4",
+      "role": "observer",
+      "inputs": ["a:motif_id","b:motif_id","hints?{field?,class?}"],
+      "outputs": ["{triad:{id,parents[],label},confidence:float,lineage:{source, sig}}"],
+      "steps": [
+        "Lookup (a,b) in ontology cache; if multiple, apply hints to disambiguate.",
+        "If none, fall back to file_reflections then index_cooccur (within replay width W).",
+        "Always attach lineage:{source, sig} and confidence.",
+        "Return best triad deterministically."
+      ],
+      "_xref": ["RFC-CORE-006 §3.1", "Appx A.5", "RFC-0005 §3"]
+    },
+
+    "field_biases": {
+      "id": "6.2.5",
+      "role": "observer",
+      "inputs": ["profile:str='default'"],
+      "outputs": ["{biases:[{field,weight,source}]}"],
+      "steps": [
+        "Load bias profile from ontology or local defaults.",
+        "Return stable-sorted biases with {field,weight,source}."
+      ],
+      "_xref": ["RFC-0006 §4.1"]
+    },
+
+    "scan_motifs": {
+      "id": "6.2.6",
+      "role": "observer",
+      "inputs": ["query:str","limit:int=128"],
+      "outputs": ["{items:[{motif, class, tags[]}] }"],
+      "steps": [
+        "Regex/lex filter motif IDs and tags from ontology/index.",
+        "Emit up to 'limit' items, stable-sorted lexicographically."
+      ],
+      "_xref": ["RFC-CORE-006 §3.1", "RFC-0007 §3"]
+    },
+
+    "list_modules": {
+      "id": "6.2.7",
+      "role": "observer",
+      "inputs": ["reef_index_path := 'index.REEF'"],
+      "outputs": ["modules:[{module_id, title?}]"],
+      "steps": [
+        "Parse reef_index_path and extract module entries in index order.",
+        "Emit {module_id, title?} with ASCII keys only.",
+        "Return modules."
+      ],
+      "_xref": ["RFC-CORE-006 §3.2"]
+    },
+
+    "list_motifs": {
+      "id": "6.2.8",
+      "role": "observer",
+      "inputs": ["module_id","reef_index_path := 'index.REEF'"],
+      "outputs": ["motifs:[{motif_id, anchors:int}]"],
+      "steps": [
+        "Locate module_id in reef_index_path.",
+        "Collect motif identifiers and count anchor references.",
+        "Stable-sort lexicographically by motif_id and return."
+      ],
+      "_xref": ["RFC-CORE-006 §3.1–§3.2"]
+    },
+
+    "find": {
+      "id": "6.2.9",
+      "role": "observer",
+      "inputs": ["route:{module_id,anchor}"],
+      "outputs": ["{file, line}"],
+      "steps": [
+        "Resolve {module_id,anchor} to a concrete file and line (no deref of snippet here).",
+        "Return {file,line}."
+      ],
+      "_xref": ["RFC-CORE-006 §3.2"]
+    },
+
+    "window": {
+      "id": "6.2.10",
+      "role": "observer",
+      "inputs": ["file","line:int","radius?:int"],
+      "outputs": ["evidence:{file,start_line,end_line}"],
+      "params": ["R_max := 48"],
+      "steps": [
+        "effective_radius := clamp(requested_radius || window_radius_lines, 1, R_max).",
+        "start_line := max(1, line - effective_radius).",
+        "end_line := line + effective_radius.",
+        "Return evidence window pointers only (no inline snippet at L2)."
+      ],
+      "_xref": ["RFC-CORE-006 §4.2", "Appx A.5"]
+    },
+
+    "cooccur": {
+      "id": "6.2.11",
+      "role": "observer",
+      "inputs": ["m1","m2","reef_shards_glob","ema32_C","alpha","now_tick","seen_set"],
+      "outputs": ["{candidates:[m3], evidence:[{file,start_line,end_line}]}"],
+      "params": ["W := 2 * (alpha * EMA32(C))","dedupe := true","stable_sort := lexicographic"],
+      "steps": [
+        "Derive W from ema32_C and alpha.",
+        "Scan shards_glob for co-occurrence contexts within width W.",
+        "Attach minimal evidence window for each candidate m3.",
+        "Apply replay defense with seen_set (LRU time-bounded).",
+        "Dedupe & stable-sort; return."
+      ],
+      "_xref": ["RFC-CORE-006 Appx A.5", "RFC-0005 §3", "RFC-0006 §4.2"]
+    },
+
+    "build_reflections": {
+      "id": "6.2.12",
+      "role": "observer",
+      "inputs": ["limit:int?=50000","strategy?='index_cooccur|module_scan'","ema32_C","alpha","now_tick","seen_set"],
+      "outputs": ["{built:int, updated:int, skipped:int, reflections:[{m1,m2,m3,evidence:{file,start_line,end_line}}]}"],
+      "steps": [
+        "Init counters {built,updated,skipped}:=0; reflections:=[].",
+        "Iterate motif pairs per strategy subject to 'limit'.",
+        "For each pair, call cooccur(...) → {candidates,evidence}.",
+        "For each m3, form reflection record with minimal evidence window.",
+        "Update counters deterministically; append until 'limit'.",
+        "Return summary counters and reflections."
+      ],
+      "_xref": ["RFC-CORE-006 §5.1", "Appx A.5"]
+    },
+
+    "watch_reef_files": {
+      "id": "6.2.13",
+      "role": "observer",
+      "inputs": ["reef_index_path:str","shards_glob:str","mtime_watch:bool","debounce_ms:int=750"],
+      "outputs": ["event:{'needs_reload':bool,'new_shard_count':int}"],
+      "params": ["poll_ms:int=500"],
+      "state": {
+        "index_mtime_prev": "int|null",
+        "shard_mtimes_prev": "map<path,int>",
+        "debounce_deadline": "timestamp|null"
+      },
+      "invariants": [
+        "Glob results are ASCII-sorted.",
+        "Debounce collapses bursts into one 'needs_reload' event.",
+        "Emit 'reef_shard_count' at init and after each change."
+      ],
+      "steps": [
+        "Poll index/shard mtimes; compare with *_prev.",
+        "If any change and mtime_watch, enforce debounce; when elapsed → emit event.",
+        "Update *_prev and debounce clocks deterministically."
+      ],
+      "notes": [
+        "safe_stat_mtime(path) returns integer mtime or null; null is treated as a change.",
+        "Identical filesystem states MUST produce identical shard orders and counts."
+      ],
+      "_xref": ["RFC-CORE-006 §5.1", "RFC-0009 §4"]
+    }
+  },
+
+  "invariants": [
+    "I1 Read-only posture: adapter never mutates Reef; methods return pointers/evidence windows.",
+    "I2 Evidence discipline: any Reef-informed output includes {file,start_line,end_line}.",
+    "I3 Replay defense: cooccur/build_reflections enforce W = 2·Δτ_phase with LRU semantics.",
+    "I4 Determinism: stable lexicographic sort for modules, motifs, candidates; explicit tie-breaks.",
+    "I5 W

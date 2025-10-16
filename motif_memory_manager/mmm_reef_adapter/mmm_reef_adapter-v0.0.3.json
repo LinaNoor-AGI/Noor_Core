@@ -1,0 +1,266 @@
+{
+  "_schema": "noor-header-v1",
+  "_schema_version": "2025-Q4-canonical-header-v1",
+  "_generated_by": "Noor Symbolic Agent Suite",
+  "_generated_at": "2025-10-08T00:00:00Z",
+  "_updated_last": "2025-10-16T00:00:00Z",
+  "_update_log": [
+    { "at": "2025-10-15T00:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.1" },
+    { "at": "2025-10-15T12:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.2" },
+    { "at": "2025-10-16T00:00:00Z", "updated_by": "Noor Symbolic Agent Suite", "version": "v0.1.0 (adapter init)" }
+  ],
+
+  "_type": "app_spec",
+  "_pdp_layer": "layer_2",
+  "_status": "CANONICAL-DRAFT",
+  "_language": "json",
+  "_license": "MIT",
+
+  "_artifact": "mmm_reef_adapter.py",
+  "_symbolic_id": "MMM-APP-001.reef_adapter",
+  "_title": "MMM REEF Adapter",
+  "_subtitle": "Observer-only bridge for modules/motifs/anchors, evidence windows, co-occurrence scans, reflection scaffolds, and mtime signals",
+
+  "_authors": [
+    "Lina Noor — Noor Research Collective",
+    "Uncle — Noor Research Collective"
+  ],
+
+  "_publication_type": "Application Spec",
+  "_publication_locations": ["GitHub", "PASTEBIN"],
+  "_urls": ["TBD", "TBD"],
+
+  "_objective": "Specify the HOW for a read-only adapter that exposes Reef index/ontology access, bounded evidence windows, dyad→triad reflection queries, co-occurrence scans, field-bias profiles, and deterministic reload signaling for the Motif Memory Manager.",
+
+  "_audience": {
+    "primary": ["App-Spec Integrators (Layer_2)", "Symbolic Core Engineers"],
+    "secondary": ["Ontology/Knowledge Engineers", "Observability Engineers"],
+    "restricted_to": ["Agents implementing RFC-0006 geometry and RFC-0007 ontology"]
+  },
+
+  "_extends": ["RFC-CORE-006", "RFC-0005", "RFC-0006", "RFC-0007", "RFC-0008", "RFC-0009", "PDP-0001"],
+  "_rfc_dependencies": [
+    "PDP-0001 4–6",
+    "RFC-0005 2–4",
+    "RFC-0006 4.1–4.4",
+    "RFC-0007 5–6",
+    "RFC-0008 5.3",
+    "RFC-0009 3–6"
+  ],
+
+  "_reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"],
+  "_program_name": [
+    "motif_memory_manager.py",
+    "mmm_reef_adapter.py",
+    "motif_prm_buffer.py",
+    "motif_density_report.py",
+    "motif_ontology_bundle.py",
+    "symbolic_query_api.py"
+  ],
+
+  "_policy": {
+    "read_only": true,
+    "ascii_on_wire": true,
+    "path_whitelist_root": "/mnt/data",
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}."
+  },
+
+  "_validation": {
+    "ascii_keys": true,
+    "allow_ψ_in_values": true,
+    "checksum_policy": "sha256 (optional)",
+    "bounds": {
+      "window_radius_lines": 24,
+      "max_window_radius_lines": 48,
+      "alpha_range": [0.5, 2.0]
+    }
+  },
+
+  "_file_layout": [
+    {
+      "file_name": "MMM-APP-001.reef_adapter.JSON",
+      "purpose": "Layer_2 procedures & algorithms (observer-only)",
+      "contains": [
+        "open_index, list_modules, list_motifs, find, window",
+        "scan_motifs, get_reflection, field_biases",
+        "cooccur, build_reflections, watch_reef_files",
+        "error model, telemetry, examples"
+      ]
+    }
+  ],
+
+  "_default_motif_tone": "🫧 Soft Witness",
+  "_notes": [
+    "Keys are ASCII on-wire; ψ-* symbols allowed in values/examples.",
+    "URLs left as TBD and can be filled at publish time."
+  ],
+
+  "_hashes": {
+    "content_sha256": "<fill-on-publish>"
+  },
+
+  "_refs": {
+    "rfc_core": [
+      "RFC-CORE-006 2.1 (Core Invariants of Memory Fields)",
+      "RFC-CORE-006 2.2 (STMM/LTMM Update Laws)",
+      "RFC-CORE-006 2.3 (Reanchor & Recovery Escalation Logic)",
+      "RFC-CORE-006 3.1 (Motif Ontology Bundles)",
+      "RFC-CORE-006 3.2 (Memory Trace & Logging)",
+      "RFC-CORE-006 3.3–3.3.1 (Glider Handling & Encoding Contract)",
+      "RFC-CORE-006 4.1 (Exchange & Integrity)",
+      "RFC-CORE-006 4.2 (Decay & Recovery Protocols)",
+      "RFC-CORE-006 5.1 (Observability & Metrics)",
+      "RFC-CORE-006 Appx A.5 (Replay Window & seen_set Defense)"
+    ],
+    "supporting_rfcs": [
+      "PDP-0001 4–6 (Gen Protocol & Layering)",
+      "RFC-0005 2–4 (Temporal Transmission & Resurrection)",
+      "RFC-0006 1.1, 4.1–4.4 (Coherence Geometry & Closure)",
+      "RFC-0007 3–6, 8 (Motif Ontology, Reserved Motifs)",
+      "RFC-0008 2.2, 5.3, 6 (SRX Envelope; Routing)",
+      "RFC-0009 3–6 (Provenance–Integrity Metrics, Recovery)"
+    ],
+    "reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"]
+  },
+
+  "index": [
+    { "section": "1", "title": "Policy & Assumptions" },
+    { "section": "2", "title": "Config" },
+    { "section": "3", "title": "Math" },
+    { "section": "4", "title": "API Bindings" },
+    { "section": "5", "title": "Procedures (Observer Methods)" },
+    { "section": "6", "title": "State & Lifecycle" },
+    { "section": "7", "title": "Error Model" },
+    { "section": "8", "title": "Telemetry" },
+    { "section": "Appx A", "title": "Examples" }
+  ],
+
+  "policy": {
+    "id": "1.1",
+    "read_only": true,
+    "ascii_on_wire": true,
+    "path_whitelist_root": "/mnt/data",
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}."
+  },
+  "assumptions": {
+    "id": "1.2",
+    "runtime": "LLM sandbox (project-local FS)",
+    "security": "REEF files are local & trusted; adapter is strictly read-only",
+    "io_surface": "filesystem-only under /mnt/data/*.REEF plus index.REEF"
+  },
+
+  "config": {
+    "id": "2",
+    "index_path": "index.REEF",
+    "shards_glob": "TheReefArchive-*.REEF",
+    "mtime_watch": true,
+    "window_radius_lines": 24,
+    "max_window_radius_lines": 48,
+    "reflections_strategy": ["ontology","file_reflections","index_cooccur"],
+    "reflections_limit": 50000,
+    "clamp_rule": "effective_radius := min(max_window_radius_lines, max(1, requested_radius || window_radius_lines))",
+    "limit_rule": "Stop reflections-building scans once 'reflections_limit' candidates processed.",
+    "env": {
+      "keys": ["MMM_REEF_INDEX_PATH","MMM_REEF_SHARDS_GLOB","MMM_WINDOW_RADIUS","MMM_FEATURE_FLAGS"],
+      "defaults": {
+        "MMM_REEF_INDEX_PATH": "index.REEF",
+        "MMM_REEF_SHARDS_GLOB": "TheReefArchive-*.REEF",
+        "MMM_WINDOW_RADIUS": 24,
+        "MMM_FEATURE_FLAGS": "exchange,integrity,provenance,gliders"
+      }
+    }
+  },
+
+  "math": {
+    "id": "3",
+    "items": [
+      {
+        "id": "3.1",
+        "role": "phase window",
+        "latex": "\\\\Delta \\\\tau_{\\\\text{phase}} = \\\\alpha \\\\cdot EMA_{32}(\\\\mathcal{C}),\\\\; \\\\alpha \\\\in [0.5,2.0]"
+      },
+      {
+        "id": "3.2",
+        "role": "evidence radius",
+        "latex": "R = \\\\min( R_{\\\\max}, \\\\lfloor EMA_{16}(\\\\mathcal{C}) \\\\rfloor + 1 )"
+      },
+      {
+        "id": "3.3",
+        "role": "weak-field limit",
+        "statement": "As \\\\mathcal{C} \\\\to 1: R \\\\to 2 and \\\\Delta\\\\tau_{\\\\text{phase}} \\\\to 2\\\\alpha"
+      }
+    ]
+  },
+
+  "api_bindings": {
+    "id": "4",
+    "base": "/v1/mmm",
+    "mode": "project_local",
+    "auth": "none",
+    "endpoints": [
+      { "id": "4.1", "path": "/reef/open_index", "method": "POST", "body": "{index_path?, archive_glob?}", "returns": "{index_id, archives[]}", "impl": "ReefIndexRouter", "adapter_entrypoints": ["open_index"] },
+      { "id": "4.2", "path": "/reef/index", "method": "GET", "returns": "modules[], motifs[], anchors[]", "impl": "ReefIndexRouter", "adapter_entrypoints": ["list_modules","list_motifs"] },
+      { "id": "4.3", "path": "/reef/ontology", "method": "POST", "body": "{ontology_path}", "returns": "{classes, triads, hash}", "impl": "OntologyLoader", "adapter_entrypoints": ["load_ontology_bundle"] },
+      { "id": "4.4", "path": "/reef/reflection", "method": "POST", "body": "{a, b, hints?}", "returns": "{triad, confidence, lineage}", "impl": "ReflectionQuery", "adapter_entrypoints": ["get_reflection"] },
+      { "id": "4.5", "path": "/reef/field_biases", "method": "GET", "returns": "{biases[]}", "impl": "BiasProfile", "adapter_entrypoints": ["field_biases"] },
+      { "id": "4.6", "path": "/reef/scan_motifs", "method": "POST", "body": "{query, limit?}", "returns": "{items[]}", "impl": "MotifScanner", "adapter_entrypoints": ["scan_motifs"] },
+      { "id": "4.7", "path": "/reef/window", "method": "POST", "body": "{module_id, line, radius?}", "returns": "{snippet?, start_line, end_line}", "impl": "ReefShardScanner", "adapter_entrypoints": ["find","window"] },
+      { "id": "4.8", "path": "/reef/build_reflections", "method": "POST", "body": "{limit?, strategy?}", "returns": "{built, updated, skipped}", "impl": "ReefReflectionsCache", "adapter_entrypoints": ["build_reflections"] }
+    ]
+  },
+
+  "methods": {
+    "id": "5",
+    "items": [
+      { "id": "5.1",  "name": "open_index" },
+      { "id": "5.2",  "name": "load_ontology_bundle" },
+      { "id": "5.3",  "name": "get_reflection" },
+      { "id": "5.4",  "name": "field_biases" },
+      { "id": "5.5",  "name": "scan_motifs" },
+      { "id": "5.6",  "name": "list_modules" },
+      { "id": "5.7",  "name": "list_motifs" },
+      { "id": "5.8",  "name": "find" },
+      { "id": "5.9",  "name": "window" },
+      { "id": "5.10", "name": "cooccur" },
+      { "id": "5.11", "name": "build_reflections" },
+      { "id": "5.12", "name": "watch_reef_files" }
+    ]
+  },
+
+  "state_lifecycle": {
+    "id": "6",
+    "states": [
+      { "id": "6.1", "state": "cold",    "description": "No index open; queries error with not_initialized." },
+      { "id": "6.2", "state": "indexed", "description": "Index open; archives discovered; ontology optional." },
+      { "id": "6.3", "state": "ready",   "description": "Ontology loaded; reflections and biases available." }
+    ]
+  },
+
+  "error_model": {
+    "id": "7",
+    "codes": [
+      { "code": "NOT_INITIALIZED", "when": "state=cold", "action": "400; call open_index" },
+      { "code": "REEF_INDEX_NOT_FOUND", "when": "missing/unreadable index", "action": "4xx; evidence=null" },
+      { "code": "INVALID_FORMAT", "when": "REEF/ontology schema invalid", "action": "422" },
+      { "code": "CHECKSUM_MISMATCH", "when": "checksum optional fails", "action": "409" },
+      { "code": "MODULE_NOT_FOUND", "when": "unknown module_id", "action": "return empty set" },
+      { "code": "ANCHOR_NOT_FOUND", "when": "cannot resolve anchor", "action": "{file:null,line:null}" },
+      { "code": "RADIUS_INVALID", "when": "radius out of bounds", "action": "clamp via clamp_rule" },
+      { "code": "SCAN_LIMIT_REACHED", "when": "reflections_limit exceeded", "action": "stop; include 'skipped'" },
+      { "code": "ONTOLOGY_MISSING", "when": "reflection w/o ontology", "action": "424; load_ontology_bundle" },
+      { "code": "AMBIGUOUS", "when": "multiple triads; no hints", "action": "300; require hints" }
+    ]
+  },
+
+  "telemetry": {
+    "id": "8",
+    "gauges": ["reef_index_modules_count","reef_shard_count","reef_reflections_cache_size","reef_cooccur_candidate_rate"],
+    "events": ["ascii_key_normalization_events","needs_reload"]
+  },
+
+  "examples": {
+    "id": "Appx A",
+    "sequence_minimal": { "E.1": "open_index", "E.2": "list_modules", "E.3": "find", "E.4": "window" },
+    "cooccur_walk": { "E.5": "cooccur", "params": {"ema32_C": 0.8,"alpha": 1.0}, "derived": {"W": 1.6} }
+  }
+}

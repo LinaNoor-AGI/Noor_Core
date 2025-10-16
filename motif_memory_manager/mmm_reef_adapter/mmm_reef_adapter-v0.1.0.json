@@ -1,0 +1,2393 @@
+{
+  "_schema": "noor-header-v1",
+  "_schema_version": "2025-Q4-canonical-header-v1",
+  "_generated_by": "Noor Symbolic Agent Suite",
+  "_generated_at": "2025-10-08T00:00:00Z",
+  "_updated_last": "2025-10-16T00:00:00Z",
+  "_update_log": [
+    { "at": "2025-10-15T00:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.1" },
+    { "at": "2025-10-15T12:00:00Z", "updated_by": "Lina Noor — Noor Research Collective", "version": "v1.1.2" },
+    { "at": "2025-10-16T00:00:00Z", "updated_by": "Noor Symbolic Agent Suite", "version": "v0.1.0 (adapter init)" }
+  ],
+
+  "_type": "app_spec",
+  "_pdp_layer": "layer_2",
+  "_status": "CANONICAL-DRAFT",
+  "_language": "json",
+  "_license": "MIT",
+
+  "_artifact": "mmm_reef_adapter.py",
+  "_version": "v0.1.0",
+  "_symbolic_id": "MMM-APP-001.reef_adapter",
+  "_title": "MMM REEF Adapter",
+  "_subtitle": "Observer-only bridge for modules/motifs/anchors, evidence windows, co-occurrence scans, reflection scaffolds, and mtime signals",
+
+  "_authors": [
+    "Lina Noor — Noor Research Collective",
+    "Uncle — Noor Research Collective"
+  ],
+
+  "_publication_type": "Application Spec",
+  "_publication_locations": ["GitHub", "PASTEBIN"],
+  "_urls": ["TBD", "TBD"],
+
+  "_objective": "Specify the HOW for a read-only adapter that exposes Reef index/ontology access, bounded evidence windows, dyad→triad reflection queries, co-occurrence scans, field-bias profiles, and deterministic reload signaling for the Motif Memory Manager.",
+
+  "_audience": {
+    "primary": ["App-Spec Integrators (Layer_2)", "Symbolic Core Engineers"],
+    "secondary": ["Ontology/Knowledge Engineers", "Observability Engineers"],
+    "restricted_to": ["Agents implementing RFC-0006 geometry and RFC-0007 ontology"]
+  },
+
+  "_extends": ["RFC-CORE-006", "RFC-0005", "RFC-0006", "RFC-0007", "RFC-0008", "RFC-0009", "PDP-0001"],
+  "_rfc_dependencies": [
+    "PDP-0001 4–6",
+    "RFC-0005 2–4",
+    "RFC-0006 4.1–4.4",
+    "RFC-0007 5–6",
+    "RFC-0008 5.3",
+    "RFC-0009 3–6"
+  ],
+
+  "_reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"],
+  "_program_name": [
+    "motif_memory_manager.py",
+    "mmm_reef_adapter.py",
+    "motif_prm_buffer.py",
+    "motif_density_report.py",
+    "motif_ontology_bundle.py",
+    "symbolic_query_api.py"
+  ],
+
+  "_policy": {
+    "read_only": true,
+    "ascii_on_wire": true,
+    "path_whitelist_root": "/mnt/data",
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}."
+  },
+
+  "_validation": {
+    "ascii_keys": true,
+    "allow_ψ_in_values": true,
+    "checksum_policy": "sha256 (optional)",
+    "bounds": {
+      "window_radius_lines": 24,
+      "max_window_radius_lines": 48,
+      "alpha_range": [0.5, 2.0]
+    }
+  },
+
+  "_file_layout": [
+    {
+      "file_name": "MMM-APP-001.reef_adapter.JSON",
+      "purpose": "Layer_2 procedures & algorithms (observer-only)",
+      "contains": [
+        "open_index, list_modules, list_motifs, find, window",
+        "scan_motifs, get_reflection, field_biases",
+        "cooccur, build_reflections, watch_reef_files",
+        "error model, telemetry, examples"
+      ]
+    }
+  ],
+
+  "_default_motif_tone": "🫧 Soft Witness",
+  "_notes": [
+    "Keys are ASCII on-wire; ψ-* symbols allowed in values/examples.",
+    "URLs left as TBD and can be filled at publish time."
+  ],
+
+  "_hashes": {
+    "content_sha256": "<fill-on-publish>"
+  },
+
+  "_refs": {
+    "rfc_core": [
+      "RFC-CORE-006 §1.2 (System Context & Observer-Only Posture)",
+      "RFC-CORE-006 §2.1 (Core Invariants; absent-not-null; flag gating)",
+      "RFC-CORE-006 §2.2 (STMM/LTMM Update Laws)",
+      "RFC-CORE-006 §3.1 (Motif Ontology Bundles; by-reference usage at L2)",
+      "RFC-CORE-006 §4.1 (Exchange & Integrity hooks — envelope/provenance contract)",
+      "RFC-CORE-006 §4.2 (Decay & Recovery Protocols — reanchor/quarantine/abandon)",
+      "RFC-CORE-006 §5.1 (Observability & Metrics — EMA windows)",
+      "RFC-CORE-006 Appx A.5 (Replay Window & seen_set Defense; EMA-32 seeding)",
+      "RFC-CORE-006 Appx A.10 (Pseudocode Index & Error Family Map)"
+    ],
+    "supporting_rfcs": [
+      "PDP-0001 §2.1–§2.3 (Layer precedence: L0=WHY, L1=WHAT, L2=HOW; regeneration rules)",
+      "RFC-0007 §8 (Ontology Validation: schema/required fields/DAG acyclicity)",
+      "RFC-0008 §2.1 (SRX Envelope: sigma_phase gating)",
+      "RFC-0008 §2.2 (Integrity Lineage: delta_hash gating)",
+      "RFC-0008 §5.3 (Routing semantics — exchange paths)",
+      "RFC-0008 §6 (Security considerations — envelope fields & exposure)",
+      "RFC-0005 §2–§4 (Temporal Transmission & Resurrection — lawful decay/resurrection)",
+      "RFC-0006 §1.1, §4.1–§4.4 (Coherence Geometry & Closure — phase/coherence context)",
+      "RFC-0009 §3–§6 (Provenance/Integrity Metrics & Recovery — measurement surfaces)"
+    ],
+    "reef_inputs": [
+      "index.REEF",
+      "TheReefArchive-*.REEF"
+    ]
+  },
+
+  "index": [
+    { "section": "1", "title": "Policy & Assumptions" },
+	{ "section": "1.1", "title": "Policy — Evidence, Envelope, and Read-Only Discipline" },
+	{ "section": "1.2", "title": "Assumptions — Runtime, Security, Authority, Preconditions" },
+	
+    { "section": "2", "title": "Configuration — Windows, Flags, Replay Hygiene" },
+	
+    { "section": "3", "title": "Math — Phase Window, Scan Width, EMA Init, Weak-Field" },
+	{ "section": "3.1", "role": "phase window" },
+	{ "section": "3.1.1", "role": "replay window width" },
+	{ "section": "3.1.2", "role": "EMA initialization" },
+	{ "section": "3.2", "role": "evidence radius (clamped)" },
+	{ "section": "3.3", "role": "weak-field limit" },
+	
+    { "section": "4", "title": "API Bindings" },
+	{ "section": "4.1", "title": "Endpoint — /reef/open_index" },
+	{ "section": "4.2", "title": "Endpoint — /reef/index" },
+	{ "section": "4.3", "title": "Endpoint — /reef/ontology" },
+	{ "section": "4.4", "title": "Endpoint — /reef/reflection" },
+	{ "section": "4.5", "title": "Endpoint — /reef/field_biases" },
+	{ "section": "4.6", "title": "Endpoint — /reef/scan_motifs" },
+	{ "section": "4.7", "title": "Endpoint — /reef/window" },
+	{ "section": "4.8", "title": "Endpoint — /reef/build_reflections" },
+	{ "section": "4.9", "title": "Endpoint — /reef/telemetry" },
+	
+    { "section": "5", "title": "Procedures (Observer Methods)" },
+	{ "section": "5.1", "title": "Item — open_index" },
+	{ "section": "5.2", "title": "Item — load_ontology_bundle" },
+	{ "section": "5.3", "title": "Item — get_reflection" },
+	{ "section": "5.4", "title": "Item — field_biases" },
+	{ "section": "5.5", "title": "Item — scan_motifs" },
+	{ "section": "5.6", "title": "Item — list_modules" },
+	{ "section": "5.7", "title": "Item — list_motifs" },
+	{ "section": "5.8", "title": "Item — find" },
+	{ "section": "5.9", "title": "Item — window" },
+	{ "section": "5.10", "title": "Method — cooccur" },
+	{ "section": "5.11", "title": "Item — build_reflections" },
+	{ "section": "5.12", "title": "Item — watch_reef_files" },
+	{ "section": "5.13", "title": "Item — compute_phase_window" },
+	{ "section": "5.14", "title": "Item — compose_seen_key" },
+	{ "section": "5.15", "title": "Item — seen_set_hybrid_policy" },
+	
+    { "section": "6", "title": "State Lifecycle — index → ontology_validated → ready" },
+	
+    { "section": "7", "title": "Error Model — A.10 family & local mapping" },
+	
+    { "section": "8", "title": "Telemetry — EMA-32 replay and integrity signals" },
+	
+    { "section": "A", "title": "Appendix A — Minimal Sequences & Phase-Aware Examples" }
+  ],
+"sections": [
+	{
+	  "id": "1.1",
+	  "title": "Policy — Evidence, Envelope, and Read-Only Discipline",
+	  "contracts": [
+		{
+		  "text": "Adapter operations are observer-only at Layer_2: measure/seal/route; no control writes to Ξ.",
+		  "level": "MUST",
+		  "depends_on": ["core006:1.2", "core006:2.1"]
+		},
+		{
+		  "text": "All responses use ASCII keys on-wire. When a feature is disabled, its fields are ABSENT (not null/empty).",
+		  "level": "MUST",
+		  "depends_on": ["core006:2.1"]
+		},
+		{
+		  "text": "Any Reef-derived claim includes pointer-only evidence by default: evidence:{file,start_line,end_line}.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5", "core006:2.2"]
+		},
+		{
+		  "text": "Inline snippet text is gated by a request parameter and off by default.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5"]
+		},
+		{
+		  "text": "When enable_sigma_phase=false, omit all sigma_phase fields from envelopes.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0008:2.1", "core006:2.1"]
+		},
+		{
+		  "text": "When enable_delta_hash=false, omit all delta_hash lineage fields from envelopes.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0008:2.2", "core006:2.1"]
+		},
+		{
+		  "text": "File paths returned in evidence MUST be rooted under path_whitelist_root and normalized (no traversal).",
+		  "level": "MUST",
+		  "depends_on": ["core006:1.2"]
+		},
+		{
+		  "text": "Prefer index-first access patterns for Reef archives; avoid uncontrolled bulk scans.",
+		  "level": "SHOULD",
+		  "depends_on": ["core006:A.5"]
+		}
+	  ],
+	  "flags_used": [
+		"enable_sigma_phase",
+		"enable_delta_hash",
+		"enable_integrity_provenance"
+	  ],
+	  "io": {
+		"inputs": [
+		  {
+			"name": "include_snippet",
+			"type": "boolean",
+			"constraints": "optional; default=false",
+			"notes": "When true, responses MAY include evidence.snippet; otherwise pointer-only."
+		  },
+		  {
+			"name": "path_whitelist_root",
+			"type": "string",
+			"constraints": "absolute path; default=/mnt/data",
+			"notes": "All evidence.file MUST be under this root."
+		  }
+		],
+		"outputs": [
+		  {
+			"name": "evidence",
+			"type": "object",
+			"constraints": "{file,start_line,end_line}[,+snippet if explicitly requested]",
+			"notes": "Pointer-only by default; snippet present only when include_snippet=true."
+		  },
+		  {
+			"name": "envelope",
+			"type": "object",
+			"constraints": "Fields gated by flags; omit sigma_phase/delta_hash when disabled.",
+			"notes": "Provenance minimal fields included when enable_integrity_provenance=true."
+		  }
+		],
+		"side_effects": ["observer-only"]
+	  },
+	  "algorithms": [
+		{
+		  "title": "normalize_flags_and_gate_envelope",
+		  "pseudocode": [
+			"flags = normalize(env_flags)",
+			"envelope = {}",
+			"if flags.enable_integrity_provenance: envelope.provenance = build_minimal_provenance(ctx)",
+			"if flags.enable_sigma_phase: envelope.sigma_phase = compute_sigma_phase(ctx)",
+			"if flags.enable_delta_hash: envelope.delta_hash = compute_delta_hash_lineage(ctx)",
+			"return envelope"
+		  ],
+		  "notes": "Disabled features are absent, not null."
+		},
+		{
+		  "title": "build_pointer_only_evidence",
+		  "pseudocode": [
+			"p = normalize_path(file)",
+			"assert p.starts_with(path_whitelist_root) and not contains_traversal(p)",
+			"ev = { file: p, start_line: s, end_line: e }",
+			"if include_snippet == true: ev.snippet = read_lines(p, s, e)",
+			"return ev"
+		  ],
+		  "notes": "Pointer-only by default; snippet gated by parameter."
+		}
+	  ],
+	  "telemetry": [],
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.PATH_OUT_OF_ROOT",
+		  "when": "evidence.file does not normalize under path_whitelist_root",
+		  "message": "Evidence path is outside the allowed root.",
+		  "remedy": "Reject response; return sanitized pointer or request requery.",
+		  "details": { "local_code": "PATH_WHITELIST_VIOLATION", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.FLAG_CONFLICT",
+		  "when": "Mutually incompatible flags are set (implementation-defined set).",
+		  "message": "Incompatible feature flags for envelope gating.",
+		  "remedy": "Disable lower-priority flag(s) or retry with a valid combination.",
+		  "details": { "local_code": "FLAGS_INVALID_COMBO", "context": {} }
+		}
+	  ],
+	  "examples": [
+		{
+		  "title": "Default pointer-only evidence (no snippet, flags off)",
+		  "input": {
+			"include_snippet": false,
+			"enable_sigma_phase": false,
+			"enable_delta_hash": false,
+			"enable_integrity_provenance": true
+		  },
+		  "output": {
+			"evidence": { "file": "/mnt/data/reef/docA.REEF", "start_line": 120, "end_line": 148 },
+			"envelope": { "provenance": { "origin": "reef-adapter", "version": "v0" } }
+		  },
+		  "notes": "sigma_phase and delta_hash are absent."
+		},
+		{
+		  "title": "Snippet explicitly requested; lineage enabled",
+		  "input": {
+			"include_snippet": true,
+			"enable_sigma_phase": false,
+			"enable_delta_hash": true,
+			"enable_integrity_provenance": true
+		  },
+		  "output": {
+			"evidence": {
+			  "file": "/mnt/data/reef/docB.REEF",
+			  "start_line": 42,
+			  "end_line": 58,
+			  "snippet": "...snippet content elided..."
+			},
+			"envelope": { "provenance": { "origin": "reef-adapter", "version": "v0" }, "delta_hash": "sha256:…"}
+		  },
+		  "notes": "delta_hash present; sigma_phase omitted; pointer-only policy overridden by explicit request."
+		}
+	  ]
+	},
+	{
+	  "id": "1.2",
+	  "title": "Assumptions — Runtime, Security, Authority, Preconditions",
+	  "contracts": [
+		{
+		  "text": "Ontology validation is a hard precondition: version format, required fields, and DAG acyclicity MUST pass before any ontology-sensitive helper is invoked.",
+		  "level": "MUST",
+		  "depends_on": [
+			"RFC-0007 (Motif Ontology Format and Transfer) — schema versioning and validation rules",
+			"RFC-CORE-006 (Motif Memory Manager) — validate ontology before staging"
+		  ]
+		},
+		{
+		  "text": "Layered authority applies: this Layer_2 app-spec yields to Layer_0 canon (RFCs) and Layer_1 CORE contracts; higher layers constrain all below.",
+		  "level": "MUST",
+		  "depends_on": [
+			"PDP-0001 (RFC-driven artifact generation) — layer manifest and authority flow",
+			"PDP-0001 — input artifact roles"
+		  ]
+		},
+		{
+		  "text": "Observer-only posture at this layer: operations are measure/seal/route; no control writes to the core memory space.",
+		  "level": "MUST",
+		  "depends_on": [
+			"RFC-CORE-006 — system context"
+		  ]
+		},
+		{
+		  "text": "ASCII keys on wire; when a feature flag is disabled, the corresponding fields are ABSENT (not null or empty).",
+		  "level": "MUST",
+		  "depends_on": [
+			"RFC-CORE-006 — core method suite"
+		  ]
+		}
+	  ],
+	  "flags_used": [],
+	  "io": {
+		"runtime": "LLM sandbox (project-local filesystem)",
+		"io_surface": "filesystem-only under /mnt/data/**/*.REEF and /mnt/data/**/index.REEF",
+		"side_effects": ["observer-only"]
+	  },
+	  "security": {
+		"trust_model": "REEF files are local and trusted for read; outputs are pointer-only by default with optional snippet gating at the endpoint level.",
+		"path_whitelist_root": "/mnt/data",
+		"notes": "This section asserts posture only; cryptographic and RBAC specifics are defined elsewhere at Layer_2."
+	  },
+	  "preconditions": {
+		"ontology_validation_required": {
+		  "description": "RFC-0007 schema and required fields validated; version string sane; ontology graph acyclic; reserved motifs not redefined.",
+		  "depends_on": [
+			"RFC-0007 — schema and versioning",
+			"RFC-0007 — ontology validation"
+		  ]
+		},
+		"layering_reference": {
+		  "description": "This app-spec inherits Layer_0 and Layer_1 precedence per PDP-0001 layering.",
+		  "depends_on": [
+			"PDP-0001 — layering and precedence"
+		  ]
+		}
+	  },
+	  "algorithms": [
+		{
+		  "title": "validate_ontology_precondition",
+		  "pseudocode": [
+			"bundle = load_ontology()",
+			"require has_required_fields(bundle)",
+			"require version_is_valid(bundle.version)",
+			"require dag_is_acyclic(bundle.graph)",
+			"require no_reserved_motif_overrides(bundle)",
+			"mark ontology_validated = true"
+		  ],
+		  "notes": "Gate any ontology-sensitive helper on the ontology_validated flag."
+		}
+	  ],
+	  "telemetry": [],
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.ONTOLOGY_NOT_VALIDATED",
+		  "when": "An ontology-sensitive helper is invoked before validation passes.",
+		  "message": "Ontology must be validated before use.",
+		  "remedy": "Run validate_ontology_precondition and resolve any validation errors.",
+		  "details": { "local_code": "ONTOLOGY_PRECHECK_FAIL", "context": {} }
+		}
+	  ],
+	  "examples": []
+	},
+
+	{
+	  "id": "2",
+	  "title": "Configuration — Windows, Flags, Replay Hygiene",
+	  "rfc_anchors": [
+		"RFC-CORE-006 §2.1",
+		"RFC-CORE-006 §A.5",
+		"RFC-CORE-006 §A.10",
+		"RFC-0008 §2.1",
+		"RFC-0008 §2.2"
+	  ],
+
+	  "contracts": [
+		{
+		  "text": "Adapter behavior is observer-only at this layer; configuration MUST NOT enable control writes to Ξ.",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §2.1"]
+		},
+		{
+		  "text": "Pointer-only evidence is the default across endpoints; inline snippets MUST be gated by an explicit request parameter.",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "text": "EMA window MUST be chosen from {EMA-16, EMA-32, EMA-64} and fixed at initialization.",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §A.5", "RFC-CORE-006 §A.10"]
+		},
+		{
+		  "text": "Replay horizon MUST derive from phase/EMA when enabled; human radius MUST be clamped to the computed phase window.",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "text": "Feature flags MUST be normalized to booleans at init and govern envelope field presence (fields absent when disabled).",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §2.1", "RFC-0008 §2.1", "RFC-0008 §2.2"]
+		},
+		{
+		  "text": "Seen-set replay defense SHOULD use a hybrid policy (time window + LRU) with bounded capacity.",
+		  "level": "SHOULD",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "text": "All wire payloads use ASCII keys; disabled features yield ABSENT (not null) fields.",
+		  "level": "MUST",
+		  "depends_on": ["RFC-CORE-006 §2.1"]
+		}
+	  ],
+
+	  "flags_used": [
+		"enable_sigma_phase",
+		"enable_delta_hash",
+		"enable_integrity_provenance",
+		"enable_gliders"
+	  ],
+
+	  "io": {
+		"inputs": [
+		  {
+			"name": "include_snippet",
+			"type": "boolean",
+			"constraints": "optional, default=false",
+			"notes": "When true, endpoints MAY include evidence.snippet; otherwise pointer-only."
+		  }
+		],
+		"outputs": [
+		  {
+			"name": "evidence",
+			"type": "object",
+			"constraints": "{file,start_line,end_line}[,+snippet if explicitly requested]",
+			"notes": "Pointer-only default enforces observer discipline."
+		  }
+		],
+		"side_effects": ["observer-only"]
+	  },
+
+	  "settings": {
+		"index_path": "index.REEF",
+		"shards_glob": "TheReefArchive-*.REEF",
+		"mtime_watch": true,
+
+		"window_radius_lines": 24,
+		"max_window_radius_lines": 48,
+
+		"endpoint_defaults": {
+		  "include_snippet": false
+		},
+
+		"ema": {
+		  "window": "EMA-32",
+		  "choices": ["EMA-16", "EMA-32", "EMA-64"],
+		  "seed_rule": "first_sample",
+		  "alpha_default": 1.0
+		},
+
+		"replay": {
+		  "window_from_phase": true,
+		  "seen_set_policy": "hybrid_time_window_plus_LRU",
+		  "lru_capacity": 4096
+		},
+
+		"reflections": {
+		  "strategy": ["ontology", "file_reflections", "index_cooccur"],
+		  "limit": 50000
+		},
+
+		"clamp_rule": "effective_radius := min(max_window_radius_lines, max(1, requested_radius || window_radius_lines))",
+
+		"env": {
+		  "keys": ["MMM_REEF_INDEX_PATH", "MMM_REEF_SHARDS_GLOB", "MMM_WINDOW_RADIUS", "MMM_FEATURE_FLAGS"],
+		  "defaults": {
+			"MMM_REEF_INDEX_PATH": "index.REEF",
+			"MMM_REEF_SHARDS_GLOB": "TheReefArchive-*.REEF",
+			"MMM_WINDOW_RADIUS": 24,
+			"MMM_FEATURE_FLAGS": "exchange,integrity,provenance,gliders"
+		  },
+		  "flag_normalization": {
+			"source_var": "MMM_FEATURE_FLAGS",
+			"parser": "csv_lowercase_trim",
+			"map": {
+			  "exchange": "enable_sigma_phase",
+			  "integrity": "enable_delta_hash",
+			  "provenance": "enable_integrity_provenance",
+			  "gliders": "enable_gliders"
+			}
+		  }
+		}
+	  },
+
+	  "algorithms": [
+		{
+		  "title": "normalize_feature_flags",
+		  "pseudocode": [
+			"raw = getenv('MMM_FEATURE_FLAGS', 'exchange,integrity,provenance,gliders')",
+			"tokens = split_csv_lower_trim(raw)",
+			"flags = {",
+			"  enable_sigma_phase: contains(tokens, 'exchange'),",
+			"  enable_delta_hash: contains(tokens, 'integrity'),",
+			"  enable_integrity_provenance: contains(tokens, 'provenance'),",
+			"  enable_gliders: contains(tokens, 'gliders')",
+			"}",
+			"return flags"
+		  ],
+		  "notes": "Disabled features are absent in outputs (absent-not-null).",
+		  "depends_on": ["RFC-0008 §2.1", "RFC-0008 §2.2", "RFC-CORE-006 §2.1"]
+		},
+		{
+		  "title": "compute_phase_window_and_clamp",
+		  "pseudocode": [
+			"ema_window = settings.ema.window  // one of EMA-16/32/64",
+			"phase_window = ema(ema_window).coherence_metric(ctx)",
+			"requested = ctx.params.requested_radius || settings.window_radius_lines",
+			"effective_radius = min(settings.max_window_radius_lines, max(1, requested))",
+			"if settings.replay.window_from_phase:",
+			"  effective_radius = min(effective_radius, phase_window)",
+			"return effective_radius"
+		  ],
+		  "notes": "Implements radius clamp to phase-derived horizon when enabled.",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "title": "seen_set_hybrid_policy",
+		  "pseudocode": [
+			"now = clock()",
+			"ttl = phase_window_to_ttl(phase_window)",
+			"prune_time_window(seen_set, now - ttl)",
+			"prune_lru(seen_set, capacity=settings.replay.lru_capacity)",
+			"key = compose_seen_key(vendor, region, session, id, delimiter='|', escape=true)",
+			"if seen_set.contains(key): return DROPPED_REPLAY",
+			"seen_set.put(key, now)",
+			"return ACCEPTED"
+		  ],
+		  "notes": "Combines time-window TTL with bounded LRU.",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		}
+	  ],
+
+	  "telemetry": [
+		{ "name": "replay_drop_rate", "unit": "fraction", "window": "EMA-32", "notes": "Rate of DROPPED_REPLAY decisions." },
+		{ "name": "accepted_within_window", "unit": "fraction", "window": "EMA-32", "notes": "Accepted requests within phase window." }
+	  ],
+
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.001",
+		  "when": "Configured EMA window is not one of {EMA-16, EMA-32, EMA-64}.",
+		  "message": "Unsupported EMA window.",
+		  "remedy": "Choose a valid EMA window and restart initialization.",
+		  "details": { "local_code": "INVALID_EMA_WINDOW", "context": { "provided": "<value>" } },
+		  "depends_on": ["RFC-CORE-006 §A.10"]
+		},
+		{
+		  "code": "E.MMM.A10.002",
+		  "when": "Alpha parameter is outside allowed range [0.5, 2.0].",
+		  "message": "Alpha parameter out of range.",
+		  "remedy": "Provide alpha within [0.5,2.0] or use alpha_default.",
+		  "details": { "local_code": "ALPHA_OUT_OF_RANGE", "context": { "provided": "<value>" } },
+		  "depends_on": ["RFC-CORE-006 §A.10"]
+		},
+		{
+		  "code": "E.MMM.A10.003",
+		  "when": "Feature flags cannot be parsed or include unknown tokens.",
+		  "message": "Invalid MMM_FEATURE_FLAGS.",
+		  "remedy": "Use CSV from {exchange,integrity,provenance,gliders}.",
+		  "details": { "local_code": "FLAGS_PARSE_ERROR", "context": { "provided": "<value>" } },
+		  "depends_on": ["RFC-CORE-006 §A.10", "RFC-CORE-006 §2.1"]
+		}
+	  ],
+
+	  "examples": [
+		{
+		  "title": "Init with defaults; pointer-only evidence; phase-based clamp on",
+		  "input": {
+			"env": { "MMM_FEATURE_FLAGS": "exchange,integrity,provenance,gliders" },
+			"params": { "requested_radius": 72, "include_snippet": false }
+		  },
+		  "output": {
+			"flags": {
+			  "enable_sigma_phase": true,
+			  "enable_delta_hash": true,
+			  "enable_integrity_provenance": true,
+			  "enable_gliders": true
+			},
+			"effective_radius": 48,
+			"evidence_shape": "{file,start_line,end_line}"
+		  },
+		  "notes": "Clamp applies (max_window_radius_lines=48). Snippet absent."
+		},
+		{
+		  "title": "Invalid EMA window at init",
+		  "input": {
+			"settings_override": { "ema": { "window": "EMA-12" } }
+		  },
+		  "output": {
+			"error": {
+			  "code": "E.MMM.A10.001",
+			  "message": "Unsupported EMA window.",
+			  "details": { "local_code": "INVALID_EMA_WINDOW", "context": { "provided": "EMA-12" } }
+			}
+		  },
+		  "notes": "Initialization fails fast per A.10."
+		}
+	  ]
+	},
+
+	{
+	  "id": "3",
+	  "title": "Math — Phase Window, Scan Width, EMA Init, Weak-Field",
+	  "rfc_anchors": [
+		"RFC-CORE-006 §A.5",
+		"RFC-CORE-006 §A.10"
+	  ],
+	  "items": [
+		{
+		  "id": "3.1",
+		  "role": "phase window",
+		  "statement": "Δτ_phase = α · EMA_32(ℂ)",
+		  "latex": "\\Delta\\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C})",
+		  "constraints": {
+			"alpha_range": [0.5, 2.0],
+			"ema_window": "EMA-32",
+			"ema_choices": ["EMA-16", "EMA-32", "EMA-64"],
+			"seed_rule": "first_sample"
+		  },
+		  "depends_on": ["RFC-CORE-006 §A.5", "RFC-CORE-006 §A.10"]
+		},
+		{
+		  "id": "3.1.1",
+		  "role": "replay window width",
+		  "statement": "W = 2 · Δτ_phase",
+		  "latex": "W = 2\\,\\Delta\\tau_{\\text{phase}}",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "id": "3.1.2",
+		  "role": "EMA initialization",
+		  "statement": "If init=false, seed EMA with the first sample before applying updates.",
+		  "pseudocode": [
+			"if state.init == false:",
+			"  state.m = x",
+			"  state.init = true",
+			"else:",
+			"  state.m = state.m + α * (x - state.m)"
+		  ],
+		  "depends_on": ["RFC-CORE-006 §A.10"]
+		},
+		{
+		  "id": "3.2",
+		  "role": "evidence radius (clamped)",
+		  "statement": "R = min( R_max, floor(EMA_k(ℂ)) + 1, ceil(W/2) )",
+		  "notes": "k ∈ {16,32,64} chosen at init; W from 3.1a. Ensures evidence radius never exceeds the phase-derived horizon.",
+		  "latex": "R = \\min\\!\\left(R_{\\max},\\; \\left\\lfloor EMA_{k}(\\mathcal{C}) \\right\\rfloor + 1,\\; \\lceil W/2 \\rceil \\right)",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		},
+		{
+		  "id": "3.3",
+		  "role": "weak-field limit",
+		  "statement": "As ℂ → 1: R → 2 and Δτ_phase → 2α",
+		  "latex": "\\text{As }\\mathcal{C}\\to 1:\\; R\\to 2,\\; \\Delta\\tau_{\\text{phase}}\\to 2\\alpha",
+		  "depends_on": ["RFC-CORE-006 §A.5"]
+		}
+	  ],
+	  "conventions": {
+		"symbols": {
+		  "ℂ": "coherence measure in [0,1]",
+		  "α": "scaling coefficient",
+		  "W": "scan width (ticks)"
+		},
+		"units": {
+		  "Δτ_phase": "ticks",
+		  "W": "ticks",
+		  "R": "lines"
+		}
+	  }
+	},
+
+	{
+	  "id": "4",
+	  "title": "API Bindings",
+	  "base": "/v1/mmm",
+	  "mode": "project_local",
+	  "auth": "none",
+
+	  "contracts": [
+		{
+		  "text": "All endpoints are observer-only at Layer_2: measure/seal/route; no control writes to Ξ.",
+		  "level": "MUST",
+		  "depends_on": ["core006:1.2", "core006:2.1"]
+		},
+		{
+		  "text": "ASCII keys on wire; when a feature is disabled its fields are ABSENT (not null/empty).",
+		  "level": "MUST",
+		  "depends_on": ["core006:2.1"]
+		},
+		{
+		  "text": "Pointer-only evidence is the default for Reef-derived claims; inline snippets are gated by request param.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5"]
+		},
+		{
+		  "text": "When enable_sigma_phase=false, omit `sigma_phase` from envelopes; when true, include it.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0008:2.1", "core006:2.1"]
+		},
+		{
+		  "text": "When enable_delta_hash=false, omit `delta_hash` lineage fields; when true, include them.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0008:2.2", "core006:2.1"]
+		},
+		{
+		  "text": "Prefer index-first access patterns for .REEF archives; avoid uncontrolled bulk scans.",
+		  "level": "SHOULD",
+		  "depends_on": ["core006:A.5"]
+		}
+	  ],
+
+	  "flags_used": [
+		"enable_sigma_phase",
+		"enable_delta_hash",
+		"enable_integrity_provenance"
+	  ],
+
+	  "lineage_fields": {
+		"sigma_phase": "present iff enable_sigma_phase=true",
+		"delta_hash": "present iff enable_delta_hash=true"
+	  },
+
+	  "io": {
+		"inputs": [
+		  { "name": "include_snippet", "type": "boolean", "constraints": "optional; default=false", "notes": "If true, evidence.snippet MAY be included." },
+		  { "name": "use_phase", "type": "boolean", "constraints": "optional; default=false", "notes": "If true, server clamps user radius by phase window." },
+		  { "name": "radius", "type": "integer (lines)", "constraints": ">=0; server MAY clamp when use_phase=true", "notes": "Window half-width in lines." }
+		],
+		"outputs": [
+		  { "name": "evidence", "type": "object", "constraints": "{file,start_line,end_line}[,+snippet if explicitly requested]", "notes": "Pointer-only by default." },
+		  { "name": "envelope", "type": "object", "constraints": "gated fields by flags (sigma_phase, delta_hash)", "notes": "Absent-not-null behavior." }
+		],
+		"side_effects": ["observer-only"]
+	  },
+
+	  "algorithms": [
+		{
+		  "title": "clamp_radius_by_phase_window",
+		  "pseudocode": [
+			"phase_window = use_phase ? compute_phase_window(EMA32(coherence)) : INF",
+			"radius_eff = min(request.radius || DEFAULT_RADIUS, phase_window)",
+			"return radius_eff"
+		  ],
+		  "notes": "Implements replay-window hygiene; see telemetry for acceptance/drop rates."
+		},
+		{
+		  "title": "gate_envelope_fields_by_flags",
+		  "pseudocode": [
+			"flags = normalize_flags(env)",
+			"envelope = {}",
+			"if flags.enable_integrity_provenance: envelope.provenance = build_minimal_provenance(ctx)",
+			"if flags.enable_sigma_phase: envelope.sigma_phase = compute_sigma_phase(ctx)",
+			"if flags.enable_delta_hash: envelope.delta_hash = compute_delta_hash_lineage(ctx)",
+			"return envelope"
+		  ],
+		  "notes": "Disabled features are omitted entirely."
+		}
+	  ],
+
+	  "telemetry": [
+		{ "name": "replay_drop_rate", "unit": "fraction", "window": "EMA-32", "notes": "Share of requests dropped by replay/clamp policy." },
+		{ "name": "accepted_within_window", "unit": "fraction", "window": "EMA-32", "notes": "Share accepted under current phase window." },
+		{ "name": "import_reject_missing_checksum", "unit": "fraction", "window": "EMA-32", "notes": "Reject rate when integrity checks are enabled." }
+	  ],
+
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.RADIUS_CLAMPED",
+		  "when": "Requested radius exceeds phase window when use_phase=true.",
+		  "message": "Requested radius exceeded replay policy and was clamped.",
+		  "remedy": "Client MAY retry with a smaller radius or disable use_phase.",
+		  "details": { "local_code": "RADIUS_EXCEEDS_POLICY", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.PATH_OUT_OF_ROOT",
+		  "when": "evidence.file resolves outside path_whitelist_root.",
+		  "message": "Evidence path outside allowed root.",
+		  "remedy": "Return sanitized pointer or require corrective query.",
+		  "details": { "local_code": "PATH_WHITELIST_VIOLATION", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.FLAG_CONFLICT",
+		  "when": "Mutually incompatible flags supplied.",
+		  "message": "Incompatible feature flags.",
+		  "remedy": "Disable lower-priority flags or retry with valid combination.",
+		  "details": { "local_code": "FLAGS_INVALID_COMBO", "context": {} }
+		}
+	  ],
+
+	  "endpoints": [
+		{
+		  "id": "4.1",
+		  "title": "Endpoint — /reef/open_index",
+		  "path": "/reef/open_index",
+		  "method": "POST",
+		  "body": "{index_path?, archive_glob?}",
+		  "returns": "{index_id, archives[]}",
+		  "impl": "ReefIndexRouter",
+		  "adapter_entrypoints": ["open_index"],
+		  "contracts": [
+			{ "text": "Paths MUST normalize under path_whitelist_root.", "level": "MUST", "depends_on": ["core006:1.2"] }
+		  ]
+		},
+		{
+		  "id": "4.2",
+		  "title": "Endpoint — /reef/index",
+		  "path": "/reef/index",
+		  "method": "GET",
+		  "returns": "{modules[], motifs[], anchors[]}",
+		  "impl": "ReefIndexRouter",
+		  "adapter_entrypoints": ["list_modules","list_motifs"],
+		  "contracts": [
+			{ "text": "Index-first access; avoid bulk scans.", "level": "SHOULD", "depends_on": ["core006:A.5"] }
+		  ]
+		},
+		{
+		  "id": "4.3",
+		  "title": "Endpoint — /reef/ontology",
+		  "path": "/reef/ontology",
+		  "method": "POST",
+		  "body": "{ontology_path}",
+		  "returns": "{classes, triads, hash}",
+		  "impl": "OntologyLoader",
+		  "adapter_entrypoints": ["load_ontology_bundle"],
+		  "contracts": [
+			{ "text": "Ontology bundle MUST pass RFC-0007 validation prior to ontology-sensitive calls.", "level": "MUST", "depends_on": ["rfc0007:8"] }
+		  ]
+		},
+		{
+		  "id": "4.4",
+		  "title": "Endpoint — /reef/reflection",
+		  "path": "/reef/reflection",
+		  "method": "POST",
+		  "adapter_entrypoints": ["get_reflection"],
+
+		  "contracts": [
+			{
+			  "text": "Reflection requests MUST be gated by ontology validation: proceed only when ontology_validated == true.",
+			  "level": "MUST",
+			  "depends_on": ["rfc0007 §8"]
+			},
+			{
+			  "text": "Lineage fields follow absent-not-null gating: when a feature flag is disabled, the corresponding field is omitted from the response.",
+			  "level": "MUST",
+			  "depends_on": ["core006:2.1"]
+			},
+			{
+			  "text": "When enable_sigma_phase=false, omit lineage.sigma_phase; when true, include it.",
+			  "level": "MUST",
+			  "depends_on": ["rfc0008:2.1", "core006:2.1"]
+			},
+			{
+			  "text": "When enable_delta_hash=false, omit lineage.delta_hash; when true, include it.",
+			  "level": "MUST",
+			  "depends_on": ["rfc0008:2.2", "core006:2.1"]
+			},
+			{
+			  "text": "Adapter remains observer-only (no control writes).",
+			  "level": "MUST",
+			  "depends_on": ["core006:1.2"]
+			},
+			{
+			  "text": "ASCII keys on wire.",
+			  "level": "MUST",
+			  "depends_on": ["core006:2.1"]
+			}
+		  ],
+
+		  "flags_used": [
+			"enable_sigma_phase",
+			"enable_delta_hash"
+		  ],
+
+		  "io": {
+			"inputs": [
+			  {
+				"name": "a",
+				"type": "string",
+				"constraints": "non-empty",
+				"notes": "First motif identifier."
+			  },
+			  {
+				"name": "b",
+				"type": "string",
+				"constraints": "non-empty",
+				"notes": "Second motif identifier."
+			  },
+			  {
+				"name": "hints",
+				"type": "object",
+				"constraints": "optional",
+				"notes": "Adapter-specific guidance for reflection heuristics; ignored if ontology_validated==false."
+			  }
+			],
+			"outputs": [
+			  {
+				"name": "triad",
+				"type": "object",
+				"constraints": "RFC-0007-conformant reference; by-reference, not embedded content",
+				"notes": "Represents the reflected triadic relation between a and b."
+			  },
+			  {
+				"name": "confidence",
+				"type": "number",
+				"constraints": "0.0..1.0",
+				"notes": "Confidence score for the reflected triad."
+			  },
+			  {
+				"name": "lineage",
+				"type": "object",
+				"constraints": "optional; present only if at least one lineage field is enabled",
+				"notes": "May include {sigma_phase, delta_hash} depending on flags; omitted entirely if none are enabled."
+			  }
+			],
+			"side_effects": ["observer-only"]
+		  },
+
+		  "algorithms": [
+			{
+			  "title": "get_reflection_impl",
+			  "pseudocode": [
+				"function get_reflection(a, b, hints={}):",
+				"  assert non_empty(a) and non_empty(b)",
+				"  if state.ontology_validated != true:",
+				"    raise E.MMM.A10.005 // ONTOLOGY_MISSING",
+				"  triad = reflect_triad(a, b, hints)                // L2 behavior; uses validated ontology by reference",
+				"  conf  = score_confidence(triad, context=hints)    // Implementation-defined scoring",
+				"  env_flags = normalize_flags(env)",
+				"  lineage = {}",
+				"  if env_flags.enable_sigma_phase:",
+				"    lineage.sigma_phase = compute_sigma_phase(triad, ctx)",
+				"  if env_flags.enable_delta_hash:",
+				"    lineage.delta_hash = compute_delta_hash_lineage(triad, ctx)",
+				"  // enforce absent-not-null",
+				"  if keys(lineage).length == 0: lineage = ABSENT",
+				"  return { triad: triad.ref, confidence: conf, (lineage if present) }"
+			  ],
+			  "notes": "Disabled lineage fields are omitted; no ontology content is embedded—only references."
+			}
+		  ],
+
+		  "telemetry": [],
+
+		  "errors": [
+			{
+			  "code": "E.MMM.A10.005",
+			  "when": "ontology_validated != true at call time",
+			  "message": "Ontology validation required before reflection.",
+			  "remedy": "Run ontology validation and retry the request.",
+			  "details": { "local_code": "ONTOLOGY_MISSING", "context": {} }
+			},
+			{
+			  "code": "E.MMM.A10.BAD_REQUEST",
+			  "when": "inputs a or b are empty or malformed",
+			  "message": "Invalid reflection parameters.",
+			  "remedy": "Provide non-empty motif identifiers.",
+			  "details": { "local_code": "REFLECTION_PARAMS_INVALID", "context": {} }
+			}
+		  ],
+
+		  "examples": [
+			{
+			  "title": "Lineage omitted (both flags disabled)",
+			  "input": {
+				"a": "ψ-alpha",
+				"b": "ψ-beta",
+				"env_flags": { "enable_sigma_phase": false, "enable_delta_hash": false }
+			  },
+			  "output": {
+				"triad": { "ref": "reef://triads/abc123" },
+				"confidence": 0.82
+			  },
+			  "notes": "Absent-not-null: lineage key not present."
+			},
+			{
+			  "title": "Sigma-phase only",
+			  "input": {
+				"a": "ψ-alpha",
+				"b": "ψ-beta",
+				"env_flags": { "enable_sigma_phase": true, "enable_delta_hash": false }
+			  },
+			  "output": {
+				"triad": { "ref": "reef://triads/def456" },
+				"confidence": 0.76,
+				"lineage": { "sigma_phase": "phase:…"}
+			  },
+			  "notes": "delta_hash omitted due to flag."
+			}
+		  ]
+		},
+		{
+		  "id": "4.5",
+		  "title": "Endpoint — /reef/field_biases",
+		  "path": "/reef/field_biases",
+		  "method": "GET",
+		  "returns": "{biases[]}",
+		  "impl": "BiasProfile",
+		  "adapter_entrypoints": ["field_biases"],
+		  "contracts": []
+		},
+		{
+		  "id": "4.6",
+		  "title": "Endpoint — /reef/scan_motifs",
+		  "path": "/reef/scan_motifs",
+		  "contracts": [
+			{
+			  "text": "Pointer-only evidence by default: responses include evidence:{file,start_line,end_line} and omit inline snippet.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5", "core006:2.1"]
+			},
+			{
+			  "text": "When use_phase=true, compute a phase-derived replay horizon W from EMA-32 of coherence and clamp scan width by W; set response.policy='phase'.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5"]
+			},
+			{
+			  "text": "When use_phase=false, use legacy static clamp and set response.policy='legacy'.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5"]
+			},
+			{
+			  "text": "Honor configured evidence_window limits (count/span/mtime) on all results; if exceeded, truncate and report skipped.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5"]
+			},
+			{
+			  "text": "ASCII keys on wire; disabled features are ABSENT (not null).",
+			  "level": "MUST",
+			  "depends_on": ["core006:2.1"]
+			},
+			{
+			  "text": "Adapter remains observer-only (no control writes).",
+			  "level": "MUST",
+			  "depends_on": ["core006:1.2"]
+			},
+			{
+			  "text": "Ontology-dependent scans MUST occur only after ontology validation (RFC-0007); this endpoint does not emit ontology content.",
+			  "level": "SHOULD",
+			  "depends_on": ["rfc0007 §2"]
+			}
+		  ],
+		  "flags_used": [],
+		  "io": {
+			"inputs": [
+			  {
+				"name": "query",
+				"type": "string",
+				"constraints": "non-empty; UTF-8 text allowed; ASCII keys on-wire",
+				"notes": "Motif search expression; semantics defined by adapter."
+			  },
+			  {
+				"name": "limit",
+				"type": "integer",
+				"constraints": "optional; 1..256; default=64",
+				"notes": "Maximum items to return; endpoint MAY return fewer due to policy or evidence_window."
+			  },
+			  {
+				"name": "use_phase",
+				"type": "boolean",
+				"constraints": "optional; default=false",
+				"notes": "Enable phase-derived replay horizon clamping."
+			  },
+			  {
+				"name": "alpha",
+				"type": "number",
+				"constraints": "optional; range [0.5, 2.0]; default=1.0",
+				"notes": "Scale factor for phase window W when use_phase=true."
+			  }
+			],
+			"outputs": [
+			  {
+				"name": "items",
+				"type": "array<object>",
+				"constraints": "each item = { motif:string, evidence:{file:string,start_line:int,end_line:int} }",
+				"notes": "Evidence is pointer-only by default."
+			  },
+			  {
+				"name": "skipped",
+				"type": "integer",
+				"constraints": "optional; ≥0",
+				"notes": "Number of results omitted due to policy/evidence_window."
+			  },
+			  {
+				"name": "policy",
+				"type": "string",
+				"constraints": "'phase'|'legacy'",
+				"notes": "Reflects the clamp policy applied."
+			  }
+			],
+			"side_effects": ["observer-only"]
+		  },
+		  "algorithms": [
+			{
+			  "title": "compute_phase_window",
+			  "pseudocode": [
+				"function compute_phase_window(ctx, alpha=1.0):",
+				"  c = coherence_signal(ctx)                    // current coherence metric",
+				"  ema32 = ema32_update(ctx.ema32_state, c)    // seed with first sample if unset",
+				"  W = alpha * ema32                           // phase-derived window",
+				"  return max(min_allowed, min(W, max_allowed))"
+			  ],
+			  "notes": "EMA-32 with first-sample seeding for stability and comparability."
+			},
+			{
+			  "title": "scan_motifs_impl",
+			  "pseudocode": [
+				"function scan_motifs(query, limit=64, use_phase=false, alpha=1.0):",
+				"  assert query non-empty",
+				"  clamp = legacy_clamp()",
+				"  policy = 'legacy'",
+				"  if use_phase == true:",
+				"    W = compute_phase_window(ctx, alpha)",
+				"    clamp = clamp.merge(phase_window=W)",
+				"    policy = 'phase'",
+				"  raw = reef_index_scan(query, clamp, limit * safety_factor)",
+				"  items = []",
+				"  skipped = 0",
+				"  for r in raw:",
+				"    if outside_evidence_window(r): skipped += 1; continue",
+				"    ev = build_pointer_only_evidence(r.file, r.start_line, r.end_line)",
+				"    items.push({ motif: r.motif, evidence: ev })",
+				"    if items.length == limit: break",
+				"  return { items, skipped, policy }"
+			  ],
+			  "notes": "Always pointer-only evidence; legacy vs phase clamp determines breadth."
+			}
+		  ],
+		  "telemetry": [
+			{ "name": "replay_drop_rate", "unit": "fraction", "window": "EMA-32", "notes": "Fraction of scan candidates dropped by phase/legacy clamp." },
+			{ "name": "accepted_within_window", "unit": "fraction", "window": "EMA-32", "notes": "Accepted items / considered items after clamp." }
+		  ],
+		  "errors": [
+			{
+			  "code": "E.MMM.A10.BAD_REQUEST",
+			  "when": "query is empty or limit/alpha out of allowed range",
+			  "message": "Invalid request parameters.",
+			  "remedy": "Provide non-empty query; ensure limit ∈ [1,256] and alpha ∈ [0.5,2.0].",
+			  "details": { "local_code": "SCAN_PARAMS_INVALID", "context": {} }
+			},
+			{
+			  "code": "E.MMM.A10.PHASE_WINDOW_UNAVAILABLE",
+			  "when": "use_phase=true but coherence signal/EMA state cannot be read",
+			  "message": "Phase window unavailable; cannot apply phase policy.",
+			  "remedy": "Retry with use_phase=false or initialize telemetry source.",
+			  "details": { "local_code": "PHASE_SOURCE_MISSING", "context": {} }
+			}
+		  ],
+		  "examples": [
+			{
+			  "title": "Legacy clamp (default)",
+			  "input": { "query": "ψ-cohere", "limit": 3 },
+			  "output": {
+				"items": [
+				  { "motif": "ψ-cohere:triad", "evidence": { "file": "/mnt/data/reef/a.REEF", "start_line": 120, "end_line": 138 } }
+				],
+				"skipped": 4,
+				"policy": "legacy"
+			  },
+			  "notes": "Pointer-only evidence; no snippet."
+			},
+			{
+			  "title": "Phase clamp with alpha=1.2",
+			  "input": { "query": "ψ-cohere", "limit": 5, "use_phase": true, "alpha": 1.2 },
+			  "output": {
+				"items": [
+				  { "motif": "ψ-cohere:ring", "evidence": { "file": "/mnt/data/reef/b.REEF", "start_line": 42, "end_line": 63 } }
+				],
+				"skipped": 2,
+				"policy": "phase"
+			  },
+			  "notes": "Scan width bounded by W; absent-not-null fields hold."
+			}
+		  ]
+		},
+		{
+		  "id": "4.7",
+		  "title": "Endpoint — /reef/window",
+		  "path": "/reef/window",
+		  "method": "POST",
+		  "body": "{module_id, line, radius?, include_snippet?, use_phase?}",
+		  "returns": "{evidence:{file,start_line,end_line, snippet?}, start_line, end_line}",
+		  "impl": "ReefShardScanner",
+		  "adapter_entrypoints": ["find","window"],
+		  "contracts": [
+			{ "text": "Pointer-only evidence by default; snippet only when include_snippet=true.", "level": "MUST", "depends_on": ["core006:A.5"] },
+			{ "text": "If use_phase=true, server clamps radius to phase_window.", "level": "MUST", "depends_on": ["core006:A.5","core006:2.1"] },
+			{ "text": "Evidence file path under path_whitelist_root; no traversal.", "level": "MUST", "depends_on": ["core006:1.2"] }
+		  ]
+		},
+		{
+		  "id": "4.8",
+		  "title": "Endpoint — /reef/build_reflections",
+		  "path": "/reef/build_reflections",
+		  "method": "POST",
+		  "body": "{limit?, strategy?}",
+		  "returns": "{built, updated, skipped}",
+		  "impl": "ReefReflectionsCache",
+		  "adapter_entrypoints": ["build_reflections"],
+		  "contracts": [
+			{ "text": "Observer-only cache hydration; no control writes to Ξ.", "level": "MUST", "depends_on": ["core006:1.2"] }
+		  ]
+		},
+		{
+		  "id": "4.9",
+		  "title": "Endpoint — /reef/telemetry",
+		  "path": "/reef/telemetry",
+		  "method": "GET",
+		  "returns": "{replay_drop_rate: number, accepted_within_window: number, import_reject_missing_checksum: number}",
+		  "impl": "TelemetryRouter",
+		  "adapter_entrypoints": ["telemetry_snapshot"],
+		  "contracts": [
+			{ "text": "Metrics reported as EMA-32 unless otherwise specified.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ]
+		}
+	  ],
+
+	  "examples": [
+		{
+		  "title": "Window (default pointer-only; clamped)",
+		  "input": {
+			"path": "/v1/mmm/reef/window",
+			"method": "POST",
+			"body": { "module_id": "m.core", "line": 480, "radius": 200, "use_phase": true }
+		  },
+		  "output": {
+			"evidence": { "file": "/mnt/data/reef/m.core.REEF", "start_line": 416, "end_line": 544 },
+			"start_line": 416,
+			"end_line": 544
+		  },
+		  "notes": "If requested radius exceeded phase window, it was clamped; snippet omitted (default)."
+		},
+		{
+		  "title": "Telemetry snapshot (EMA-32 fields)",
+		  "input": { "path": "/v1/mmm/reef/telemetry", "method": "GET" },
+		  "output": {
+			"replay_drop_rate": 0.07,
+			"accepted_within_window": 0.92,
+			"import_reject_missing_checksum": 0.01
+		  },
+		  "notes": "Fractions over EMA-32 windows."
+		}
+	  ]
+	},
+
+	{
+	  "id": "5",
+	  "title": "Methods",
+	  "contracts": [
+		{ "text": "All methods are observer-only at Layer_2: measure/seal/route; no control writes to Ξ.", "level": "MUST", "depends_on": ["core006:1.2", "core006:2.1"] },
+		{ "text": "ASCII keys on wire; disabled features are ABSENT (not null/empty).", "level": "MUST", "depends_on": ["core006:2.1"] },
+		{ "text": "Pointer-only evidence is the default; inline snippets are gated by request param.", "level": "MUST", "depends_on": ["core006:A.5"] }
+	  ],
+	  "flags_used": ["enable_sigma_phase", "enable_delta_hash", "enable_integrity_provenance"],
+	  "items": [
+		{
+		  "id": "5.1",
+		  "name": "open_index",
+		  "summary": "Open a Reef index or archive glob and return a handle.",
+		  "inputs": [
+			{"name": "index_path", "type": "string", "constraints": "optional; absolute; under path_whitelist_root"},
+			{"name": "archive_glob", "type": "string", "constraints": "optional; under path_whitelist_root"}
+		  ],
+		  "outputs": [
+			{"name": "index_id", "type": "string"},
+			{"name": "archives", "type": "string[]"}
+		  ],
+		  "contracts": [
+			{ "text": "Paths MUST normalize under path_whitelist_root; no traversal.", "level": "MUST", "depends_on": ["core006:1.2"] },
+			{ "text": "Prefer index-first access to avoid uncontrolled bulk scans.", "level": "SHOULD", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"p = normalize(index_path || archive_glob)",
+			"assert under_root(p, path_whitelist_root)",
+			"return { index_id: mk_id(p), archives: list_archives(p) }"
+		  ],
+		  "errors": [
+			{ "code": "E.MMM.A10.PATH_OUT_OF_ROOT", "when": "Path escapes whitelist", "message": "Path outside allowed root.", "remedy": "Reject request" }
+		  ],
+		  "examples": []
+		},
+		{
+		  "id": "5.2",
+		  "name": "load_ontology_bundle",
+		  "summary": "Load RFC-0007 ontology bundle for validation and later ontology-sensitive calls.",
+		  "inputs": [
+			{"name": "ontology_path", "type": "string", "constraints": "required; under path_whitelist_root"}
+		  ],
+		  "outputs": [
+			{"name": "classes", "type": "object"},
+			{"name": "triads", "type": "object"},
+			{"name": "hash", "type": "string"},
+			{"name": "ontology_validated", "type": "boolean"}
+		  ],
+		  "contracts": [
+			{ "text": "Ontology MUST pass RFC-0007 validation.", "level": "MUST", "depends_on": ["rfc0007:8"] }
+		  ],
+		  "pseudocode": [
+			"bundle = read(ontology_path)",
+			"ok, report = validate_rfc0007(bundle)",
+			"return { classes: report.classes, triads: report.triads, hash: report.hash, ontology_validated: ok }"
+		  ],
+		  "errors": [
+			{ "code": "E.MMM.A10.ONTOLOGY_INVALID", "when": "RFC-0007 validation fails", "message": "Ontology bundle invalid.", "remedy": "Fix bundle; re-run validation" }
+		  ],
+		  "examples": []
+		},
+		{
+		  "id": "5.3",
+		  "name": "get_reflection",
+		  "summary": "Derive a reflection triad and confidence from motifs a and b.",
+		  "inputs": [
+			{"name": "a", "type": "string"},
+			{"name": "b", "type": "string"},
+			{"name": "hints", "type": "object", "constraints": "optional"}
+		  ],
+		  "outputs": [
+			{"name": "triad", "type": "object"},
+			{"name": "confidence", "type": "number"},
+			{"name": "envelope", "type": "object", "constraints": "absent if all gated fields disabled"}
+		  ],
+		  "preconditions": [
+			{ "text": "ontology_validated == true", "depends_on": ["rfc0007:8"] }
+		  ],
+		  "contracts": [
+			{ "text": "Envelope fields (sigma_phase, delta_hash) are included only if corresponding flags are enabled.", "level": "MUST", "depends_on": ["rfc0008:2.1", "rfc0008:2.2", "core006:2.1"] }
+		  ],
+		  "pseudocode": [
+			"assert state.ontology_validated == true else throw E.MMM.A10.005",
+			"triad, conf = reflect(a, b, hints)",
+			"env = gate_envelope_by_flags(ctx.flags)",
+			"return { triad: triad, confidence: conf, envelope: env.or_absent() }"
+		  ],
+		  "errors": [
+			{ "code": "E.MMM.A10.005", "when": "ontology_validated != true", "message": "Ontology not loaded/validated.", "remedy": "Call load_ontology_bundle()" }
+		  ],
+		  "examples": []
+		},
+		{
+		  "id": "5.4",
+		  "name": "field_biases",
+		  "summary": "Return field-level bias profile.",
+		  "inputs": [],
+		  "outputs": [{ "name": "biases", "type": "array" }],
+		  "contracts": [],
+		  "pseudocode": [ "return compute_field_biases()" ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.5",
+		  "name": "scan_motifs",
+		  "summary": "Scan Reef for motifs matching query, with bounded limits.",
+		  "inputs": [
+			{"name": "query", "type": "object"},
+			{"name": "limit", "type": "integer", "constraints": "optional; default=50; clamp to evidence_window.max_items"}
+		  ],
+		  "outputs": [{ "name": "items", "type": "array" }],
+		  "contracts": [
+			{ "text": "Bounded scans; honor limit and evidence_window policies.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"n = clamp(limit || 50, 1, evidence_window.max_items)",
+			"return list_motifs_matching(query, n)"
+		  ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.6",
+		  "name": "list_modules",
+		  "summary": "List Reef modules.",
+		  "inputs": [],
+		  "outputs": [{ "name": "modules", "type": "array" }],
+		  "contracts": [],
+		  "pseudocode": [ "return reef.index.modules()" ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.7",
+		  "name": "list_motifs",
+		  "summary": "List motifs in Reef.",
+		  "inputs": [],
+		  "outputs": [{ "name": "motifs", "type": "array" }],
+		  "contracts": [],
+		  "pseudocode": [ "return reef.index.motifs()" ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.8",
+		  "name": "find",
+		  "summary": "Find a location for a symbol and return a pointer window.",
+		  "inputs": [
+			{"name": "module_id", "type": "string"},
+			{"name": "line", "type": "integer"},
+			{"name": "radius", "type": "integer", "constraints": ">=0; may be clamped"},
+			{"name": "include_snippet", "type": "boolean", "constraints": "default=false"},
+			{"name": "use_phase", "type": "boolean", "constraints": "default=false"}
+		  ],
+		  "outputs": [
+			{"name": "evidence", "type": "object", "constraints": "{file,start_line,end_line, snippet?}"},
+			{"name": "start_line", "type": "integer"},
+			{"name": "end_line", "type": "integer"}
+		  ],
+		  "contracts": [
+			{ "text": "Pointer-only by default; snippet only when include_snippet=true.", "level": "MUST", "depends_on": ["core006:A.5"] },
+			{ "text": "When use_phase=true, clamp radius to phase_window.", "level": "MUST", "depends_on": ["core006:A.5","core006:2.1"] }
+		  ],
+		  "pseudocode": [
+			"r_eff = use_phase ? clamp_radius_by_phase_window(radius) : radius",
+			"win = compute_window(module_id, line, r_eff)",
+			"ev = build_pointer_only_evidence(win, include_snippet)",
+			"return { evidence: ev, start_line: win.start, end_line: win.end }"
+		  ],
+		  "errors": [
+			{ "code": "E.MMM.A10.RADIUS_CLAMPED", "when": "radius > phase_window with use_phase=true", "message": "Radius clamped.", "remedy": "Retry with smaller radius or disable use_phase" }
+		  ],
+		  "examples": []
+		},
+		{
+		  "id": "5.9",
+		  "name": "window",
+		  "summary": "Return a bounded window around a line.",
+		  "inputs": [
+			{"name": "module_id", "type": "string"},
+			{"name": "line", "type": "integer"},
+			{"name": "radius", "type": "integer", "constraints": ">=0; may be clamped"},
+			{"name": "include_snippet", "type": "boolean", "constraints": "default=false"},
+			{"name": "use_phase", "type": "boolean", "constraints": "default=false"}
+		  ],
+		  "outputs": [
+			{"name": "evidence", "type": "object"},
+			{"name": "start_line", "type": "integer"},
+			{"name": "end_line", "type": "integer"}
+		  ],
+		  "contracts": [
+			{ "text": "Same evidence rules as find.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"return methods.find(module_id, line, radius, include_snippet, use_phase)"
+		  ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.10",
+		  "title": "Method — cooccur",
+		  "contracts": [
+			{
+			  "text": "Pointer-only evidence by default: return evidence:{file,start_line,end_line} and omit inline snippet.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5", "core006:2.1"]
+			},
+			{
+			  "text": "When use_phase=true, derive a replay horizon W from EMA-32 of coherence (seeded on first sample) and bound the co-occurrence search region by W before any other limits.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5"]
+			},
+			{
+			  "text": "Honor configured cooccur.max_pairs and evidence_window bounds; if both apply, the effective cap is the minimum produced by policy and phase window.",
+			  "level": "MUST",
+			  "depends_on": ["core006:A.5"]
+			},
+			{
+			  "text": "ASCII keys on wire; disabled features are ABSENT (not null).",
+			  "level": "MUST",
+			  "depends_on": ["core006:2.1"]
+			},
+			{
+			  "text": "Adapter remains observer-only (no control writes).",
+			  "level": "MUST",
+			  "depends_on": ["core006:1.2"]
+			}
+		  ],
+		  "flags_used": [],
+		  "io": {
+			"inputs": [
+			  {
+				"name": "module_id",
+				"type": "string",
+				"constraints": "non-empty",
+				"notes": "Scope or namespace for co-occurrence computation."
+			  },
+			  {
+				"name": "min_support",
+				"type": "integer",
+				"constraints": ">=1; default=1",
+				"notes": "Minimum co-occurrence frequency to include a pair."
+			  },
+			  {
+				"name": "max_pairs",
+				"type": "integer",
+				"constraints": "optional; 1..128; default=128; further clamped by policy.cooccur.max_pairs",
+				"notes": "Requested upper bound on emitted pairs."
+			  },
+			  {
+				"name": "use_phase",
+				"type": "boolean",
+				"constraints": "optional; default=false",
+				"notes": "Apply phase-derived replay horizon W when true."
+			  },
+			  {
+				"name": "alpha",
+				"type": "number",
+				"constraints": "optional; range [0.5, 2.0]; default=1.0",
+				"notes": "Scale factor for phase window W."
+			  }
+			],
+			"outputs": [
+			  {
+				"name": "pairs",
+				"type": "array<object>",
+				"constraints": "bounded; each = { motif_a:string, motif_b:string, support:integer, evidence:{file:string,start_line:int,end_line:int} }",
+				"notes": "Evidence is pointer-only."
+			  },
+			  {
+				"name": "policy",
+				"type": "string",
+				"constraints": "'phase'|'legacy'",
+				"notes": "Indicates which clamp policy governed the result."
+			  }
+			],
+			"side_effects": ["observer-only"]
+		  },
+		  "algorithms": [
+			{
+			  "title": "compute_phase_window",
+			  "pseudocode": [
+				"function compute_phase_window(ctx, alpha=1.0):",
+				"  c = coherence_signal(ctx)                    // current coherence metric",
+				"  ema32 = ema32_update(ctx.ema32_state, c)    // seed with first sample if unset",
+				"  W = alpha * ema32                           // phase-derived temporal window",
+				"  return clamp(W, min_allowed, max_allowed)"
+			  ],
+			  "notes": "EMA-32 with first-sample seeding provides stable, comparable W across calls."
+			},
+			{
+			  "title": "cooccur_impl",
+			  "pseudocode": [
+				"function cooccur(module_id, min_support=1, max_pairs=128, use_phase=false, alpha=1.0):",
+				"  assert non_empty(module_id) and min_support >= 1",
+				"  k_policy = policy.cooccur.max_pairs",
+				"  k_req = clamp(max_pairs, 1, 128)",
+				"  k = min(k_req, k_policy)",
+				"  region = legacy_region(module_id)",
+				"  policy_mode = 'legacy'",
+				"  if use_phase == true:",
+				"    W = compute_phase_window(ctx, alpha)",
+				"    region = bound_region_by_phase(region, W)           // temporal/replay horizon clamp",
+				"    k = min(k, cap_from_window(W))                      // optional: further cap by W",
+				"    policy_mode = 'phase'",
+				"  candidates = find_cooccurrences(region, min_support)",
+				"  ranked = rank_pairs(candidates)",
+				"  out = []",
+				"  for p in ranked:",
+				"    if out.length == k: break",
+				"    ev = build_pointer_only_evidence(p.file, p.start_line, p.end_line)",
+				"    out.push({ motif_a: p.a, motif_b: p.b, support: p.freq, evidence: ev })",
+				"  return { pairs: out, policy: policy_mode }"
+			  ],
+			  "notes": "Pointer-only evidence; snippet emission (if ever enabled) is handled at endpoint assembly, not here."
+			}
+		  ],
+		  "telemetry": [
+			{ "name": "replay_drop_rate", "unit": "fraction", "window": "EMA-32", "notes": "Fraction of candidate pairs excluded by phase/legacy bounds." },
+			{ "name": "accepted_within_window", "unit": "fraction", "window": "EMA-32", "notes": "Accepted pairs / considered pairs after bounds." }
+		  ],
+		  "errors": [
+			{
+			  "code": "E.MMM.A10.BAD_REQUEST",
+			  "when": "module_id empty or parameter out of range (min_support < 1, max_pairs < 1 or > 128, alpha outside [0.5,2.0])",
+			  "message": "Invalid method parameters.",
+			  "remedy": "Provide a non-empty module_id; ensure parameter ranges are valid.",
+			  "details": { "local_code": "COOCCUR_PARAMS_INVALID", "context": {} }
+			},
+			{
+			  "code": "E.MMM.A10.PHASE_WINDOW_UNAVAILABLE",
+			  "when": "use_phase=true but coherence/EMA state cannot be read",
+			  "message": "Phase window unavailable; cannot apply phase policy.",
+			  "remedy": "Retry with use_phase=false or initialize telemetry source.",
+			  "details": { "local_code": "PHASE_SOURCE_MISSING", "context": {} }
+			}
+		  ],
+		  "examples": [
+			{
+			  "title": "Legacy co-occur (defaults)",
+			  "input": { "module_id": "reef:core", "min_support": 1, "max_pairs": 5 },
+			  "output": {
+				"pairs": [
+				  { "motif_a": "ψ-a", "motif_b": "ψ-b", "support": 7, "evidence": { "file": "/mnt/data/reef/x.REEF", "start_line": 210, "end_line": 228 } }
+				],
+				"policy": "legacy"
+			  },
+			  "notes": "Pointer-only evidence; no snippet."
+			},
+			{
+			  "title": "Phase-bounded co-occur with alpha=1.2",
+			  "input": { "module_id": "reef:core", "min_support": 2, "max_pairs": 8, "use_phase": true, "alpha": 1.2 },
+			  "output": {
+				"pairs": [
+				  { "motif_a": "ψ-ring", "motif_b": "ψ-triad", "support": 4, "evidence": { "file": "/mnt/data/reef/y.REEF", "start_line": 45, "end_line": 66 } }
+				],
+				"policy": "phase"
+			  },
+			  "notes": "Region bounded by W; effective k may be reduced by policy and window."
+			}
+		  ]
+		},
+		{
+		  "id": "5.11",
+		  "name": "build_reflections",
+		  "summary": "Hydrate reflection cache (observer-only).",
+		  "inputs": [
+			{"name": "limit", "type": "integer", "constraints": "optional"},
+			{"name": "strategy", "type": "string", "constraints": "optional"}
+		  ],
+		  "outputs": [
+			{"name": "built", "type": "integer"},
+			{"name": "updated", "type": "integer"},
+			{"name": "skipped", "type": "integer"}
+		  ],
+		  "contracts": [
+			{ "text": "Observer-only; no control writes to Ξ.", "level": "MUST", "depends_on": ["core006:1.2"] }
+		  ],
+		  "pseudocode": [
+			"return hydrate_reflection_cache(limit, strategy)"
+		  ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.12",
+		  "name": "watch_reef_files",
+		  "summary": "Watch Reef paths for mtime changes and emit index update hints.",
+		  "inputs": [
+			{"name": "paths", "type": "string[]", "constraints": "under path_whitelist_root"}
+		  ],
+		  "outputs": [
+			{"name": "events", "type": "array", "constraints": "mtime_change events with pointers only"}
+		  ],
+		  "contracts": [
+			{ "text": "No content emission without pointer evidence.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"for p in paths: assert under_root(p)",
+			"emit on_change -> {file: p, start_line: 0, end_line: 0}"
+		  ],
+		  "errors": [],
+		  "examples": []
+		},
+		{
+		  "id": "5.13",
+		  "name": "compute_phase_window",
+		  "summary": "Compute phase window W from coherence trace using EMA-32; seed with first sample.",
+		  "inputs": [
+			{"name": "C_trace", "type": "number[]", "constraints": "time-ordered"},
+			{"name": "alpha", "type": "number", "constraints": "optional; default per EMA-32"}
+		  ],
+		  "outputs": [
+			{"name": "W", "type": "integer", "constraints": "lines"}
+		  ],
+		  "contracts": [
+			{ "text": "EMA-32 smoothing; first sample seeds the accumulator.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"ema = seed(C_trace[0])",
+			"for t in C_trace[1:]: ema = ema32_update(ema, t, alpha?)",
+			"W = map_coherence_to_window(ema)",
+			"return W"
+		  ],
+		  "errors": [],
+		  "examples": [
+			{
+			  "title": "Example",
+			  "input": {"C_trace": [0.4,0.5,0.6], "alpha": null},
+			  "output": {"W": 128},
+			  "notes": "Mapping is policy-defined; bounded by evidence window."
+			}
+		  ]
+		},
+		{
+		  "id": "5.14",
+		  "name": "compose_seen_key",
+		  "summary": "Compose a replay-defense key with escaped delimiter; respect flags by omitting gated fields.",
+		  "inputs": [
+			{"name": "vendor", "type": "string"},
+			{"name": "region", "type": "string"},
+			{"name": "session", "type": "string"},
+			{"name": "id", "type": "string"},
+			{"name": "flags", "type": "object", "constraints": "enable_sigma_phase, enable_delta_hash"}
+		  ],
+		  "outputs": [
+			{"name": "key", "type": "string"}
+		  ],
+		  "contracts": [
+			{ "text": "Escape the '|' delimiter in each part; omit gated fields when flags disabled.", "level": "MUST", "depends_on": ["core006:2.1"] }
+		  ],
+		  "pseudocode": [
+			"parts = [vendor, region, session, id].map(escape_delim('|'))",
+			"return parts.join('|')"
+		  ],
+		  "errors": [],
+		  "examples": [
+			{
+			  "title": "Escaped",
+			  "input": {"vendor": "acme|corp", "region": "us-west", "session": "s1", "id": "m42", "flags": {"enable_sigma_phase": false, "enable_delta_hash": false}},
+			  "output": {"key": "acme\\|corp|us-west|s1|m42"},
+			  "notes": "No sigma/delta fields because flags are disabled."
+			}
+		  ]
+		},
+		{
+		  "id": "5.15",
+		  "name": "seen_set_hybrid_policy",
+		  "summary": "Replay defense combining time-window and LRU; emits replay_drop when rejected.",
+		  "inputs": [
+			{"name": "key", "type": "string"},
+			{"name": "now", "type": "timestamp"},
+			{"name": "ttl_seconds", "type": "integer"},
+			{"name": "lru_capacity", "type": "integer"}
+		  ],
+		  "outputs": [
+			{"name": "accepted", "type": "boolean"},
+			{"name": "reason", "type": "string", "constraints": "ok|expired|duplicate"}
+		  ],
+		  "contracts": [
+			{ "text": "Reject if key exists within TTL window; else admit and update LRU.", "level": "MUST", "depends_on": ["core006:A.5"] }
+		  ],
+		  "pseudocode": [
+			"if seen_set.contains(key) and not expired(key, now, ttl_seconds):",
+			"  emit telemetry.replay_drop += 1",
+			"  return {accepted:false, reason:'duplicate'}",
+			"seen_set.put(key, now)",
+			"lru.touch(key, lru_capacity)",
+			"return {accepted:true, reason:'ok'}"
+		  ],
+		  "errors": [],
+		  "examples": []
+		}
+	  ],
+	  "telemetry": [
+		{ "name": "replay_drop", "unit": "count", "window": "EMA-32", "notes": "Increment on duplicate within TTL." }
+	  ],
+	  "errors": [],
+	  "examples": []
+	},
+
+	{
+	  "id": "6",
+	  "title": "State Lifecycle — index → ontology_validated → ready",
+	  "contracts": [
+		{
+		  "text": "Ontology validation is a hard precondition before any ontology-sensitive helper (reflection, bias, cooccur) is callable.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0007:§validation", "core006:§2.1"]
+		},
+		{
+		  "text": "Telemetry streams (EMA-32) are considered live only in `ready` and MUST be cold/off in earlier states.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5"]
+		},
+		{
+		  "text": "The adapter is observer-only across all states; no control writes to Ξ.",
+		  "level": "MUST",
+		  "depends_on": ["core006:§1.2"]
+		},
+		{
+		  "text": "Flag effects (Σ/Δ/provenance) are evaluated at init and do not alter state transitions (lifecycle is flag-agnostic).",
+		  "level": "SHOULD",
+		  "depends_on": ["core006:§2.1", "rfc0008:§2"]
+		}
+	  ],
+	  "flags_used": [
+		"enable_sigma_phase",
+		"enable_delta_hash",
+		"enable_integrity_provenance"
+	  ],
+	  "states": [
+		{ "id": "6.1",   "state": "cold",                "description": "No index open; NOT_INITIALIZED; all ontology-sensitive calls error with E.MMM.A10.005 (ontology required)." },
+		{ "id": "6.2",   "state": "indexed",             "description": "Index open; archives discovered; ontology not yet validated; telemetry OFF." },
+		{ "id": "6.2.1", "state": "ontology_validated",  "description": "RFC-0007 checks pass (version/schema/DAG/references); ontology-sensitive helpers may be advertised but remain gated until ready." },
+		{ "id": "6.3",   "state": "ready",               "description": "Validation complete; telemetry streams (EMA-32) ON; reflections/bias/cooccur enabled; pointer-only evidence still default." }
+	  ],
+	  "transitions": [
+		{ "from": "cold", "to": "indexed", "on": "open_index()", "guard": "archive_discovery_succeeds", "notes": "Initialize cursors; no ontology load yet." },
+		{ "from": "indexed", "to": "ontology_validated", "on": "validate_ontology()", "guard": "rfc0007_all_checks_pass", "notes": "Hard precondition for ontology-sensitive helpers." },
+		{ "from": "ontology_validated", "to": "ready", "on": "start_telemetry()", "guard": "ema_windows_seeded && exporters_bound", "notes": "Bring EMA-32 streams online; publish capabilities." },
+		{ "from": "indexed", "to": "cold", "on": "close_index()", "guard": "always", "notes": "Tear down cursors/handles." },
+		{ "from": "ontology_validated", "to": "cold", "on": "close_index()", "guard": "always", "notes": "De-init validation context." },
+		{ "from": "ready", "to": "indexed", "on": "stop_telemetry()", "guard": "graceful_stop", "notes": "Disable streams; helpers remain gated until revalidated if index is swapped." }
+	  ],
+	  "io": {
+		"inputs": [],
+		"outputs": [],
+		"side_effects": ["observer-only"]
+	  },
+	  "algorithms": [
+		{
+		  "title": "startup_to_ready",
+		  "pseudocode": [
+			"state = cold",
+			"on open_index():",
+			"  if discover_archives(): state = indexed else error E.MMM.A10.NOT_INITIALIZED",
+			"on validate_ontology():",
+			"  if rfc0007_checks_pass(): state = ontology_validated else error E.MMM.A10.006",
+			"on start_telemetry():",
+			"  seed_EMA_windows([16,32,64]); bind_exporters(); state = ready"
+		  ],
+		  "notes": "EMA-32 is the default reporting window; other EMAs may be seeded for auxiliary metrics."
+		},
+		{
+		  "title": "gate_ontology_sensitive_helpers",
+		  "pseudocode": [
+			"function require_validated():",
+			"  if state == cold:          error E.MMM.A10.005",
+			"  if state == indexed:       error E.MMM.A10.005",
+			"  if state == ontology_validated or state == ready: return OK"
+		  ],
+		  "notes": "Helpers (reflection, bias, cooccur) call this gate before execution."
+		}
+	  ],
+	  "telemetry": [],
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.005",
+		  "when": "Ontology-sensitive helper invoked before ontology validation",
+		  "message": "Ontology validation required before this operation.",
+		  "remedy": "Invoke validate_ontology() then retry.",
+		  "details": { "local_code": "ONTOLOGY_REQUIRED", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.006",
+		  "when": "Ontology validation failed",
+		  "message": "Ontology bundle failed RFC-0007 checks.",
+		  "remedy": "Fix version/schema/DAG/references; re-run validate_ontology().",
+		  "details": { "local_code": "ONTOLOGY_VALIDATION_FAILED", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.NOT_INITIALIZED",
+		  "when": "Index not open and an operation requires it",
+		  "message": "Adapter is not initialized (cold).",
+		  "remedy": "Call open_index() to reach indexed state.",
+		  "details": { "local_code": "NOT_INITIALIZED", "context": {} }
+		}
+	  ],
+	  "examples": [
+		{
+		  "title": "Happy path: cold → indexed → ontology_validated → ready",
+		  "input": { "actions": ["open_index()", "validate_ontology()", "start_telemetry()"] },
+		  "output": { "final_state": "ready" },
+		  "notes": "After ready, helpers are enabled; telemetry streams active with EMA-32."
+		},
+		{
+		  "title": "Guarded call before validation",
+		  "input": { "state": "indexed", "action": "get_reflection()" },
+		  "output": { "error": "E.MMM.A10.005" },
+		  "notes": "Gate enforces ontology validation precondition."
+		}
+	  ]
+	},
+
+	{
+	  "id": "7",
+	  "title": "Error Model — A.10 family & local mapping",
+	  "contracts": [
+		{
+		  "text": "All adapter errors MUST normalize to the CORE-006 A.10 family (`E.MMM.A10.*`) while preserving the original local code in `details.local_code`.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.10", "core006:§2.1"]
+		},
+		{
+		  "text": "Disabled features produce omissions (ABSENT fields), not nulls; attempts to emit gated fields MUST raise a feature-flag violation.",
+		  "level": "MUST",
+		  "depends_on": ["core006:§2.1", "rfc0008:§2"]
+		},
+		{
+		  "text": "Replay/phase policies govern radius and key composition; violations map to the A.10 window/key codes.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5", "core006:A.10"]
+		},
+		{
+		  "text": "Ontology-sensitive operations require prior validation; missing/failed validation maps to A.10 ontology codes.",
+		  "level": "MUST",
+		  "depends_on": ["rfc0007:§validation", "core006:§2.1", "core006:A.10"]
+		}
+	  ],
+	  "flags_used": [
+		"enable_sigma_phase",
+		"enable_delta_hash",
+		"enable_integrity_provenance"
+	  ],
+	  "io": {
+		"inputs": [],
+		"outputs": [],
+		"side_effects": ["observer-only"]
+	  },
+	  "algorithms": [
+		{
+		  "title": "normalize_error(local_code, context)",
+		  "pseudocode": [
+			"switch local_code:",
+			"  case 'NOT_INITIALIZED':            return A10('E.MMM.A10.NOT_INITIALIZED', 'Adapter is not initialized', remedy='open_index()', details)",
+			"  case 'RADIUS_INVALID':             if context.caused_by_phase_policy then return A10('E.MMM.A10.001', 'Invalid EMA/radius', remedy='select supported window or clamp') else return A10('E.MMM.A10.032', 'Range invalid', remedy='use allowed range')",
+			"  case 'ONTOLOGY_MISSING':           return A10('E.MMM.A10.005', 'Ontology prerequisite failure', remedy='validate_ontology()')",
+			"  case 'REEF_INDEX_NOT_FOUND':       return A10('E.MMM.A10.020', 'Index missing/unreadable', remedy='provide readable index path')",
+			"  case 'INVALID_FORMAT':             return A10('E.MMM.A10.021', 'Format invalid (REEF/ontology)', remedy='fix schema/version/DAG')",
+			"  case 'CHECKSUM_MISMATCH':          return A10('E.MMM.A10.022', 'Integrity check failed', remedy='recompute or disable integrity feature')",
+			"  case 'MODULE_NOT_FOUND':           return A10('E.MMM.A10.024', 'Unknown module', remedy='use known module_id')",
+			"  case 'ANCHOR_NOT_FOUND':           return A10('E.MMM.A10.023', 'Anchor resolution failed', remedy='supply resolvable anchor')",
+			"  case 'SCAN_LIMIT_REACHED':         return A10('E.MMM.A10.030', 'Scan limit reached', remedy='lower scope or increase limit within policy')",
+			"  case 'AMBIGUOUS':                  return A10('E.MMM.A10.031', 'Ambiguous result', remedy='provide disambiguating hints')",
+			"  case 'FLAG_VIOLATION':             return A10('E.MMM.A10.003', 'Feature flag violation', remedy='enable flag or remove fields')",
+			"  case 'REPLAY_KEY_COMPOSITION':     return A10('E.MMM.A10.004', 'Replay key composition error', remedy='compose per policy and flags')",
+			"  default:                           return A10('E.MMM.A10.UNKNOWN', 'Unclassified error', remedy='inspect details')"
+		  ],
+		  "notes": "Returns an object with {code, message, remedy, details:{local_code, context}}. Absent-not-null enforced for gated fields."
+		}
+	  ],
+	  "telemetry": [],
+	  "errors": [
+		{
+		  "code": "E.MMM.A10.NOT_INITIALIZED",
+		  "when": "State=cold; any operation requires an open index",
+		  "message": "Adapter is not initialized.",
+		  "remedy": "Call open_index() to reach indexed state.",
+		  "details": { "local_code": "NOT_INITIALIZED", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.001",
+		  "when": "EMA window ∉ {16,32,64} or radius violates phase-derived clamp",
+		  "message": "Invalid EMA window or derived radius.",
+		  "remedy": "Select supported window; ensure radius <= phase_window when use_phase=true.",
+		  "details": { "local_code": "RADIUS_INVALID", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.003",
+		  "when": "Gated fields (sigma_phase, delta_hash) used while corresponding flag disabled",
+		  "message": "Feature flag violation.",
+		  "remedy": "Enable the feature flag or remove gated fields from request/response.",
+		  "details": { "local_code": "FLAG_VIOLATION", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.004",
+		  "when": "Replay key composed with disallowed fields or malformed tuple",
+		  "message": "Replay key composition error.",
+		  "remedy": "Recompose per compose_seen_key policy and active flags.",
+		  "details": { "local_code": "REPLAY_KEY_COMPOSITION", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.005",
+		  "when": "Ontology-sensitive helper invoked before validation or on failed validation",
+		  "message": "Ontology prerequisite failure.",
+		  "remedy": "Run RFC-0007 validation successfully, then retry.",
+		  "details": { "local_code": "ONTOLOGY_MISSING", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.020",
+		  "when": "Reef index missing or unreadable at configured path",
+		  "message": "Index missing or unreadable.",
+		  "remedy": "Provide readable index path under path_whitelist_root.",
+		  "details": { "local_code": "REEF_INDEX_NOT_FOUND", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.021",
+		  "when": "REEF/ontology payload fails schema/version/DAG rules",
+		  "message": "Invalid format for REEF/ontology.",
+		  "remedy": "Fix schema, version, and DAG acyclicity; revalidate.",
+		  "details": { "local_code": "INVALID_FORMAT", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.022",
+		  "when": "Checksum/integrity verification fails when integrity is enabled",
+		  "message": "Integrity check failed.",
+		  "remedy": "Recompute checksum or disable integrity feature explicitly.",
+		  "details": { "local_code": "CHECKSUM_MISMATCH", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.023",
+		  "when": "Anchor cannot be resolved to a file/line span",
+		  "message": "Anchor resolution failed.",
+		  "remedy": "Supply resolvable anchor or update index.",
+		  "details": { "local_code": "ANCHOR_NOT_FOUND", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.024",
+		  "when": "Unknown module_id requested",
+		  "message": "Unknown module.",
+		  "remedy": "Use a known module_id or register the module.",
+		  "details": { "local_code": "MODULE_NOT_FOUND", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.030",
+		  "when": "Scan/reflection limit exceeded per policy bounds",
+		  "message": "Scan limit reached.",
+		  "remedy": "Lower scope or raise limit within policy constraints.",
+		  "details": { "local_code": "SCAN_LIMIT_REACHED", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.031",
+		  "when": "Multiple valid targets remain after disambiguation attempts",
+		  "message": "Ambiguous result.",
+		  "remedy": "Provide disambiguating hints or narrow the query.",
+		  "details": { "local_code": "AMBIGUOUS", "context": {} }
+		},
+		{
+		  "code": "E.MMM.A10.032",
+		  "when": "Numeric parameter out of allowed range but not governed by EMA policy",
+		  "message": "Range invalid.",
+		  "remedy": "Use an allowed range per method contract.",
+		  "details": { "local_code": "RADIUS_INVALID", "context": {} }
+		}
+	  ],
+	  "examples": [
+		{
+		  "title": "Map local ONTOLOGY_MISSING to A.10 family",
+		  "input": { "local_code": "ONTOLOGY_MISSING", "context": { "state": "indexed" } },
+		  "output": { "code": "E.MMM.A10.005", "message": "Ontology prerequisite failure", "details": { "local_code": "ONTOLOGY_MISSING" } },
+		  "notes": "Gate required before ontology-sensitive helpers."
+		},
+		{
+		  "title": "Radius invalid due to phase clamp",
+		  "input": { "local_code": "RADIUS_INVALID", "context": { "use_phase": true, "radius": 9001, "phase_window": 512 } },
+		  "output": { "code": "E.MMM.A10.001", "message": "Invalid EMA/radius", "details": { "local_code": "RADIUS_INVALID" } },
+		  "notes": "When not caused by phase policy, map to E.MMM.A10.032 instead."
+		}
+	  ]
+	},
+
+	{
+	  "id": "8",
+	  "title": "Telemetry — EMA-32 replay and integrity signals",
+	  "contracts": [
+		{
+		  "text": "Replay acceptance/denial MUST be measured and exported via EMA-32 rates.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5"]
+		},
+		{
+		  "text": "Telemetry streams are LIVE only in state=ready; before ready they MUST be off/cold.",
+		  "level": "MUST",
+		  "depends_on": ["core006:A.5", "core006:§6"]
+		},
+		{
+		  "text": "When integrity features are disabled, integrity-derived metrics are ABSENT (not null/zero).",
+		  "level": "MUST",
+		  "depends_on": ["core006:§2.1", "rfc0008:§2"]
+		},
+		{
+		  "text": "All telemetry keys are ASCII; windows MUST be one of {EMA-16, EMA-32, EMA-64} (EMA-32 default).",
+		  "level": "MUST",
+		  "depends_on": ["core006:§2.1", "core006:A.5"]
+		}
+	  ],
+	  "flags_used": [
+		"enable_integrity_provenance",
+		"enable_delta_hash"
+	  ],
+	  "io": {
+		"inputs": [
+		  { "name": "event", "type": "enum", "constraints": "one of telemetry.events", "notes": "Structured telemetry event emitted by adapter" },
+		  { "name": "value", "type": "number|object", "constraints": "per-event schema", "notes": "For metric updates, numeric value in [0,1] for rates" }
+		],
+		"outputs": [
+		  { "name": "metrics_export", "type": "object", "constraints": "ASCII keys; EMA windowed rates", "notes": "Omit integrity-derived metrics when features disabled" }
+		],
+		"side_effects": ["observer-only"]
+	  },
+	  "algorithms": [
+		{
+		  "title": "seed_and_bind_telemetry",
+		  "pseudocode": [
+			"on_enter_ready():",
+			"  windows = { 'EMA-16', 'EMA-32', 'EMA-64' }",
+			"  active_window = 'EMA-32'",
+			"  init_metric('replay_drop_rate', active_window)",
+			"  init_metric('accepted_within_window', active_window)",
+			"  if flags.enable_integrity_provenance or flags.enable_delta_hash:",
+			"    init_metric('import_reject_missing_checksum', active_window)",
+			"  bind_exporters()"
+		  ],
+		  "notes": "Telemetry streams are cold before ready; ABSENT-not-null for disabled features."
+		},
+		{
+		  "title": "record_replay_result",
+		  "pseudocode": [
+			"function record_replay_result(within_window:boolean):",
+			"  if state != 'ready': return",
+			"  if within_window:",
+			"    ema_update('accepted_within_window', 1.0)",
+			"    ema_update('replay_drop_rate', 0.0)",
+			"  else:",
+			"    emit_event('replay_drop_event', {reason:'phase_window_violation'})",
+			"    ema_update('accepted_within_window', 0.0)",
+			"    ema_update('replay_drop_rate', 1.0)"
+		  ],
+		  "notes": "Updates are per-decision; exporter handles aggregation cadence."
+		},
+		{
+		  "title": "record_integrity_reject",
+		  "pseudocode": [
+			"function record_integrity_reject(reason):",
+			"  if state != 'ready': return",
+			"  if not (flags.enable_integrity_provenance or flags.enable_delta_hash): return",
+			"  if reason == 'missing_checksum':",
+			"    ema_update('import_reject_missing_checksum', 1.0)",
+			"  emit_event('flag_violation_detected', {reason})"
+		  ],
+		  "notes": "Metric is ABSENT entirely when integrity features disabled."
+		}
+	  ],
+	  "telemetry": {
+		"metrics": [
+		  { "name": "replay_drop_rate", "unit": "fraction", "window": "EMA-32", "notes": "Rate of decisions dropped by replay/phase policy" },
+		  { "name": "accepted_within_window", "unit": "fraction", "window": "EMA-32", "notes": "Rate of decisions accepted within Δτ_phase window" },
+		  { "name": "import_reject_missing_checksum", "unit": "fraction", "window": "EMA-32", "notes": "Integrity-related reject rate; ABSENT if integrity features disabled" }
+		],
+		"gauges": [
+		  "reef_index_modules_count",
+		  "reef_shard_count",
+		  "reef_reflections_cache_size",
+		  "reef_cooccur_candidate_rate"
+		],
+		"events": [
+		  "replay_drop_event",
+		  "ontology_validation_failed",
+		  "flag_violation_detected",
+		  "ascii_key_normalization_events",
+		  "needs_reload"
+		]
+	  },
+	  "errors": [],
+	  "examples": [
+		{
+		  "title": "Replay drop recorded; integrity disabled",
+		  "input": {
+			"state": "ready",
+			"flags": { "enable_integrity_provenance": false, "enable_delta_hash": false },
+			"event": "replay_drop_event",
+			"value": { "reason": "phase_window_violation" }
+		  },
+		  "output": {
+			"metrics_export": {
+			  "replay_drop_rate": 0.62,
+			  "accepted_within_window": 0.38
+			}
+		  },
+		  "notes": "Integrity metric is ABSENT because features are disabled."
+		},
+		{
+		  "title": "Integrity reject recorded with checksum gating",
+		  "input": {
+			"state": "ready",
+			"flags": { "enable_integrity_provenance": true, "enable_delta_hash": true },
+			"event": "flag_violation_detected",
+			"value": { "reason": "missing_checksum" }
+		  },
+		  "output": {
+			"metrics_export": {
+			  "replay_drop_rate": 0.12,
+			  "accepted_within_window": 0.88,
+			  "import_reject_missing_checksum": 0.04
+			}
+		  },
+		  "notes": "All keys ASCII; EMA-32 windowing applies to reported fractions."
+		}
+	  ]
+	},
+
+	{
+	  "id": "A",
+	  "title": "Appendix A — Minimal Sequences & Phase-Aware Examples",
+	  "rfc_anchors": ["core006:A.5", "rfc0007:validation", "rfc0008:2.1"],
+	  "assumptions": [
+		"Adapter is observer-only (no control writes).",
+		"ASCII keys on-wire; disabled features are ABSENT, not null.",
+		"Pointer-only evidence by default; inline snippet gated by parameter."
+	  ],
+
+	  "sequence_minimal": {
+		"E.1": {
+		  "op": "open_index",
+		  "request": { "path": "/mnt/data/reef" },
+		  "response": { "status": 200, "index_id": "reef-idx-001" },
+		  "citations": ["core006:A.5"]
+		},
+		"E.2": {
+		  "op": "list_modules",
+		  "request": { "index_id": "reef-idx-001" },
+		  "response": { "status": 200, "modules": ["ontology", "cooccur", "window"] },
+		  "citations": ["core006:A.5"]
+		},
+		"E.3": {
+		  "op": "load_ontology_bundle",
+		  "request": { "index_id": "reef-idx-001", "validated": true },
+		  "response": { "status": 200, "validated": true, "bundle_version": "v2025.10" },
+		  "citations": ["rfc0007:validation"]
+		},
+		"E.4": {
+		  "op": "window",
+		  "request": {
+			"query": "ψ-spar@Ξ",
+			"include_snippet": false,
+			"radius": 200
+		  },
+		  "response": {
+			"status": 200,
+			"evidence": {
+			  "file": "/mnt/data/reef/docA.REEF",
+			  "start_line": 120,
+			  "end_line": 148
+			}
+		  },
+		  "notes": "Pointer-only evidence; no snippet included.",
+		  "citations": ["core006:A.5"]
+		}
+	  },
+
+	  "cooccur_walk_phase": {
+		"E.5": {
+		  "op": "cooccur",
+		  "params": { "use_phase": true, "alpha": 1.0, "ema32_C": 0.8 },
+		  "derived": { "W": 1.6 },
+		  "request": {
+			"pairs_limit": 128,
+			"min_support": 1,
+			"use_phase": true,
+			"alpha": 1.0
+		  },
+		  "response": {
+			"status": 200,
+			"phase_window": 1.6,
+			"pairs": [
+			  {
+				"a": "ψ-spar@Ξ",
+				"b": "ψ-hold@Ξ",
+				"support": 5,
+				"evidence": {
+				  "file": "/mnt/data/reef/docB.REEF",
+				  "start_line": 42,
+				  "end_line": 58
+				}
+			  }
+			]
+		  },
+		  "notes": "Human radius implicitly clamped to phase_window when use_phase=true.",
+		  "citations": ["core006:A.5"]
+		}
+	  },
+
+	  "telemetry_read": {
+		"op": "GET /reef/telemetry",
+		"request": {},
+		"response": {
+		  "status": 200,
+		  "metrics": {
+			"replay_drop_rate": { "window": "EMA-32", "value": 0.03 },
+			"accepted_within_window": { "window": "EMA-32", "value": 0.97 },
+			"import_reject_missing_checksum": { "window": "EMA-32", "value": 0.00 }
+		  }
+		},
+		"citations": ["core006:A.5"]
+	  },
+
+	  "envelope_flag_examples": [
+		{
+		  "title": "delta_hash disabled; sigma_phase disabled",
+		  "flags": {
+			"enable_sigma_phase": false,
+			"enable_delta_hash": false,
+			"enable_integrity_provenance": true
+		  },
+		  "response_envelope": {
+			"provenance": { "origin": "reef-adapter", "version": "v0" }
+		  },
+		  "notes": "sigma_phase and delta_hash are ABSENT when disabled.",
+		  "citations": ["rfc0008:2.1"]
+		},
+		{
+		  "title": "delta_hash enabled; sigma_phase disabled",
+		  "flags": {
+			"enable_sigma_phase": false,
+			"enable_delta_hash": true,
+			"enable_integrity_provenance": true
+		  },
+		  "response_envelope": {
+			"provenance": { "origin": "reef-adapter", "version": "v0" },
+			"delta_hash": "sha256:…"
+		  },
+		  "citations": ["rfc0008:2.1"]
+		}
+	  ],
+
+	  "error_example": {
+		"title": "Ontology-sensitive helper called without validation",
+		"call": { "op": "get_reflection", "args": { "topic": "ψ-spar@Ξ" } },
+		"response": {
+		  "status": 400,
+		  "error": {
+			"code": "E.MMM.A10.005",
+			"when": "Ontology not validated",
+			"message": "Ontology bundle must be validated before this operation.",
+			"details": { "local_code": "ONTOLOGY_NOT_VALIDATED", "context": { "helper": "get_reflection" } }
+		  }
+		},
+		"citations": ["rfc0007:validation", "core006:1.2"]
+	  },
+
+	  "fixtures": {
+		"path_whitelist_root": "/mnt/data",
+		"flags_default": {
+		  "enable_sigma_phase": false,
+		  "enable_delta_hash": false,
+		  "enable_integrity_provenance": true
+		}
+	  }
+	}
+]
+}

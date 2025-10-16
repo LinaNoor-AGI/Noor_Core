@@ -1,0 +1,365 @@
+{
+  "_schema": "layer_2.adapter-spec-v1",
+  "_artifact": "mmm_reef_adapter.py",
+  "_layer": "L2 (WHAT+algorithms, observer-only)",
+  "_status": "CANONICAL-DRAFT",
+  "_summary": "Read-only Reef bridge for the Motif Memory Manager (MMM): discovers modules/motifs/anchors, produces bounded evidence windows, computes motif co-occurrence candidates, scaffolds reflections summaries, and watches Reef shards for deterministic reload signals.",
+  "_role": "observer (no Reef mutation; pointers/evidence only)",
+  "_refs": {
+    "rfc_core": ["RFC-CORE-006 §2.2 (Reef Adapter)"],
+    "supporting_rfcs": [
+      "PDP-0001 (Protocol for RFC-Driven Symbolic Artifact Generation)",
+      "RFC-0005 (Motif Transmission Across Time — decay/replay)",
+      "RFC-0006 (Coherence, Capacity, and Windows)",
+      "RFC-0007 (Presence & ψ-field conventions)",
+      "RFC-0008 (Exchange & Integrity envelope)",
+      "RFC-0009 (Provenance discipline)"
+    ],
+    "reef_inputs": ["index.REEF", "TheReefArchive-*.REEF"]
+  },
+
+  "policy": {
+    "read_only": true,
+    "reef_evidence_policy": "Any Reef-derived claim MUST include evidence:{file,start_line,end_line}.",
+    "ascii_on_wire": true
+  },
+
+  "config": {
+    "index_path": "index.REEF",
+    "shards_glob": "TheReefArchive-*.REEF",
+    "mtime_watch": true,
+    "window_radius_lines": 24,
+    "max_window_radius_lines": 48,
+    "reflections_strategy": ["ontology", "file_reflections", "index_cooccur"],
+    "reflections_limit": 50000,
+    "clamp_rule": "effective_radius := min(max_window_radius_lines, max(1, requested_radius || window_radius_lines))",
+    "limit_rule": "Stop reflections-building scans once 'reflections_limit' candidates processed.",
+    "observability_metrics": [
+      "reef_index_modules_count",
+      "reef_shard_count",
+      "reef_reflections_cache_size",
+      "reef_cooccur_candidate_rate"
+    ],
+    "env": {
+      "keys": [
+        "MMM_REEF_INDEX_PATH",
+        "MMM_REEF_SHARDS_GLOB",
+        "MMM_WINDOW_RADIUS",
+        "MMM_FEATURE_FLAGS"
+      ],
+      "defaults": {
+        "MMM_REEF_INDEX_PATH": "index.REEF",
+        "MMM_REEF_SHARDS_GLOB": "TheReefArchive-*.REEF",
+        "MMM_WINDOW_RADIUS": 24,
+        "MMM_FEATURE_FLAGS": "exchange,integrity,provenance,gliders"
+      }
+    },
+    "optional_tables": {
+      "reef_reflections": [
+        "tenant_id",
+        "m1",
+        "m2",
+        "m3",
+        "...",
+        "first_seen_ts",
+        "last_seen_ts",
+        "PRIMARY (tenant_id,m1,m2)"
+      ]
+    }
+  },
+
+  "math": [
+    {
+      "id": "2.2.1.1",
+      "role": "phase window",
+      "latex": "\\Delta \\tau_{\\text{phase}} = \\alpha \\cdot EMA_{32}(\\mathcal{C}),\\; \\alpha \\in [0.5,2.0]",
+      "gloss": "Adaptive coherence-derived phase window, used by replay filtering when traversing Reef candidates."
+    },
+    {
+      "id": "2.2.1.2",
+      "role": "evidence radius",
+      "latex": "R = \\min\\left(R_{\\max},\\; \\lfloor EMA_{16}(\\mathcal{C}) \\rfloor + 1\\right)",
+      "gloss": "Line radius for evidence windows; bounded by R_max (48)."
+    },
+    {
+      "id": "2.2.1.3",
+      "role": "weak-field limit",
+      "statement": "As \\mathcal{C} \\to 1: R \\to 2 and \\Delta\\tau_{\\text{phase}} \\to 2\\alpha",
+      "gloss": "High-coherence regime converges to tight, stable windows."
+    }
+  ],
+
+  "api_bindings": {
+    "base": "/v1/mmm",
+    "mode": "project_local",
+    "auth": "none",
+    "endpoints": [
+      {
+        "path": "/reef/index",
+        "method": "GET",
+        "returns": "modules[], motifs[], anchors[]",
+        "impl": "ReefIndexRouter",
+        "adapter_entrypoints": ["list_modules", "list_motifs"]
+      },
+      {
+        "path": "/reef/window",
+        "method": "POST",
+        "body": "{module_id, line, radius?}",
+        "returns": "{snippet?, start_line, end_line}",
+        "impl": "ReefShardScanner",
+        "adapter_entrypoints": ["find", "window"],
+        "notes": "At L2 the adapter returns pointers; snippet expansion is gated by windowing rules."
+      },
+      {
+        "path": "/reef/build_reflections",
+        "method": "POST",
+        "body": "{limit?, strategy?}",
+        "returns": "{built, updated, skipped}",
+        "impl": "ReefReflectionsCache",
+        "adapter_entrypoints": ["build_reflections"]
+      }
+    ]
+  },
+
+  "methods": {
+    "list_modules": {
+      "id": "2.2.2.1",
+      "role": "observer",
+      "inputs": ["reef_index_path := 'index.REEF'"],
+      "outputs": ["modules:[{module_id, title?}]"],
+      "params": [],
+      "steps": [
+        "Parse reef_index_path and extract module entries in index order.",
+        "Emit {module_id, title?} with ASCII keys only.",
+        "Return modules."
+      ]
+    },
+
+    "list_motifs": {
+      "id": "2.2.2.2",
+      "role": "observer",
+      "inputs": ["module_id", "reef_index_path := 'index.REEF'"],
+      "outputs": ["motifs:[{motif_id, anchors:int}]"],
+      "params": [],
+      "steps": [
+        "Locate module_id in reef_index_path.",
+        "Collect motif identifiers and count anchor references.",
+        "Stable-sort lexicographically by motif_id and return."
+      ]
+    },
+
+    "find": {
+      "id": "2.2.2.3",
+      "role": "observer",
+      "inputs": ["route:{module_id,anchor}"],
+      "outputs": ["{file, line}"],
+      "params": [],
+      "steps": [
+        "Resolve {module_id,anchor} to a concrete file and line (no deref of snippet here).",
+        "Return {file,line}."
+      ]
+    },
+
+    "window": {
+      "id": "2.2.2.4",
+      "role": "observer",
+      "inputs": ["file", "line:int", "radius?:int"],
+      "outputs": ["evidence:{file,start_line,end_line}"],
+      "params": ["R_max := 48"],
+      "steps": [
+        "effective_radius := clamp(requested_radius || window_radius_lines, 1, R_max).",
+        "Compute start_line := max(1, line - effective_radius).",
+        "Compute end_line := line + effective_radius.",
+        "Return evidence window pointers only (no inline snippet at L2)."
+      ]
+    },
+
+    "cooccur": {
+      "id": "2.2.2.5",
+      "role": "observer",
+      "inputs": [
+        "m1",
+        "m2",
+        "reef_shards_glob",
+        "ema32_C",
+        "alpha",
+        "now_tick",
+        "seen_set /* LRU replay defense */"
+      ],
+      "outputs": [
+        "{candidates:[m3], evidence:[{file,start_line,end_line}]}"
+      ],
+      "params": [
+        "W := 2 * (alpha * EMA32(C)) /* replay scan width */",
+        "dedupe := true",
+        "stable_sort := lexicographic"
+      ],
+      "steps": [
+        "Derive W from ema32_C and alpha.",
+        "Scan shards_glob for co-occurrence contexts within width W.",
+        "For each valid (m1,m2)->m3 candidate, attach minimal evidence window {file,start_line,end_line}.",
+        "Apply replay defense with seen_set (LRU time-bounded).",
+        "Dedupe and stable-sort candidates.",
+        "Return {candidates, evidence}."
+      ]
+    },
+
+    "build_reflections": {
+      "id": "2.2.2.6",
+      "role": "observer",
+      "inputs": [
+        "limit:int?=50000",
+        "strategy?='index_cooccur|module_scan'",
+        "ema32_C",
+        "alpha",
+        "now_tick",
+        "seen_set"
+      ],
+      "outputs": [
+        "{built:int, updated:int, skipped:int, reflections:[{m1,m2,m3, evidence:{file,start_line,end_line}}]}"
+      ],
+      "params": [],
+      "steps": [
+        "Initialize counters {built,updated,skipped}:=0; reflections:=[].",
+        "Iterate motif pairs per strategy subject to 'limit'.",
+        "For each pair, call cooccur(...) → {candidates,evidence}.",
+        "For each m3, form reflection record with minimal evidence window.",
+        "Update counters deterministically (no external writes at L2); append to reflections until 'limit'.",
+        "Return summary counters and reflections array."
+      ]
+    },
+
+    "watch_reef_files": {
+      "id": "2.2.2.7",
+      "role": "observer",
+      "inputs": [
+        "reef_index_path:str",
+        "shards_glob:str",
+        "mtime_watch:bool",
+        "debounce_ms:int=750"
+      ],
+      "outputs": [
+        "event:{'needs_reload':bool,'new_shard_count':int}"
+      ],
+      "params": [
+        "poll_ms:int=500 /* external scheduler tick */"
+      ],
+      "state": {
+        "index_mtime_prev": "int|null",
+        "shard_mtimes_prev": "map<path,int>",
+        "debounce_deadline": "timestamp|null"
+      },
+      "invariants": [
+        "Glob results are ASCII-sorted.",
+        "Debounce: multiple changes within debounce_ms collapse into one 'needs_reload'.",
+        "Emit 'reef_shard_count' at init and after each 'needs_reload' event."
+      ],
+      "steps": [
+        "Poll index and shard mtimes; compare with *_prev.",
+        "If any path missing or mtime changed → mark changed=true.",
+        "If changed and mtime_watch, enforce debounce; when elapsed → emit {'needs_reload':true,'new_shard_count':N}.",
+        "Update *_prev and debounce clocks deterministically."
+      ],
+      "notes": [
+        "safe_stat_mtime(path) returns integer mtime or null; null is treated as a change.",
+        "Identical filesystem states MUST produce identical shard orders and counts."
+      ]
+    }
+  },
+
+  "invariants": [
+    "I1 Read-only posture: adapter never mutates Reef; methods return pointers/evidence windows.",
+    "I2 Evidence discipline: any Reef-informed output includes {file,start_line,end_line}.",
+    "I3 Replay defense: cooccur/build_reflections enforce W = 2·Δτ_phase with LRU semantics.",
+    "I4 Determinism: stable lexicographic sort for modules, motifs, candidates; explicit tie-breaks.",
+    "I5 Weak-field stability: as 𝒞→1, R and Δτ_phase converge to fixed bounds.",
+    "I6 ASCII on-wire: all emitted keys ASCII; ψ-* symbols allowed only in values/examples, not keys."
+  ],
+
+  "error_model": {
+    "codes": [
+      {
+        "code": "REEF_INDEX_NOT_FOUND",
+        "when": "index.REEF missing/unreadable",
+        "action": "Return 4xx with evidence=null; emit reef_shard_count=0 if applicable."
+      },
+      {
+        "code": "MODULE_NOT_FOUND",
+        "when": "list_motifs/find given unknown module_id",
+        "action": "Return empty set; do not throw."
+      },
+      {
+        "code": "ANCHOR_NOT_FOUND",
+        "when": "find(route) cannot resolve anchor",
+        "action": "Return {file:null,line:null}; do not expand window."
+      },
+      {
+        "code": "RADIUS_INVALID",
+        "when": "requested radius <1 or >R_max",
+        "action": "Clamp via clamp_rule; record normalization in debug logs only."
+      },
+      {
+        "code": "SCAN_LIMIT_REACHED",
+        "when": "reflections_limit exceeded during scans",
+        "action": "Stop scan deterministically; include 'skipped' in summary."
+      }
+    ]
+  },
+
+  "telemetry": {
+    "gauges": {
+      "reef_index_modules_count": "Count modules discovered in index.REEF",
+      "reef_shard_count": "Number of shards matching TheReefArchive-*.REEF",
+      "reef_reflections_cache_size": "Reflections records retained by process (if any caching layer is present)",
+      "reef_cooccur_candidate_rate": "Candidates per unit time during cooccur scans"
+    },
+    "events": [
+      "ascii_key_normalization_events /* emitted by upper layers when key normalization occurs */",
+      "needs_reload /* from watch_reef_files */"
+    ]
+  },
+
+  "examples": {
+    "sequence_minimal": [
+      {
+        "call": "list_modules",
+        "in": {"reef_index_path": "index.REEF"},
+        "out": {"modules": [{"module_id": "core.motif", "title": "Motifs"}]}
+      },
+      {
+        "call": "find",
+        "in": {"route": {"module_id": "core.motif", "anchor": "ψ-null@Ξ"}},
+        "out": {"file": "TheReefArchive-00.REEF", "line": 1234}
+      },
+      {
+        "call": "window",
+        "in": {"file": "TheReefArchive-00.REEF", "line": 1234, "radius": 24},
+        "out": {"evidence": {"file": "TheReefArchive-00.REEF", "start_line": 1210, "end_line": 1258}}
+      }
+    ],
+    "cooccur_walk": {
+      "params": {"ema32_C": 0.8, "alpha": 1.0, "now_tick": 1690000000},
+      "derived": {"W": 2 * (1.0 * 0.8) },
+      "call": "cooccur",
+      "in": {"m1": "ψ-null@Ξ", "m2": "ψ-spar@Ξ", "reef_shards_glob": "TheReefArchive-*.REEF"},
+      "out": {
+        "candidates": ["ψ-resonance@Ξ"],
+        "evidence": [{"file": "TheReefArchive-01.REEF", "start_line": 640, "end_line": 688}]
+      }
+    }
+  },
+
+  "compliance_and_regeneration": {
+    "bounds": [
+      "R <= max_window_radius_lines (48)",
+      "Δτ_phase = α·EMA32(C), α∈[0.5,2.0]"
+    ],
+    "ascii_keys": true,
+    "rfc_alignment": [
+      "Decay/replay (RFC-0005): scanning width W ties to Δτ_phase",
+      "Capacity/windowing (RFC-0006): EMA-derived bounds",
+      "Presence keys (RFC-0007): ψ-* appear in values/examples, not JSON keys",
+      "Exchange/integrity/provenance (RFC-0008/0009): enforced at egress layers; adapter surfaces evidence only"
+    ]
+  }
+}
